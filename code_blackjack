@@ -1,4 +1,12 @@
 
+import tkinter
+
+root = tkinter.Tk()
+root.title('Blackjack 21')
+root.state('zoomed')
+
+canvas = tkinter.Canvas(root, background='green', width=1900, height=1000)
+canvas.pack()
 
 # p = pique, c = coeur, t = trèfle, ca = carreau
 paquet = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9,'10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 10,\
@@ -14,4 +22,7 @@ def melange(paquet):
     return paquet
 
 
-#def donne(paquet,joueur):
+"""def donne(paquet,joueur):"""
+
+
+root.mainloop()
