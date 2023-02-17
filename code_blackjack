@@ -16,22 +16,33 @@ score = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9,
 
 paquet = list(score.keys())
 
-
+bouton_donne = tk.Button(text="distribuer", fg = "")
 """def donne(paquet, joueur, nb_carte):"""
 
 def donne(paquet, joueur, nb_carte): 
-    croupier = []
     joueur = [] 
     nb_carte = 0
     while nb_carte < 2 : 
         joueur.append(paquet[0])
         del paquet[0]
-        croupier.append(paquet[0])
-        del paquet[0]
         nb_carte += 1
+    print(joueur)
+    return joueur
 
 
 """def croupier(main_croupier):"""
+
+def donne(main_croupier): 
+    global paquet
+    main_croupier = [] 
+    nb_carte = 0
+    while nb_carte < 2 : 
+        main_croupier.append(paquet[0])
+        del paquet[0]
+        nb_carte += 1
+    print(main_croupier)
+    return main_croupier
+
 
 """def stand(main):"""
 
