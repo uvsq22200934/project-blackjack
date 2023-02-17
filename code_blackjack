@@ -5,7 +5,7 @@ root = tkinter.Tk()
 root.title('Blackjack 21')
 # root.state('zoomed')
 
-canvas = tkinter.Canvas(root, background='green', width=300, height=300)
+canvas = tkinter.Canvas(root, background='green', width=500, height=300)
 canvas.grid(column=0, row=0)
 
 # p = pique, c = coeur, t = trèfle, ca = carreau
