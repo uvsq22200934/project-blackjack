@@ -19,6 +19,18 @@ paquet = list(score.keys())
 
 """def donne(paquet, joueur, nb_carte):"""
 
+def donne(paquet, joueur, nb_carte): 
+    croupier = []
+    joueur = [] 
+    nb_carte = 0
+    while nb_carte < 2 : 
+        joueur.append(paquet[0])
+        del paquet[0]
+        croupier.append(paquet[0])
+        del paquet[0]
+        nb_carte += 1
+
+
 """def croupier(main_croupier):"""
 
 """def stand(main):"""
