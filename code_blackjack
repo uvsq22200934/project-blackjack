@@ -32,7 +32,7 @@ def donne(paquet, joueur, nb_carte):
 
 """def croupier(main_croupier):"""
 
-def donne(main_croupier): 
+def croupier(main_croupier): 
     global paquet
     main_croupier = [] 
     nb_carte = 0
