@@ -21,9 +21,9 @@ paquet = list(score.keys())
 
 
 rectangle = canvas.create_rectangle(10, 20, 50, 50, fill="white")
-canvas.tag_bind(rectangle, "<Button-1>", lambda e : random.shuffle(paquet))
+canvas.tag_bind(rectangle, "<Button-1>", lambda e : random.shuffle(paquet), text = 'mélanger')
 
 rectangle2 = canvas.create_rectangle(100, 20, 120, 50, fill="yellow")
-canvas.tag_bind(rectangle2, "<Button-1>", lambda e : print(paquet))
+canvas.tag_bind(rectangle2, "<Button-1>", lambda e : print(paquet), text = 'print paquet')
 
 root.mainloop()
