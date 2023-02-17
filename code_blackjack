@@ -5,8 +5,8 @@ root = tkinter.Tk()
 root.title('Blackjack 21')
 # root.state('zoomed')
 
-canvas = tkinter.Canvas(root, background='green', width=1900, height=1000)
-canvas.pack()
+canvas = tkinter.Canvas(root, background='green', width=300, height=300)
+canvas.grid(column = 0, row =0)
 
 # p = pique, c = coeur, t = trèfle, ca = carreau
 score = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 10,
@@ -20,10 +20,12 @@ paquet = list(score.keys())
 """def donne(paquet,joueur):"""
 
 
-rectangle = canvas.create_rectangle(10, 20, 50, 50, fill="white")
-canvas.tag_bind(rectangle, "<Button-1>", lambda e : random.shuffle(paquet), text = 'mélanger')
+bouton_melanger = tkinter.Button(background='white',text='Mélanger')
+bouton_melanger.grid(column = 0, row =0)
+bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
 
-rectangle2 = canvas.create_rectangle(100, 20, 120, 50, fill="yellow")
-canvas.tag_bind(rectangle2, "<Button-1>", lambda e : print(paquet), text = 'print paquet')
+bouton_print = tkinter.Button(background='white', text='Print')
+bouton_print.grid(column = 0, row =1)
+bouton_print.bind('<Button-1>', lambda e : print(paquet))
 
 root.mainloop()
