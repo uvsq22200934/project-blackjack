@@ -32,7 +32,7 @@ def donne(paquet, joueur, nb_carte):
 
 """def croupier(main_croupier):"""
 
-def donne(main_croupier): 
+def croupier(main_croupier): 
     global paquet
     main_croupier = [] 
     nb_carte = 0
@@ -43,7 +43,7 @@ def donne(main_croupier):
     print(main_croupier)
     return main_croupier
 
-bouton_donne = tkinter.Button(text="distribuer", fg = "white",command = donne)
+
 
 """def stand(main):"""
 
@@ -58,8 +58,12 @@ bouton_melanger = tkinter.Button(background='white', text='Mélanger')
 bouton_melanger.grid(column=0, row=0)
 bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
 
+bouton_donne= tkinter.Button(background = 'white', text='distribuer', command=donne)
+bouton_donne.grid(column=0, row=1)
+bouton_donne.bind('<Button-1>')
+
 bouton_print = tkinter.Button(background='white', text='Print')
-bouton_print.grid(column=0, row=1)
+bouton_print.grid(column=0, row=2)
 bouton_print.bind('<Button-1>', lambda e : print(paquet))
 
 root.mainloop()
