@@ -1,5 +1,5 @@
 import random
-import tkinter
+import tkinter 
 
 root = tkinter.Tk()
 root.title('Blackjack 21')
@@ -16,7 +16,7 @@ score = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9,
 
 paquet = list(score.keys())
 
-bouton_donne = tk.Button(text="distribuer", fg = "")
+
 """def donne(paquet, joueur, nb_carte):"""
 
 def donne(paquet, joueur, nb_carte): 
@@ -43,6 +43,7 @@ def donne(main_croupier):
     print(main_croupier)
     return main_croupier
 
+bouton_donne = tkinter.Button(text="distribuer", fg = "white",command = donne)
 
 """def stand(main):"""
 
