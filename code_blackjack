@@ -17,10 +17,20 @@ score = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9,
 paquet = list(score.keys())
 
 
-"""def donne(paquet,joueur):"""
+"""def donne(paquet, joueur, nb_carte):"""
+
+"""def croupier(main_croupier):"""
+
+"""def stand(main):"""
+
+"""def hit(main):"""
+
+"""def doubble_down(main)"""
+
+""""def surrender(main)"""
 
 
-bouton_melanger = tkinter.Button(background='white',text='Mélanger')
+bouton_melanger = tkinter.Button(background='white', text='Mélanger')
 bouton_melanger.grid(column=0, row=0)
 bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
 
