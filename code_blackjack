@@ -55,15 +55,20 @@ def croupier(main_croupier):
 
 
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
-bouton_melanger.grid(column=0, row=0)
+bouton_melanger.grid(column=0, row=1)
 bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
 
-bouton_donne= tkinter.Button(background = 'white', text='distribuer', command=donne)
-bouton_donne.grid(column=0, row=1)
-bouton_donne.bind('<Button-1>')
+def melange_distrib(event):
+    if event.widget == bouton_melanger:
+        bouton_melanger['text']= 'distribuer'
+        bouton_melanger['command']= donne
+bouton_melanger.bind("<Button-1>", melange_distrib)
 
 bouton_print = tkinter.Button(background='white', text='Print')
 bouton_print.grid(column=0, row=2)
 bouton_print.bind('<Button-1>', lambda e : print(paquet))
+
+cartes = tkinter.Canvas(root, width = 60, height = 100, bg = "red")
+cartes.grid(column =0, row =0)
 
 root.mainloop()
