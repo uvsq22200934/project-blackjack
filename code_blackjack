@@ -5,7 +5,7 @@ root = tkinter.Tk()
 root.title('Blackjack 21')
 # root.state('zoomed')
 
-canvas = tkinter.Canvas(root, background='green', width=500, height=300)
+canvas = tkinter.Canvas(root, background='green', width=1900, height=1000)
 canvas.grid(column=0, row=0)
 
 # p = pique, c = coeur, t = trèfle, ca = carreau
@@ -44,7 +44,6 @@ def croupier(main_croupier):
     return main_croupier
 
 
-
 """def stand(main):"""
 
 """def hit(main):"""
@@ -53,6 +52,16 @@ def croupier(main_croupier):
 
 """"def surrender(main)"""
 
+#fonction et bouton pour lancer une partie
+bouton_play = tkinter.Button(bg = 'dark green', text = 'jouer')
+bouton_play.grid(column=800, row=500)
+def play(event):
+    if event.widget == bouton_play : 
+        bouton_play['text'] = 'mélanger'
+        bouton_play['command']= melange_distrib
+bouton_play.bind("<Button-1>", play)
+
+#fonction et bouton pour mélanger et distribuer le jeu
 
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
 bouton_melanger.grid(column=0, row=1)
