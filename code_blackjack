@@ -5,7 +5,7 @@ root = tkinter.Tk()
 root.title('Blackjack 21')
 # root.state('zoomed')
 
-canvas = tkinter.Canvas(root, background='green', width=500, height=300)
+canvas = tkinter.Canvas(root, background='green', width=1900, height=1000)
 canvas.grid(column=0, row=0)
 
 # p = pique, c = coeur, t = trèfle, ca = carreau
@@ -33,8 +33,7 @@ def donne(paquet, joueur, nb_carte):
 
 """def croupier(main_croupier):"""
 
-
-def donne_croupier(main_croupier):
+def donne(main_croupier): 
     global paquet
     main_croupier = []
     nb_carte = 0
@@ -45,8 +44,7 @@ def donne_croupier(main_croupier):
     print(main_croupier)
     return main_croupier
 
-
-bouton_donne = tkinter.Button(text="distribuer", fg="white", command=donne)
+bouton_donne = tkinter.Button(text="distribuer", fg = "white",command = donne)
 
 """def stand(main):"""
 
@@ -56,13 +54,32 @@ bouton_donne = tkinter.Button(text="distribuer", fg="white", command=donne)
 
 """"def surrender(main)"""
 
+#fonction et bouton pour lancer une partie
+bouton_play = tkinter.Button(bg = 'dark green', text = 'jouer')
+bouton_play.grid(column=800, row=500)
+def play(event):
+    if event.widget == bouton_play : 
+        bouton_play['text'] = 'mélanger'
+        bouton_play['command']= melange_distrib
+bouton_play.bind("<Button-1>", play)
+
+#fonction et bouton pour mélanger et distribuer le jeu
 
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
-bouton_melanger.grid(column=0, row=0)
+bouton_melanger.grid(column=0, row=1)
 bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
 
+def melange_distrib(event):
+    if event.widget == bouton_melanger:
+        bouton_melanger['text']= 'distribuer'
+        bouton_melanger['command']= donne
+bouton_melanger.bind("<Button-1>", melange_distrib)
+
 bouton_print = tkinter.Button(background='white', text='Print')
-bouton_print.grid(column=0, row=1)
+bouton_print.grid(column=0, row=2)
 bouton_print.bind('<Button-1>', lambda e : print(paquet))
+
+cartes = tkinter.Canvas(root, width = 60, height = 100, bg = "red")
+cartes.grid(column =0, row =0)
 
 root.mainloop()
