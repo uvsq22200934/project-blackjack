@@ -84,7 +84,7 @@ def fin_manche():
     return main_croupier, main_joueur
 
 
-"""def croupier(main_croupier):"""
+"""def croupier():"""
 
 """def stand(main):"""
 
@@ -106,18 +106,18 @@ bouton_play.bind("<Button-1>", play)
 """fonction et bouton pour mélanger et distribuer le jeu"""
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
 bouton_melanger.grid(column=0, row=1)
-bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
+bouton_melanger.bind('<Button-1>', lambda e: random.shuffle(paquet))
 
 bouton_print = tkinter.Button(background='white', text='Print')
 bouton_print.grid(column=0, row=2)
-bouton_print.bind('<Button-1>', lambda e : print(paquet))
+bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
 bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
 bouton_fin_manche.grid(column=1, row=1)
-bouton_fin_manche.bind('<Button-1>', lambda e : fin_manche())
+bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
 bouton_distribuer = tkinter.Button(background='white', text='test distribuer')
 bouton_distribuer.grid(column=2, row=2)
-bouton_distribuer.bind('<Button-1>', lambda e : distribuer(2))
+bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 
 root.mainloop()
