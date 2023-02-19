@@ -1,48 +1,90 @@
 import random
-import tkinter 
+import tkinter
 
-root = tkinter.Tk()
-root.title('Blackjack 21')
-# root.state('zoomed')
+"""listes"""
 
-canvas = tkinter.Canvas(root, background='green', width=1900, height=1000)
-canvas.grid(column=0, row=0)
-
-# p = pique, c = coeur, t = trèfle, ca = carreau
+"""p = pique, c = coeur, t = trèfle, ca = carreau"""
 score = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 10,
           '2c': 2, '3c': 3, '4c': 4, '5c': 5, '6c': 6, '7c': 7, '8c': 8, '9c': 9, '10c': 10, 'Vc': 10, 'Dc': 10, 'Rc': 10, 'Ac': 10,
           '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7, '8t': 8, '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10, 'Rt': 10, 'At': 10,
           '2ca': 2, '3ca': 3, '4ca': 4, '5ca': 5, '6ca': 6, ' 7ca': 7, '8ca': 8, '9ca': 9, '10ca': 10, 'Vca': 10, 'Dca': 10, 'Rca': 10, 'Aca': 10}
 
 paquet = list(score.keys())
+defausse = []
+
+main_joueur = []
+main_croupier = []
 
 
-"""def donne(paquet, joueur, nb_carte):"""
+"""Graphismes"""
 
-def donne(paquet, joueur, nb_carte): 
-    joueur = [] 
-    nb_carte = 0
-    while nb_carte < 2 : 
-        joueur.append(paquet[0])
-        del paquet[0]
-        nb_carte += 1
-    print(joueur)
-    return joueur
+root = tkinter.Tk()
+root.title('Blackjack 21')
+"""root.state('zoomed')"""
+
+canvas = tkinter.Canvas(root, background='green', width=300, height=300)
+canvas.grid(column=0, row=0)
+
+cartes = tkinter.Canvas(root, width=60, height=100, bg="red")
+cartes.grid(column=0, row=0)
 
 
-"""def croupier(main_croupier):"""
+"""Def fonctions"""
 
-def croupier(main_croupier): 
+
+def donne(nb_carte):
     global paquet
-    main_croupier = [] 
+    global main_joueur
     nb_carte = 0
-    while nb_carte < 2 : 
+    while nb_carte < 2:
+        main_joueur.append(paquet[0])
+        del paquet[0]
         main_croupier.append(paquet[0])
         del paquet[0]
         nb_carte += 1
-    print(main_croupier)
-    return main_croupier
+    print(main_joueur, '\n', main_croupier)
+    return main_joueur, main_croupier
 
+
+"""je ne comprends pas l'interet"""
+
+
+def play(event):
+    if event.widget == bouton_play:
+        bouton_play['text'] = 'mélanger'
+        bouton_play['command'] = melange_distrib
+
+
+"""je ne comprends pas l'interet"""
+
+
+def melange_distrib():
+    bouton_melanger['text'] = 'distribuer'
+    bouton_melanger['command'] = donne(2)
+
+
+def distribuer(nb_carte):
+    donne(nb_carte)
+    print(main_croupier, main_joueur)
+    return main_joueur, main_croupier
+
+
+def fin_manche():
+    print('debut fonction')
+    global main_croupier
+    global main_joueur
+    global defausse
+    while len(main_joueur) and len(main_croupier) != 0:
+        print(main_joueur, main_croupier)
+        defausse.append(main_joueur[0])
+        del main_joueur[0]
+        defausse.append(paquet[0])
+        del main_croupier[0]
+    print('mains', main_croupier, main_joueur)
+    return main_croupier, main_joueur
+
+
+"""def croupier(main_croupier):"""
 
 """def stand(main):"""
 
@@ -50,34 +92,32 @@ def croupier(main_croupier):
 
 """def doubble_down(main)"""
 
-""""def surrender(main)"""
+"""def surrender(main)"""
 
-#fonction et bouton pour lancer une partie
-bouton_play = tkinter.Button(bg = 'dark green', text = 'jouer')
-bouton_play.grid(column=800, row=500)
-def play(event):
-    if event.widget == bouton_play : 
-        bouton_play['text'] = 'mélanger'
-        bouton_play['command']= melange_distrib
+
+"""Boutons"""
+
+"""fonction et bouton pour lancer une partie"""
+bouton_play = tkinter.Button(bg='dark green', text='jouer')
+bouton_play.grid(column=1, row=1)
+
 bouton_play.bind("<Button-1>", play)
 
-#fonction et bouton pour mélanger et distribuer le jeu
-
+"""fonction et bouton pour mélanger et distribuer le jeu"""
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
 bouton_melanger.grid(column=0, row=1)
 bouton_melanger.bind('<Button-1>', lambda e : random.shuffle(paquet))
-
-def melange_distrib(event):
-    if event.widget == bouton_melanger:
-        bouton_melanger['text']= 'distribuer'
-        bouton_melanger['command']= donne
-bouton_melanger.bind("<Button-1>", melange_distrib)
 
 bouton_print = tkinter.Button(background='white', text='Print')
 bouton_print.grid(column=0, row=2)
 bouton_print.bind('<Button-1>', lambda e : print(paquet))
 
-cartes = tkinter.Canvas(root, width = 60, height = 100, bg = "red")
-cartes.grid(column =0, row =0)
+bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
+bouton_fin_manche.grid(column=1, row=1)
+bouton_fin_manche.bind('<Button-1>', fin_manche)
+
+bouton_distribuer = tkinter.Button(background='white', text='test distribuer')
+bouton_distribuer.grid(column=2, row=2)
+bouton_distribuer.bind('<Button-1>', distribuer)
 
 root.mainloop()
