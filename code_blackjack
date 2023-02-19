@@ -114,10 +114,10 @@ bouton_print.bind('<Button-1>', lambda e : print(paquet))
 
 bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
 bouton_fin_manche.grid(column=1, row=1)
-bouton_fin_manche.bind('<Button-1>', fin_manche)
+bouton_fin_manche.bind('<Button-1>', lambda e : fin_manche())
 
 bouton_distribuer = tkinter.Button(background='white', text='test distribuer')
 bouton_distribuer.grid(column=2, row=2)
-bouton_distribuer.bind('<Button-1>', distribuer)
+bouton_distribuer.bind('<Button-1>', lambda e : distribuer(2))
 
 root.mainloop()
