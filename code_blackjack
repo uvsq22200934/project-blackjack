@@ -1,13 +1,15 @@
 import random
 import tkinter
 
+
 """listes et variables"""
+
 
 """p = pique, co = coeur, t = trèfle, ca = carreau"""
 valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
            '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 11,
            '2co': 2, '3co': 3, '4co': 4, '5co': 5, '6co': 6, '7co': 7,
-           '8co': 8, '9co': 9, '10co': 10, 'Vco': 10, 'Dco': 10, 'Rco': 10, 
+           '8co': 8, '9co': 9, '10co': 10, 'Vco': 10, 'Dco': 10, 'Rco': 10,
            'Aco': 11,
            '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7, '8t': 8,
            '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10, 'Rt': 10, 'At': 11,
@@ -25,7 +27,9 @@ Ap = 0
 Ac = 0
 At = 0
 
+
 """Graphismes"""
+
 
 root = tkinter.Tk()
 root.title('Blackjack 21')
@@ -163,6 +167,7 @@ def croupier():
 
 """Boutons"""
 
+
 """fonction et bouton pour lancer une partie"""
 bouton_play = tkinter.Button(bg='dark green', text='jouer')
 bouton_play.grid(column=1, row=1)
@@ -205,6 +210,7 @@ bouton_score.grid(column=3, row=3)
 
 
 """ mise du jeu """
+
 
 mise_totale = 0
 mise = {'pion_rouge': 5, 'pion_bleu': 10, 'pion_vert': 25, 'pion_noir': 100}
