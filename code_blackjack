@@ -58,7 +58,7 @@ def nouvelle_partie(bouton):
     if bouton == 'nouvelle_partie':
         bouton_nouvelle_partie.destroy()
         bouton_play.destroy()
-"""        bouton_nouvelle_partie['command'] = melange_distrib"""
+"""bouton_nouvelle_partie['command'] = melange_distrib"""
 
 
 """je ne comprends pas l'interet"""
@@ -75,15 +75,18 @@ def distribuer(nb_carte):
     return main_joueur, main_croupier
 
 
-def pioche(bouton):
+def pioche(nb_carte, main, bouton):
     global main_joueur
     global paquet
-    global nb_carte
     if bouton == 'bouton_pioche':
         main_joueur.append(paquet[0])
         del paquet[0]
-    print('main joueur', main_joueur)
-    return main_joueur
+        print('main joueur', main_joueur)
+    else:
+        for i in range(nb_carte-1):
+            main.append(paquet[0])
+            del paquet[0]
+    return main
 
 
 def fin_manche():
@@ -108,7 +111,13 @@ def score(main):
     return points
 
 
-"""def croupier():"""
+def croupier():
+    global main_croupier
+    points = score(main_croupier)
+    while points <= 16:
+        pioche(1, main_croupier)
+    return main_croupier
+
 
 """def stand(main):"""
 
@@ -149,7 +158,7 @@ bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 
 bouton_pioche = tkinter.Button(bg='white', text='pioche')
 bouton_pioche.grid(column=1, row=2)
-bouton_pioche.bind('<Button-1>', lambda e: pioche('bouton_pioche'))
+bouton_pioche.bind('<Button-1>', lambda e: pioche(2, main_joueur, 'bouton_pioche'))
 
 bouton_score = tkinter.Button(bg='white', text='score', command=lambda: score(main_joueur))
 bouton_score.grid(column=3, row=2)
