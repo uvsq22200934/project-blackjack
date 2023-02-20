@@ -54,11 +54,11 @@ def play(event):
         bouton_play['command'] = nouvelle_partie
 
 
-def nouvelle_partie(event):
-    if event.widget == bouton_nouvelle_partie:
+def nouvelle_partie(bouton):
+    if bouton == 'nouvelle_partie':
         bouton_nouvelle_partie.destroy()
         bouton_play.destroy()
-        bouton_nouvelle_partie['command'] = melange_distrib
+"""        bouton_nouvelle_partie['command'] = melange_distrib"""
 
 
 """je ne comprends pas l'interet"""
@@ -124,12 +124,11 @@ def score(main):
 """fonction et bouton pour lancer une partie"""
 bouton_play = tkinter.Button(bg='dark green', text='jouer')
 bouton_play.grid(column=1, row=1)
-
 bouton_play.bind("<Button-1>", play)
 
-bouton_nouvelle_partie = tkinter.Button(bg='white', text='nouvelle partie') 
+bouton_nouvelle_partie = tkinter.Button(bg='white', text='nouvelle partie')
 bouton_nouvelle_partie.grid(column=1, row=0)
-bouton_nouvelle_partie.bind("<Button-1>", nouvelle_partie)
+bouton_nouvelle_partie.bind("<Button-1>", lambda e: nouvelle_partie('nouvelle_partie'))
 
 """fonction et bouton pour mélanger et distribuer le jeu"""
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
