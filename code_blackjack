@@ -68,14 +68,16 @@ def distribuer(nb_carte):
     print(main_croupier, main_joueur)
     return main_joueur, main_croupier
 
+
 def pioche(bouton):
     global main_joueur
-    global paquet 
-    if bouton == 'bouton_pioche' : 
+    global paquet
+    if bouton == 'bouton_pioche':
         main_joueur.append(paquet[0])
         del paquet[0]
     print(main_joueur)
     return main_joueur
+
 
 def fin_manche():
     print('debut fonction')
@@ -128,8 +130,8 @@ bouton_distribuer = tkinter.Button(background='white', text='test distribuer')
 bouton_distribuer.grid(column=2, row=2)
 bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 
-bouton_pioche = tkinter.Button(bg = 'white',text = 'pioche')
+bouton_pioche = tkinter.Button(bg='white', text='pioche')
 bouton_pioche.grid(column=1, row=2)
-bouton_pioche.bind('<Button-1>',lambda e: pioche('bouton_pioche'))
+bouton_pioche.bind('<Button-1>', lambda e: pioche('bouton_pioche'))
 
 root.mainloop()
