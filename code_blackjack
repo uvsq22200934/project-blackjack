@@ -4,12 +4,12 @@ import tkinter
 """listes"""
 
 """p = pique, c = coeur, t = trèfle, ca = carreau"""
-score = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 10,
+valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 10,
           '2c': 2, '3c': 3, '4c': 4, '5c': 5, '6c': 6, '7c': 7, '8c': 8, '9c': 9, '10c': 10, 'Vc': 10, 'Dc': 10, 'Rc': 10, 'Ac': 10,
           '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7, '8t': 8, '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10, 'Rt': 10, 'At': 10,
           '2ca': 2, '3ca': 3, '4ca': 4, '5ca': 5, '6ca': 6, ' 7ca': 7, '8ca': 8, '9ca': 9, '10ca': 10, 'Vca': 10, 'Dca': 10, 'Rca': 10, 'Aca': 10}
 
-paquet = list(score.keys())
+paquet = list(valeurs.keys())
 defausse = []
 
 main_joueur = []
@@ -42,7 +42,7 @@ def donne(nb_carte):
         main_croupier.append(paquet[0])
         del paquet[0]
         nb_carte += 1
-    print(main_joueur, '\n', main_croupier)
+    print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
 
 
@@ -65,7 +65,7 @@ def melange_distrib():
 
 def distribuer(nb_carte):
     donne(nb_carte)
-    print(main_croupier, main_joueur)
+    print('main croupier', main_croupier, 'main joueur', main_joueur)
     return main_joueur, main_croupier
 
 
@@ -75,7 +75,7 @@ def pioche(bouton):
     if bouton == 'bouton_pioche':
         main_joueur.append(paquet[0])
         del paquet[0]
-    print(main_joueur)
+    print('main joueur', main_joueur)
     return main_joueur
 
 
@@ -90,8 +90,15 @@ def fin_manche():
         del main_joueur[0]
         defausse.append(paquet[0])
         del main_croupier[0]
-    print('mains', main_croupier, main_joueur)
+    print('mains croupier ', main_croupier, 'main joueur', main_joueur)
     return main_croupier, main_joueur
+
+
+def score(main):
+    points = 0
+    for i in range(len(main)):
+        points += valeurs.get(main[i])
+    return points
 
 
 """def croupier():"""
@@ -133,5 +140,8 @@ bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 bouton_pioche = tkinter.Button(bg='white', text='pioche')
 bouton_pioche.grid(column=1, row=2)
 bouton_pioche.bind('<Button-1>', lambda e: pioche('bouton_pioche'))
+
+bouton_score = tkinter.Button(bg='white', text='score', command=lambda: score(main_joueur))
+bouton_score.grid(column=3, row=2)
 
 root.mainloop()
