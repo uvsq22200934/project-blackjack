@@ -146,8 +146,7 @@ bouton_play.bind("<Button-1>", play)
 
 bouton_nouvelle_partie = tkinter.Button(bg='white', text='nouvelle partie')
 bouton_nouvelle_partie.grid(column=1, row=0)
-bouton_nouvelle_partie.bind(
-    "<Button-1>", lambda e: nouvelle_partie('nouvelle_partie'))
+bouton_nouvelle_partie.bind("<Button-1>", lambda e: nouvelle_partie('nouvelle_partie'))
 
 """fonction et bouton pour mélanger et distribuer le jeu"""
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
@@ -168,8 +167,7 @@ bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 
 bouton_pioche = tkinter.Button(bg='white', text='pioche')
 bouton_pioche.grid(column=1, row=2)
-bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
-                   main_joueur, 'bouton_pioche'))
+bouton_pioche.bind('<Button-1>', lambda e: pioche(2,main_joueur, 'bouton_pioche'))
 
 bouton_score = tkinter.Button(
     bg='white', text='score', command=lambda: score(main_joueur))
@@ -178,5 +176,37 @@ bouton_score.grid(column=3, row=2)
 bouton_score = tkinter.Button(
     bg='white', text='croupier test', command=croupier)
 bouton_score.grid(column=3, row=3)
+
+
+
+""" mise du jeu """
+
+mise_totale = 0 
+mise = {'pion_rouge' : 5,'pion_bleu' : 10,'pion_vert' : 25,'pion_noir' : 100}
+
+def mise_joueur(mise) : 
+    if event.widget == bouton_mise : 
+         
+                   
+bouton_mise = tkinter.Button.circle(root, bg = 'khaki1', text ='mise')
+bouton_mise.grid(canvas, colum = 1, row = 2)
+bouton_mise.bind('<Double-1>', lambda e : mise_joueur)
+
+pion_vert = tkinter.Canvas.circle(background='forest green', width=30, height=30)
+pion_vert.grid(canvas, column = 1, row = 0)
+
+pion_bleu = tkinter.Canvas.circle(background='medium blue', width=30, height=30)
+pion_bleu.grid(canvas, column = 2, row = 0)
+
+pion_rouge = tkinter.Canvas.circle(background='red4', width=30, height=30)
+pion_rouge.grid(canvas, column = 3, row = 0)
+
+pion_noir = tkinter.Canvas.circle(background='gray15', width=30, height=30)
+pion_noir.grid(canvas, column = 4, row = 0)
+
+
+
+
+
 
 root.mainloop()
