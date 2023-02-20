@@ -72,16 +72,17 @@ def distribuer(nb_carte):
     print(main_croupier, main_joueur)
     return main_joueur, main_croupier
 
-def pioche(event):
+
+def pioche(bouton):
     global main_joueur
     global paquet 
     global nb_carte
-    while event.widget == bouton_pioche : 
+    if event.widget == bouton_pioche : 
         main_joueur.append(paquet[0])
         del paquet[0]
-        nb_carte += 1
     print(main_joueur)
     return main_joueur
+
 
 def fin_manche():
     print('debut fonction')
@@ -139,7 +140,7 @@ bouton_distribuer.grid(column=0, row=2)
 bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 
 bouton_pioche = tkinter.Button(bg = 'white',text = 'pioche')
-bouton_pioche.grid(column=0, row=3)
-bouton_pioche.bind('<Button-1>',lambda e: pioche(1))
+bouton_pioche.grid(column=1, row=2)
+bouton_pioche.bind('<Button-1>',lambda e: pioche())
 
 root.mainloop()
