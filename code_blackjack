@@ -201,8 +201,8 @@ def mise_joueur(mise) :
         mise_totale += mise
          
                    
-bouton_mise = tkinter.Button.circle(root, bg = 'khaki1', text ='mise')
-bouton_mise.grid(canvas, colum = 1, row = 2)
+bouton_mise = tkinter.Button(root, bg = 'khaki1', text ='mise')
+bouton_mise.grid(column= 1, row = 2)
 bouton_mise.bind('<Double-1>', lambda e : mise_joueur())
 
 pion_vert = tkinter.Button(bg='forest green', width=30, height=30)
