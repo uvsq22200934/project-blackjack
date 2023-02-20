@@ -199,7 +199,8 @@ mise = {'pion_rouge': 5, 'pion_bleu': 10, 'pion_vert': 25, 'pion_noir': 100}
         totale."""
 
 
-def mise_joueur():
+def mise_joueur(event):
+    global mise_totale
     while event.widget == pion_vert:
         mise_totale += 5
     while event.widget == pion_vert:
