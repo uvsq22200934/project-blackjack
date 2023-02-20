@@ -1,13 +1,14 @@
 import random
 import tkinter
 
-"""listes"""
+"""listes et variables"""
 
-"""p = pique, c = coeur, t = trèfle, ca = carreau"""
+"""p = pique, co = coeur, t = trèfle, ca = carreau"""
 valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
            '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 11,
-           '2c': 2, '3c': 3, '4c': 4, '5c': 5, '6c': 6, '7c': 7, '8c': 8,
-           '9c': 9, '10c': 10, 'Vc': 10, 'Dc': 10, 'Rc': 10, 'Ac': 11,
+           '2co': 2, '3co': 3, '4co': 4, '5co': 5, '6co': 6, '7co': 7,
+           '8co': 8, '9co': 9, '10co': 10, 'Vco': 10, 'Dco': 10, 'Rco': 10, 
+           'Aco': 11,
            '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7, '8t': 8,
            '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10, 'Rt': 10, 'At': 11,
            '2ca': 2, '3ca': 3, '4ca': 4, '5ca': 5, '6ca': 6, ' 7ca': 7,
@@ -16,10 +17,13 @@ valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
 
 paquet = list(valeurs.keys())
 defausse = []
-points = 0
 main_joueur = []
 main_croupier = []
 
+Aca = 0
+Ap = 0
+Ac = 0
+At = 0
 
 """Graphismes"""
 
@@ -88,9 +92,8 @@ def pioche(nb_carte, main, bouton=0):
     if bouton == 'bouton_pioche':
         main_joueur.append(paquet[0])
         del paquet[0]
-        print('main joueur', main_joueur)
     else:
-        for i in range(nb_carte-1):
+        for i in range(nb_carte):
             main.append(paquet[0])
             del paquet[0]
     return main
@@ -112,29 +115,41 @@ def fin_manche():
 
 
 def score(main):
-    global points
+    points = 0
+    global Aca
+    global Ap
+    global Ac
+    global At
     for element in main:
         points += valeurs.get(element)
     for element in main:
         while points > 21:
-            if 'A' in element:
-                valeurs[element] == 1
-                score(main)
-    valeurs['Aca'] == 11
-    valeurs['At'] == 11
-    valeurs['Ac'] == 11
-    valeurs['Ap'] == 11
+            if 'Aca' in element and Aca == 0:
+                Aca = 1
+                points -= 10
+            if 'Ap' in element and Ap == 0:
+                Ap = 1
+                points -= 10
+            if 'At' in element and At == 0:
+                At = 1
+                points -= 10
+            if 'Aco' in element and Ac == 0:
+                Ac = 1
+                points -= 10
+            else:
+                break
     return points
 
 
 def croupier():
     global main_croupier
-    points = score(main_croupier)
-    while points <= 16:
+    points_croupier = score(main_croupier)
+    while points_croupier <= 16:
         pioche(1, main_croupier)
-        points = score(main_croupier)
-        print(points)
-    return main_croupier
+        print(main_croupier)
+        points_croupier = score(main_croupier)
+        print(points_croupier)
+    return main_croupier, points_croupier
 
 
 """def stand(main):"""
@@ -191,7 +206,7 @@ bouton_score.grid(column=3, row=3)
 
 """ mise du jeu """
 
-mise_totale = 0 
+mise_totale = 0
 mise = {'pion_rouge': 5, 'pion_bleu': 10, 'pion_vert': 25, 'pion_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire \
@@ -216,19 +231,19 @@ bouton_mise = tkinter.Button(root, bg='khaki1', text='mise')
 bouton_mise.grid(column=1, row=2)
 bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
 
-pion_vert = tkinter.Button(bg='forest green', width=30, height=30)
+pion_vert = tkinter.Button(bg='forest green', width=5, height=5)
 pion_vert.grid(column=1, row=0)
 pion_vert.bind('<Double-1>', lambda e: mise_joueur())
 
-pion_bleu = tkinter.Button(bg='medium blue', width=30, height=30)
+pion_bleu = tkinter.Button(bg='medium blue', width=5, height=5)
 pion_bleu.grid(column=2, row=0)
 pion_bleu.bind('<Double-1>', lambda e: mise_joueur())
 
-pion_rouge = tkinter.Button(bg='red4', width=30, height=30)
+pion_rouge = tkinter.Button(bg='red4', width=5, height=5)
 pion_rouge.grid(column=3, row=0)
 pion_rouge.bind('<Double-1>', lambda e: mise_joueur())
 
-pion_noir = tkinter.Button(bg='gray15', width=30, height=30)
+pion_noir = tkinter.Button(bg='gray15', width=5, height=5)
 pion_noir.grid(column=4, row=0)
 pion_noir.bind('<Double-1>', lambda e: mise_joueur())
 
