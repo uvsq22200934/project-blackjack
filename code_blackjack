@@ -113,11 +113,10 @@ def fin_manche():
 
 def score(main):
     global points
-    nb_as = 0
     for element in main:
         points += valeurs.get(element)
     for element in main:
-        while points>21:
+        while points > 21:
             if 'A' in element:
                 valeurs[element] == 1
                 score(main)
@@ -193,38 +192,43 @@ bouton_score.grid(column=3, row=3)
 """ mise du jeu """
 
 mise_totale = 0 
-mise = {'pion_rouge' : 5,'pion_bleu' : 10,'pion_vert' : 25,'pion_noir' : 100}
+mise = {'pion_rouge': 5, 'pion_bleu': 10, 'pion_vert': 25, 'pion_noir': 100}
 
-#le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire apparaitre des boutons sur les pions, qui incrémente la valeur de la mise totale.
-def mise_joueur() : 
-    while event.widget == pion_vert :
-        mise_totale += 5 
-    while event.widget == pion_vert : 
+"""le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire \
+    apparaitre des boutons sur les pions, qui incrémente la valeur de la mise \
+        totale."""
+
+
+def mise_joueur():
+    while event.widget == pion_vert:
+        mise_totale += 5
+    while event.widget == pion_vert:
         mise_totale += 10
-    while event.widget == pion_vert : 
+    while event.widget == pion_vert:
         mise_totale += 25
-    while event.widget == pion_vert : 
-        mise_totale += 100        
+    while event.widget == pion_vert:
+        mise_totale += 100
     return mise_totale
-                   
-bouton_mise = tkinter.Button(root, bg = 'khaki1', text ='mise')
-bouton_mise.grid(column= 1, row = 2)
-bouton_mise.bind('<Double-1>', lambda e : mise_joueur())
+
+
+bouton_mise = tkinter.Button(root, bg='khaki1', text='mise')
+bouton_mise.grid(column=1, row=2)
+bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
 
 pion_vert = tkinter.Button(bg='forest green', width=30, height=30)
 pion_vert.grid(column=1, row=0)
-pion_vert.bind('<Double-1>', lambda e : mise_joueur())
+pion_vert.bind('<Double-1>', lambda e: mise_joueur())
 
 pion_bleu = tkinter.Button(bg='medium blue', width=30, height=30)
 pion_bleu.grid(column=2, row=0)
-pion_bleu.bind('<Double-1>', lambda e : mise_joueur())
+pion_bleu.bind('<Double-1>', lambda e: mise_joueur())
 
 pion_rouge = tkinter.Button(bg='red4', width=30, height=30)
 pion_rouge.grid(column=3, row=0)
-pion_rouge.bind('<Double-1>', lambda e : mise_joueur())
+pion_rouge.bind('<Double-1>', lambda e: mise_joueur())
 
 pion_noir = tkinter.Button(bg='gray15', width=30, height=30)
 pion_noir.grid(column=4, row=0)
-pion_noir.bind('<Double-1>', lambda e : mise_joueur())
+pion_noir.bind('<Double-1>', lambda e: mise_joueur())
 
 root.mainloop()
