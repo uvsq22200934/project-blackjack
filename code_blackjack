@@ -51,9 +51,13 @@ def donne(nb_carte):
 
 def play(event):
     if event.widget == bouton_play:
-        bouton_play['text'] = 'mélanger'
-        bouton_play['command'] = melange_distrib
+        bouton_play['command'] = nouvelle_partie
 
+def nouvelle_partie(event):
+    if event.widget == bouton_nouvelle_partie : 
+        bouton_nouvelle_partie.destroy()
+        bouton_play.destroy()
+        bouton_nouvelle_partie['command'] = melange_distrib
 
 """je ne comprends pas l'interet"""
 
@@ -72,7 +76,7 @@ def pioche(event):
     global main_joueur
     global paquet 
     global nb_carte
-    if event.widget == bouton_pioche : 
+    while event.widget == bouton_pioche : 
         main_joueur.append(paquet[0])
         del paquet[0]
         nb_carte += 1
@@ -113,25 +117,29 @@ bouton_play.grid(column=1, row=1)
 
 bouton_play.bind("<Button-1>", play)
 
+bouton_nouvelle_partie = tkinter.Button ( bg='white', text='nouvelle partie') 
+bouton_nouvelle_partie.grid(column=1, row=0)
+bouton_nouvelle_partie.bind("<Button-1>", nouvelle_partie)
+
 """fonction et bouton pour mélanger et distribuer le jeu"""
 bouton_melanger = tkinter.Button(background='white', text='Mélanger')
 bouton_melanger.grid(column=0, row=1)
 bouton_melanger.bind('<Button-1>', lambda e: random.shuffle(paquet))
 
 bouton_print = tkinter.Button(background='white', text='Print')
-bouton_print.grid(column=0, row=2)
+bouton_print.grid(column=0, row=5)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
 bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
-bouton_fin_manche.grid(column=1, row=1)
+bouton_fin_manche.grid(column=0, row=4)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
-bouton_distribuer = tkinter.Button(background='white', text='test distribuer')
-bouton_distribuer.grid(column=2, row=2)
+bouton_distribuer = tkinter.Button(background='white', text='distribuer')
+bouton_distribuer.grid(column=0, row=2)
 bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
 
 bouton_pioche = tkinter.Button(bg = 'white',text = 'pioche')
-bouton_pioche.grid(column=1, row=2)
-bouton_pioche.bind('<Button-1>',lambda e: pioche())
+bouton_pioche.grid(column=0, row=3)
+bouton_pioche.bind('<Button-1>',lambda e: pioche(1))
 
 root.mainloop()
