@@ -11,7 +11,7 @@ valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8, '9p': 
 
 paquet = list(valeurs.keys())
 defausse = []
-
+points = 0
 main_joueur = []
 main_croupier = []
 
@@ -75,7 +75,7 @@ def distribuer(nb_carte):
     return main_joueur, main_croupier
 
 
-def pioche(nb_carte, main, bouton):
+def pioche(nb_carte, main, bouton=0):
     global main_joueur
     global paquet
     if bouton == 'bouton_pioche':
@@ -105,9 +105,9 @@ def fin_manche():
 
 
 def score(main):
-    points = 0
-    for i in range(len(main)):
-        points += valeurs.get(main[i])
+    global points
+    for element in main:
+        points += valeurs.get(element)
     return points
 
 
@@ -116,6 +116,8 @@ def croupier():
     points = score(main_croupier)
     while points <= 16:
         pioche(1, main_croupier)
+        points = score(main_croupier)
+        print(points)
     return main_croupier
 
 
@@ -162,5 +164,8 @@ bouton_pioche.bind('<Button-1>', lambda e: pioche(2, main_joueur, 'bouton_pioche
 
 bouton_score = tkinter.Button(bg='white', text='score', command=lambda: score(main_joueur))
 bouton_score.grid(column=3, row=2)
+
+bouton_score = tkinter.Button(bg='white', text='croupier test', command= croupier)
+bouton_score.grid(column=3, row=3)
 
 root.mainloop()
