@@ -196,10 +196,16 @@ mise_totale = 0
 mise = {'pion_rouge' : 5,'pion_bleu' : 10,'pion_vert' : 25,'pion_noir' : 100}
 
 #le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire apparaitre des boutons sur les pions, qui incrémente la valeur de la mise totale.
-def mise_joueur(mise) : 
-    if event.widget == bouton_mise:
-        mise_totale += mise
-         
+def mise_joueur() : 
+    while event.widget == pion_vert :
+        mise_totale += 5 
+    while event.widget == pion_vert : 
+        mise_totale += 10
+    while event.widget == pion_vert : 
+        mise_totale += 25
+    while event.widget == pion_vert : 
+        mise_totale += 100        
+    return mise_totale
                    
 bouton_mise = tkinter.Button(root, bg = 'khaki1', text ='mise')
 bouton_mise.grid(column= 1, row = 2)
