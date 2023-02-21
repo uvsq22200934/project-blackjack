@@ -122,7 +122,7 @@ def score(main):
     points = 0
     global Aca
     global Ap
-    global Ac
+    global Aco
     global At
     for element in main:
         points += valeurs.get(element)
@@ -138,7 +138,7 @@ def score(main):
                 At = 1
                 points -= 10
             if 'Aco' in element and Ac == 0:
-                Ac = 1
+                Aco = 1
                 points -= 10
             else:
                 break
@@ -156,13 +156,27 @@ def croupier():
     return main_croupier, points_croupier
 
 
-"""def stand(main):"""
+def stand(main):
+    points = 0
+    score(main)
+    return points
 
-"""def hit(main):"""
 
-"""def doubble_down(main)"""
+def hit(main):
+    pioche(1, main)
+    return main
 
-"""def surrender(main)"""
+
+def doubble_down(main, mise=0):
+    points = 0
+    mise *= 2
+    pioche(1, main)
+    score(main)
+    return points
+
+
+def surrender(mise):
+    mise /= 2
 
 
 """Boutons"""
