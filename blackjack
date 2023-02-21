@@ -1,0 +1,320 @@
+import random
+import tkinter
+
+
+"""listes et variables"""
+
+
+"""p = pique, co = coeur, t = trèfle, ca = carreau"""
+valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
+           '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 11,
+           '2co': 2, '3co': 3, '4co': 4, '5co': 5, '6co': 6, '7co': 7,
+           '8co': 8, '9co': 9, '10co': 10, 'Vco': 10, 'Dco': 10, 'Rco': 10,
+           'Aco': 11,
+           '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7, '8t': 8,
+           '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10, 'Rt': 10, 'At': 11,
+           '2ca': 2, '3ca': 3, '4ca': 4, '5ca': 5, '6ca': 6, ' 7ca': 7,
+           '8ca': 8, '9ca': 9, '10ca': 10, 'Vca': 10, 'Dca': 10, 'Rca': 10,
+           'Aca': 11}
+
+paquet = list(valeurs.keys())
+defausse = []
+main_joueur = []
+main_croupier = []
+
+Aca = 0
+Ap = 0
+Ac = 0
+At = 0
+
+
+"""Graphismes"""
+
+
+root = tkinter.Tk()
+root.title('Blackjack 21')
+"""root.state('zoomed')"""
+
+canvas = tkinter.Canvas(root, background='green', width=400, height=400)
+canvas.grid(column=2, row=1)
+
+cartes = tkinter.Canvas(root, width=60, height=100, bg="red")
+cartes.grid(column=2, row=1)
+
+
+"""Def fonctions"""
+
+
+def donne_initiale():
+    # fonction qui distribue les cartes en début de partie
+    global paquet
+    global main_joueur
+    nb_carte = 0
+    while nb_carte < 2:
+        main_joueur.append(paquet[0])
+        del paquet[0]
+        main_croupier.append(paquet[0])
+        del paquet[0]
+        nb_carte += 1
+    print('main joueur', main_joueur, '\n main croupier', main_croupier)
+    return main_joueur, main_croupier
+
+
+"""je ne comprends pas l'interet"""
+
+
+def play(event):
+    if event.widget == bouton_play:
+        bouton_play.destroy()
+
+
+"""bouton_nouvelle_partie['command'] = melange_distrib"""
+
+
+"""je ne comprends pas l'interet"""
+
+
+def pioche(nb_carte, main, bouton=0):
+    # fonction qui permet à un joueur de piocher un certain nombre de carte
+    global main_joueur
+    global paquet
+    if bouton == 'bouton_pioche':
+        main_joueur.append(paquet[0])
+        del paquet[0]
+    else:
+        for i in range(nb_carte-1):
+            main.append(paquet[0])
+            del paquet[0]
+    return main
+
+
+
+def fin_manche():
+    # fonction qui enlève les cartes des mains des joueurs et les place dans
+    # la défausse
+    print('debut fonction')
+    global main_croupier
+    global main_joueur
+    global defausse
+    while len(main_joueur) and len(main_croupier) != 0:
+        print(main_joueur, main_croupier)
+        defausse.append(main_joueur[0])
+        del main_joueur[0]
+        defausse.append(paquet[0])
+        del main_croupier[0]
+    print('mains croupier ', main_croupier, 'main joueur', main_joueur)
+    return main_croupier, main_joueur
+
+
+def score(main):
+    # fonction qui permet de calculer la valeur d'une main
+    points = 0
+    global Aca
+    global Ap
+    global Aco
+    global At
+    for element in main:
+        points += valeurs.get(element)
+    for element in main:
+        while points > 21:
+            if 'Aca' in element and Aca == 0:
+                Aca = 1
+                points -= 10
+            if 'Ap' in element and Ap == 0:
+                Ap = 1
+                points -= 10
+            if 'At' in element and At == 0:
+                At = 1
+                points -= 10
+            if 'Aco' in element and Ac == 0:
+                Aco = 1
+                points -= 10
+            else:
+                break
+    return points
+
+
+def croupier():
+    # fonction qui définit les action du croupier en fonction de sa main
+    global main_croupier
+    points_croupier = score(main_croupier)
+    while points_croupier <= 16:
+        pioche(1, main_croupier)
+        points_croupier = score(main_croupier)
+    return main_croupier, points_croupier
+
+
+def stand(main, bouton= 0):
+    # fonction qui permet au joueur de "stand"
+    points = 0
+    score(main)
+    if bouton == 'stand_bouton' : 
+        print ("je m'arrête")
+
+    else : 
+        print("je continue")
+    stand_bouton.destroy()
+    return points
+
+
+def hit(main, bouton = 0):
+    # fonction qui permet au joueur de "hit"
+    global main_joueur
+    global paquet
+    while bouton == 'bouton_pioche':
+        main_joueur.append(paquet[0])
+        del paquet[0]
+    return main
+
+
+
+def doubble_down(main, mise=0):
+    # fonction qui permet au joueur de "double down"
+    points = 0
+    mise *= 2
+    pioche(1, main)
+    score(main)
+    return points
+
+
+def surrender(mise=0):
+    # fonction qui permet au joueur de "surrender"
+    mise /= 2
+    fin_manche()
+
+
+"""Boutons"""
+
+
+"""fonction et bouton pour lancer une partie"""
+bouton_play = tkinter.Button(bg='dark green', text='jouer')
+bouton_play.grid(column=2, row=2)
+bouton_play.bind("<Button-1>", play)
+
+
+"""fonction et bouton pour mélanger et distribuer le jeu"""
+bouton_melanger = tkinter.Button(background='white', text='Mélanger')
+bouton_melanger.grid(column=2, row=3)
+bouton_melanger.bind('<Button-1>', lambda e: random.shuffle(paquet))
+
+bouton_print = tkinter.Button(background='white', text='Print')
+bouton_print.grid(column=3, row=6)
+bouton_print.bind('<Button-1>', lambda e: print(paquet))
+
+bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
+bouton_fin_manche.grid(column=3, row=4)
+bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
+
+bouton_donne_initiale = tkinter.Button(background='white',
+                                       text='donne initiale')
+bouton_donne_initiale.grid(column=2, row=5)
+bouton_donne_initiale.bind('<Button-1>', lambda e: donne_initiale())
+
+bouton_pioche = tkinter.Button(bg='white', text='pioche')
+bouton_pioche.grid(column=1, row=4)
+bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
+                   main_joueur, 'bouton_pioche'))
+
+bouton_score = tkinter.Button(
+    bg='white', text='score', command=lambda: score(main_joueur))
+bouton_score.grid(column=1, row=3)
+
+bouton_score = tkinter.Button(
+    bg='white', text='croupier test', command=croupier)
+bouton_score.grid(column=3, row=5)
+
+stand_bouton= tkinter.Button(bg ='white', fg = 'salmon', command= stand, text = 'Stand')
+stand_bouton.grid(column = 3, row = 3)
+stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
+
+bouton_hit = tkinter.Button(bg = 'white', text = 'hit')
+bouton_hit.grid(column = 4, row = 4)
+bouton_hit.bind('<Button-1>', lambda e : hit(main_joueur, 'bouton_hit'))
+
+# fonction qui place les cartes distribuées
+
+
+def distrib(event):
+    if event.widget == bouton_donne_initiale:
+        cc1['bg'] = 'red'
+        cc2['bg'] = 'red'
+        cj1['bg'] = 'red'
+        cj2['bg'] = 'red'
+        bouton_melanger.destroy()
+
+
+bouton_donne_initiale.bind("<Button-1>", distrib)
+
+
+""" mise du jeu """
+
+
+mise_totale = 0
+mise = {'jeton_rouge': 5, 'jeton_bleu': 10, 'jeton_vert': 25,
+        'jeton_noir': 100}
+
+"""le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire \
+    apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
+        totale."""
+
+
+def mise_joueur(event):
+    global mise_totale
+    while event.widget == jeton_vert:
+        mise_totale += 5
+    while event.widget == jeton_vert:
+        mise_totale += 10
+    while event.widget == jeton_vert:
+        mise_totale += 25
+    while event.widget == jeton_vert:
+        mise_totale += 100
+    return mise_totale
+
+
+bouton_mise = tkinter.Button(root, bg='khaki1', text='mise')
+bouton_mise.grid(column=4, row=5)
+bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
+
+jeton_vert = tkinter.Button(bg='forest green', width=5, height=5)
+jeton_vert.grid(column=4, row=5)
+jeton_vert.bind('<Double-1>', lambda e: mise_joueur())
+
+jeton_bleu = tkinter.Button(bg='medium blue', width=5, height=5)
+jeton_bleu.grid(column=4, row=5)
+jeton_bleu.bind('<Double-1>', lambda e: mise_joueur())
+
+jeton_rouge = tkinter.Button(bg='red4', width=5, height=5)
+jeton_rouge.grid(column=4, row=5)
+jeton_rouge.bind('<Double-1>', lambda e: mise_joueur())
+
+jeton_noir = tkinter.Button(bg='gray15', width=5, height=5)
+jeton_noir.grid(column=4, row=5)
+jeton_noir.bind('<Double-1>', lambda e: mise_joueur())
+
+
+'''interface graphique'''
+
+# interface emplacement des cartes 1 et 2 du joueur
+cj1 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj1.grid(column=3, row=1)
+cj2 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj2.grid(column=4, row=1)
+
+# interface emplacement des cartes 1 et 2 du croupier
+cc1 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc1.grid(column=0, row=1)
+cc2 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc2.grid(column=1, row=1)
+
+# texte qui définit le côté du croupier
+labelc = tkinter.Label(root, text="Croupier", font=("helvetica", "15"),
+                       fg="black")
+labelc.grid(column=0, row=0)
+
+# texte qui définit le côté du joueur
+labelj = tkinter.Label(root, text="Joueur 1", font=("helvetica", "15"),
+                       fg="black")
+labelj.grid(column=3, row=0)
+
+
+root.mainloop()
