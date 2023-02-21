@@ -80,7 +80,6 @@ def nouvelle_partie(bouton):
 """je ne comprends pas l'interet"""
 
 
-
 def pioche(nb_carte, main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
@@ -178,9 +177,6 @@ def surrender(mise=0):
     fin_manche()
 
 
-
-
-
 """Boutons"""
 
 
@@ -225,24 +221,29 @@ bouton_score = tkinter.Button(
     bg='white', text='croupier test', command=croupier)
 bouton_score.grid(column=3, row=5)
 
-#fonction qui place les cartes distribuées
+# fonction qui place les cartes distribuées
+
+
 def distrib(event):
     if event.widget == bouton_donne_initiale:
-        cc1['bg']='red' 
-        cc2['bg']='red' 
-        cj1['bg']='red' 
-        cj2['bg']='red' 
-bouton_donne_initiale.bind("<Button-1>",distrib)
+        cc1['bg'] = 'red'
+        cc2['bg'] = 'red'
+        cj1['bg'] = 'red'
+        cj2['bg'] = 'red'
+
+
+bouton_donne_initiale.bind("<Button-1>", distrib)
 
 
 """ mise du jeu """
 
 
 mise_totale = 0
-mise = {'jeton_rouge': 5, 'jeton_bleu': 10, 'jeton_vert': 25, 'jeton_noir': 100}
+mise = {'jeton_rouge': 5, 'jeton_bleu': 10, 'jeton_vert': 25,
+        'jeton_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire \
-    apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise \
+    apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
         totale."""
 
 
@@ -282,25 +283,27 @@ jeton_noir.bind('<Double-1>', lambda e: mise_joueur())
 
 '''interface graphique'''
 
-#interface emplacement des cartes 1 et 2 du joueur
-cj1 = tkinter.Canvas(root, width = 60, height = 100, bg = 'white')
-cj1.grid(column =3, row= 1)
-cj2 =tkinter.Canvas(root, width = 60, height = 100, bg = 'white')
-cj2.grid(column= 4, row = 1)
+# interface emplacement des cartes 1 et 2 du joueur
+cj1 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj1.grid(column=3, row=1)
+cj2 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj2.grid(column=4, row=1)
 
-#interface emplacement des cartes 1 et 2 du croupier
-cc1 = tkinter.Canvas(root, width = 60, height = 100, bg = 'white')
-cc1.grid(column =0, row= 1)
-cc2 =tkinter.Canvas(root, width = 60, height = 100, bg = 'white')
-cc2.grid(column= 1, row = 1)
+# interface emplacement des cartes 1 et 2 du croupier
+cc1 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc1.grid(column=0, row=1)
+cc2 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc2.grid(column=1, row=1)
 
-#texte qui définit le côté du croupier
-labelc = tkinter.Label(root, text="Croupier", font=("helvetica", "15"), fg = "black")
-labelc.grid(column =0, row = 0)
+# texte qui définit le côté du croupier
+labelc = tkinter.Label(root, text="Croupier", font=("helvetica", "15"),
+                       fg="black")
+labelc.grid(column=0, row=0)
 
-#texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text="Joueur 1", font=("helvetica", "15"), fg = "black")
-labelj.grid(column = 3, row = 0)
+# texte qui définit le côté du joueur
+labelj = tkinter.Label(root, text="Joueur 1", font=("helvetica", "15"),
+                       fg="black")
+labelj.grid(column=3, row=0)
 
 
 root.mainloop()
