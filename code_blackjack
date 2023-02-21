@@ -45,7 +45,8 @@ cartes.grid(column=0, row=0)
 """Def fonctions"""
 
 
-def donne(nb_carte):
+def donne_initiale():
+    # fonction qui distribue les cartes en début de partie
     global paquet
     global main_joueur
     nb_carte = 0
@@ -81,16 +82,11 @@ def nouvelle_partie(bouton):
 
 def melange_distrib():
     bouton_melanger['text'] = 'distribuer'
-    bouton_melanger['command'] = donne(2)
-
-
-def distribuer(nb_carte):
-    donne(nb_carte)
-    print('main croupier', main_croupier, 'main joueur', main_joueur)
-    return main_joueur, main_croupier
+    bouton_melanger['command'] = donne_initiale()
 
 
 def pioche(nb_carte, main, bouton=0):
+    # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
     if bouton == 'bouton_pioche':
@@ -104,6 +100,8 @@ def pioche(nb_carte, main, bouton=0):
 
 
 def fin_manche():
+    # fonction qui enlève les cartes des mains des joueurs et les place dans
+    # la défausse
     print('debut fonction')
     global main_croupier
     global main_joueur
@@ -119,6 +117,7 @@ def fin_manche():
 
 
 def score(main):
+    # fonction qui permet de calculer la valeur d'une main
     points = 0
     global Aca
     global Ap
@@ -146,28 +145,30 @@ def score(main):
 
 
 def croupier():
+    # fonction qui définit les action du croupier en fonction de sa main
     global main_croupier
     points_croupier = score(main_croupier)
     while points_croupier <= 16:
         pioche(1, main_croupier)
-        print(main_croupier)
         points_croupier = score(main_croupier)
-        print(points_croupier)
     return main_croupier, points_croupier
 
 
 def stand(main):
+    # fonction qui permet au joueur de "stand"
     points = 0
     score(main)
     return points
 
 
 def hit(main):
+    # fonction qui permet au joueur de "hit"
     pioche(1, main)
     return main
 
 
 def doubble_down(main, mise=0):
+    # fonction qui permet au joueur de "double down"
     points = 0
     mise *= 2
     pioche(1, main)
@@ -175,8 +176,10 @@ def doubble_down(main, mise=0):
     return points
 
 
-def surrender(mise):
+def surrender(mise=0):
+    # fonction qui permet au joueur de "surrender"
     mise /= 2
+    fin_manche()
 
 
 """Boutons"""
@@ -205,9 +208,10 @@ bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
 bouton_fin_manche.grid(column=0, row=4)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
-bouton_distribuer = tkinter.Button(background='white', text='distribuer')
-bouton_distribuer.grid(column=0, row=2)
-bouton_distribuer.bind('<Button-1>', lambda e: distribuer(2))
+bouton_donne_initiale = tkinter.Button(background='white',
+                                       text='donne initiale')
+bouton_donne_initiale.grid(column=0, row=2)
+bouton_donne_initiale.bind('<Button-1>', lambda e: donne_initiale())
 
 bouton_pioche = tkinter.Button(bg='white', text='pioche')
 bouton_pioche.grid(column=1, row=2)
