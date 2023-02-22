@@ -61,6 +61,7 @@ def donne_initiale():
     return main_joueur, main_croupier
 
 
+
 """je ne comprends pas l'interet"""
 
 
@@ -205,20 +206,20 @@ bouton_donne_initiale.grid(column=2, row=4)
 bouton_donne_initiale.bind('<Button-1>', lambda e: donne_initiale())
 
 bouton_pioche = tkinter.Button(bg='white', text='pioche')
-bouton_pioche.grid(column=2, row=11)
+bouton_pioche.grid(column=2, row=18)
 bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
                    main_joueur, 'bouton_pioche'))
 
 bouton_score = tkinter.Button(
     bg='white', text='score', command=lambda: score(main_joueur))
-bouton_score.grid(column=1, row=11)
+bouton_score.grid(column=1, row=18)
 
 bouton_score = tkinter.Button(
     bg='white', text='croupier test', command=croupier)
 bouton_score.grid(column=4, row=17)
 
 stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
-stand_bouton.grid(column = 3, row = 11)
+stand_bouton.grid(column = 3, row = 18)
 stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
 
 # fonction qui place les cartes distribuées
@@ -231,9 +232,10 @@ def distrib(event):
         cj1['bg'] = 'red'
         cj2['bg'] = 'red'
         bouton_melanger.destroy()
-
+        bouton_donne_initiale.destroy()
 
 bouton_donne_initiale.bind("<Button-1>", distrib)
+
 
 
 """ mise du jeu """
@@ -265,19 +267,19 @@ bouton_mise = tkinter.Button(root, bg='khaki1', text='mise')
 bouton_mise.grid(column=2, row=14)
 bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_vert = tkinter.Button(bg='forest green', width=1, height=1)
+jeton_vert = tkinter.Canvas(root, bg='forest green', width=15, height=15)
 jeton_vert.grid(column=0, row=14)
 jeton_vert.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_bleu = tkinter.Button(bg='medium blue', width=1, height=1)
+jeton_bleu = tkinter.Canvas(root, bg='medium blue', width=15, height=15)
 jeton_bleu.grid(column=1, row=14)
 jeton_bleu.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_rouge = tkinter.Button(bg='red4', width=1, height=1)
+jeton_rouge = tkinter.Canvas(root, bg='red4', width=15, height=15)
 jeton_rouge.grid(column=4, row=14)
 jeton_rouge.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_noir = tkinter.Button(bg='gray15', width=1, height=1)
+jeton_noir = tkinter.Canvas(root, bg='gray15', width=15, height=15)
 jeton_noir.grid(column=3, row=14)
 jeton_noir.bind('<Double-1>', lambda e: mise_joueur())
 
