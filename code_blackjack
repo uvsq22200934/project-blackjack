@@ -175,12 +175,12 @@ def surrender(mise=0):
 
 """fonction et bouton pour lancer une partie"""
 
-bouton_play = tkinter.Button(bg='light green', text='Jouer')
+bouton_play = tkinter.Button(text='Jouer', fg = 'red')
 bouton_play.grid(column=2, row=2)
 
 #fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent chacun leur tour pour ne pas encombrer la fenêtre
 
-bouton_melanger = tkinter.Button(background='white', text='Mélanger', command = random.shuffle(paquet))
+bouton_melanger = tkinter.Button(text='Mélanger', fg = 'blue', command = random.shuffle(paquet))
 def ordre_boutons(event):
     global bouton_play
     global bouton_melanger
@@ -192,7 +192,7 @@ def ordre_boutons(event):
   
 bouton_play.bind('<Button-1>', ordre_boutons)
 
-bouton_donne_initiale = tkinter.Button(background='white',text='Donne initiale', command = donne_initiale)
+bouton_donne_initiale = tkinter.Button(text='Donne initiale', fg = "blue", command = donne_initiale)
 def ordre_boutons2(event):
     global bouton_melanger
     global bouton_donne_initiale
@@ -228,17 +228,16 @@ bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
 
 
 
-bouton_print = tkinter.Button(background='white', text='print')
+bouton_print = tkinter.Button(text='print',fg = 'green')
 bouton_print.grid(column=5, row=18)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
-bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
+bouton_fin_manche = tkinter.Button(text='test fin manche', fg = 'green')
 bouton_fin_manche.grid(column=5, row=20)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
 
-bouton_score = tkinter.Button(
-    bg='white', text='croupier test', command=croupier)
+bouton_score = tkinter.Button(text='croupier test', fg = 'green', command=croupier)
 bouton_score.grid(column=5, row=19)
 
 
@@ -270,7 +269,7 @@ def mise_joueur(event):
     return mise_totale
 
 
-bouton_mise = tkinter.Button(root, bg='khaki1', text='mise')
+bouton_mise = tkinter.Button(root, text='mise', bg='khaki1', fg = 'black')
 bouton_mise.grid(column=2, row=14)
 bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
 
@@ -306,13 +305,11 @@ cc2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
 cc2.grid(column=1, row=3)
 
 # texte qui définit le côté du croupier
-labelc = tkinter.Label(root, text="Croupier", font=("helvetica", "15"),
-                       fg="black")
+labelc = tkinter.Label(root, text="CROUPIER", font=("helvetica", "15"),bg = "green",fg="black")
 labelc.grid(column=0, row=0)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text="Joueur 1", font=("helvetica", "15"),
-                       fg="black")
+labelj = tkinter.Label(root, text="JOUEUR1", font=("helvetica", "15"),bg="green", fg ="black")
 labelj.grid(column=4, row=0)
 
 
