@@ -213,14 +213,14 @@ def ordre_boutons3(event):
         bouton_donne_initiale.destroy()
 
         bouton_pioche = tkinter.Button(bg='white', text='Pioche')
-        bouton_pioche.grid(column=2, row=18)
+        bouton_pioche.grid(column=2, row=5)
         bouton_pioche.bind('<Button-1>', lambda e: pioche(2,main_joueur, 'bouton_pioche'))
 
         bouton_score = tkinter.Button(bg='white', text='Score', command=lambda: score(main_joueur))
-        bouton_score.grid(column=1, row=18)    
+        bouton_score.grid(column=1, row=5)    
 
         stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
-        stand_bouton.grid(column = 3, row = 18)
+        stand_bouton.grid(column = 3, row = 5)
         stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
         
 bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
@@ -229,16 +229,16 @@ bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
 
 
 bouton_print = tkinter.Button(text='print',fg = 'green')
-bouton_print.grid(column=5, row=18)
+bouton_print.grid(column=5, row=6)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
 bouton_fin_manche = tkinter.Button(text='test fin manche', fg = 'green')
-bouton_fin_manche.grid(column=5, row=20)
+bouton_fin_manche.grid(column=5, row=8)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
 
 bouton_score = tkinter.Button(text='croupier test', fg = 'green', command=croupier)
-bouton_score.grid(column=5, row=19)
+bouton_score.grid(column=5, row=7)
 
 
 
@@ -260,18 +260,20 @@ mise.grid(column=3, row = 2)
 valeur_mise= tkinter.Label(root, text = '', bg = 'green', fg = 'white')
 valeur_mise.grid(column =4, row = 2)
 
+miser =tkinter.Label(root, text= "Clic pour mise:", bg = 'green', fg = 'white')
+miser.grid(column = 0, row = 8)
 
-jeton_vert = tkinter.Canvas(root, bg='forest green', width=15, height=15)
-jeton_vert.grid(column=3, row=14)
+jeton_vert = tkinter.Label(root, bg='dark green', text = '50', fg = 'white')
+jeton_vert.grid(column=3, row=8)
 
-jeton_bleu = tkinter.Canvas(root, bg='medium blue', width=15, height=15)
-jeton_bleu.grid(column=1, row=14)
+jeton_bleu = tkinter.Label(root, bg='medium blue', text ='25', fg = 'white')
+jeton_bleu.grid(column=2, row=8)
 
-jeton_rouge = tkinter.Canvas(root, bg='red', width=15, height=15)
-jeton_rouge.grid(column=0, row=14)
+jeton_rouge = tkinter.Label(root, bg='red', text = '10', fg = 'white')
+jeton_rouge.grid(column=1, row=8)
 
-jeton_noir = tkinter.Canvas(root, bg='black', width=15, height=15)
-jeton_noir.grid(column=4, row=14)
+jeton_noir = tkinter.Label(root, bg='black', text = '100', fg = 'white')
+jeton_noir.grid(column=4, row=8)
 
 def mise_rouge(event):
     global mise_totale
