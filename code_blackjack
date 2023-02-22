@@ -172,15 +172,15 @@ def surrender(mise=0):
 
 """fonction et bouton pour lancer une partie"""
 
-bouton_play = tkinter.Button(text='Jouer', fg='red')
-bouton_play.grid(column=2, row=3)
+bouton_play = tkinter.Label(root,text='BLACK JACK ! \n \n Jouer', bg = 'red', fg='yellow', font =("helvetica", "30"), heigh = 5, width = 15)
+bouton_play.grid(column = 2, row = 3)
+
 
 # fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent
 # chacun leur tour pour ne pas encombrer la fenêtre
 
 
-bouton_melanger = tkinter.Button(text='Mélanger', fg='blue',
-                                 command=random.shuffle(paquet))
+bouton_melanger = tkinter.Button(text='Mélanger', fg='blue',command=random.shuffle(paquet))
 
 
 def ordre_boutons(event):
@@ -195,8 +195,7 @@ def ordre_boutons(event):
 
 bouton_play.bind('<Button-1>', ordre_boutons)
 
-bouton_donne_initiale = tkinter.Button(
-    text='Donne initiale', fg="blue", command=donne_initiale)
+bouton_donne_initiale = tkinter.Button(text='Donne initiale', fg="blue", command=donne_initiale)
 
 
 def ordre_boutons2(event):
@@ -346,8 +345,7 @@ labelc = tkinter.Label(root, text="CROUPIER", font=(
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text="JOUEUR1", font=(
-    "helvetica", "15"), bg="green", fg="black")
+labelj = tkinter.Label(root, text="JOUEUR1", font= ("helvetica", "15"), bg="green", fg="black")
 labelj.grid(column=0, row=4)
 
 
