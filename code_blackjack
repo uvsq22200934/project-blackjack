@@ -227,17 +227,17 @@ bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
 
 
 bouton_print = tkinter.Button(background='white', text='print')
-bouton_print.grid(column=4, row=18)
+bouton_print.grid(column=5, row=18)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
 bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
-bouton_fin_manche.grid(column=4, row=16)
+bouton_fin_manche.grid(column=5, row=20)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
 
 bouton_score = tkinter.Button(
     bg='white', text='croupier test', command=croupier)
-bouton_score.grid(column=4, row=17)
+bouton_score.grid(column=5, row=19)
 
 
 
