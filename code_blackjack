@@ -61,10 +61,7 @@ def donne_initiale():
     return main_joueur, main_croupier
 
 
-
 """bouton_nouvelle_partie['command'] = melange_distrib"""
-
-
 
 
 def pioche(nb_carte, main, bouton=0):
@@ -175,24 +172,33 @@ def surrender(mise=0):
 
 """fonction et bouton pour lancer une partie"""
 
-bouton_play = tkinter.Button(text='Jouer', fg = 'red')
+bouton_play = tkinter.Button(text='Jouer', fg='red')
 bouton_play.grid(column=2, row=2)
 
-#fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent chacun leur tour pour ne pas encombrer la fenêtre
+# fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent
+# chacun leur tour pour ne pas encombrer la fenêtre
 
-bouton_melanger = tkinter.Button(text='Mélanger', fg = 'blue', command = random.shuffle(paquet))
+
+bouton_melanger = tkinter.Button(text='Mélanger', fg='blue',
+                                 command=random.shuffle(paquet))
+
+
 def ordre_boutons(event):
     global bouton_play
     global bouton_melanger
 
     if event.widget == bouton_play:
         bouton_play.destroy()
-        
-        bouton_melanger.grid(column=2, row=3) 
-  
+
+        bouton_melanger.grid(column=2, row=3)
+
+
 bouton_play.bind('<Button-1>', ordre_boutons)
 
-bouton_donne_initiale = tkinter.Button(text='Donne initiale', fg = "blue", command = donne_initiale)
+bouton_donne_initiale = tkinter.Button(
+    text='Donne initiale', fg="blue", command=donne_initiale)
+
+
 def ordre_boutons2(event):
     global bouton_melanger
     global bouton_donne_initiale
@@ -201,7 +207,9 @@ def ordre_boutons2(event):
 
         bouton_donne_initiale.grid(column=2, row=3)
 
-bouton_melanger.bind('<Button-1>',ordre_boutons2)
+
+bouton_melanger.bind('<Button-1>', ordre_boutons2)
+
 
 def ordre_boutons3(event):
     global bouton_donne_initiale
@@ -214,34 +222,34 @@ def ordre_boutons3(event):
 
         bouton_pioche = tkinter.Button(bg='white', text='Pioche')
         bouton_pioche.grid(column=2, row=5)
-        bouton_pioche.bind('<Button-1>', lambda e: pioche(2,main_joueur, 'bouton_pioche'))
+        bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
+                           main_joueur, 'bouton_pioche'))
 
-        bouton_score = tkinter.Button(bg='white', text='Score', command=lambda: score(main_joueur))
-        bouton_score.grid(column=1, row=5)    
+        bouton_score = tkinter.Button(
+            bg='white', text='Score', command=lambda: score(main_joueur))
+        bouton_score.grid(column=1, row=5)
 
-        stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
-        stand_bouton.grid(column = 3, row = 5)
-        stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
-        
-bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
-
-
+        stand_bouton = tkinter.Button(bg='salmon', command=stand, text='Stand')
+        stand_bouton.grid(column=3, row=5)
+        stand_bouton.bind(
+            "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
 
 
-bouton_print = tkinter.Button(text='print',fg = 'green')
+bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
+
+
+bouton_print = tkinter.Button(text='print', fg='green')
 bouton_print.grid(column=5, row=6)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
-bouton_fin_manche = tkinter.Button(text='test fin manche', fg = 'green')
+bouton_fin_manche = tkinter.Button(text='test fin manche', fg='green')
 bouton_fin_manche.grid(column=5, row=8)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
 
-bouton_score = tkinter.Button(text='croupier test', fg = 'green', command=croupier)
+bouton_score = tkinter.Button(
+    text='croupier test', fg='green', command=croupier)
 bouton_score.grid(column=5, row=7)
-
-
-
 
 
 """ mise du jeu """
@@ -255,58 +263,69 @@ mise = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
         totale."""
 
-mise = tkinter.Label(root, text = "Mise:", bg = 'green',fg = 'white')
-mise.grid(column=3, row = 2)
-valeur_mise= tkinter.Label(root, text = '', bg = 'green', fg = 'white')
-valeur_mise.grid(column =4, row = 2)
+mise = tkinter.Label(root, text="Mise:", bg='green', fg='white')
+mise.grid(column=3, row=2)
+valeur_mise = tkinter.Label(root, text='', bg='green', fg='white')
+valeur_mise.grid(column=4, row=2)
 
-miser =tkinter.Label(root, text= "Clic pour mise:", bg = 'green', fg = 'white')
-miser.grid(column = 0, row = 8)
+miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
+miser.grid(column=0, row=8)
 
-jeton_vert = tkinter.Label(root, bg='dark green', text = '50', fg = 'white')
+jeton_vert = tkinter.Label(root, bg='dark green', text='50', fg='white')
 jeton_vert.grid(column=3, row=8)
 
-jeton_bleu = tkinter.Label(root, bg='medium blue', text ='25', fg = 'white')
+jeton_bleu = tkinter.Label(root, bg='medium blue', text='25', fg='white')
 jeton_bleu.grid(column=2, row=8)
 
-jeton_rouge = tkinter.Label(root, bg='red', text = '10', fg = 'white')
+jeton_rouge = tkinter.Label(root, bg='red', text='10', fg='white')
 jeton_rouge.grid(column=1, row=8)
 
-jeton_noir = tkinter.Label(root, bg='black', text = '100', fg = 'white')
+jeton_noir = tkinter.Label(root, bg='black', text='100', fg='white')
 jeton_noir.grid(column=4, row=8)
+
 
 def mise_rouge(event):
     global mise_totale
     if event.widget == jeton_rouge:
-        mise_totale+=10
+        mise_totale += 10
         valeur_mise['text'] = mise_totale
     return mise_totale
+
+
 jeton_rouge.bind('<Button-1>', mise_rouge)
+
 
 def mise_bleu(event):
     global mise_totale
     if event.widget == jeton_bleu:
-        mise_totale+=25
+        mise_totale += 25
         valeur_mise['text'] = mise_totale
     return mise_totale
+
+
 jeton_bleu.bind('<Button-1>', mise_bleu)
+
 
 def mise_vert(event):
     global mise_totale
     if event.widget == jeton_vert:
-        mise_totale+=50
+        mise_totale += 50
         valeur_mise['text'] = mise_totale
     return mise_totale
+
+
 jeton_vert.bind('<Button-1>', mise_vert)
+
 
 def mise_noir(event):
     global mise_totale
     if event.widget == jeton_noir:
-        mise_totale+=100
+        mise_totale += 100
         valeur_mise['text'] = mise_totale
     return mise_totale
-jeton_noir.bind('<Button-1>', mise_noir)
 
+
+jeton_noir.bind('<Button-1>', mise_noir)
 
 
 '''interface graphique'''
@@ -324,11 +343,13 @@ cc2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
 cc2.grid(column=1, row=3)
 
 # texte qui définit le côté du croupier
-labelc = tkinter.Label(root, text="CROUPIER", font=("helvetica", "15"),bg = "green",fg="black")
+labelc = tkinter.Label(root, text="CROUPIER", font=(
+    "helvetica", "15"), bg="green", fg="black")
 labelc.grid(column=0, row=0)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text="JOUEUR1", font=("helvetica", "15"),bg="green", fg ="black")
+labelj = tkinter.Label(root, text="JOUEUR1", font=(
+    "helvetica", "15"), bg="green", fg="black")
 labelj.grid(column=4, row=0)
 
 
