@@ -35,11 +35,12 @@ root = tkinter.Tk()
 root.title('Blackjack 21')
 """root.state('zoomed')"""
 
-canvas = tkinter.Canvas(root, background='green', width=400, height=400)
-canvas.grid(column=2, row=1)
+root.geometry('500x400')
+root.configure(bg="green")
+
 
 cartes = tkinter.Canvas(root, width=60, height=100, bg="red")
-cartes.grid(column=2, row=1)
+cartes.grid(column=2, row=2)
 
 
 """Def fonctions"""
@@ -180,8 +181,8 @@ def surrender(mise=0):
 
 
 """fonction et bouton pour lancer une partie"""
-bouton_play = tkinter.Button(bg='dark green', text='jouer')
-bouton_play.grid(column=2, row=2)
+bouton_play = tkinter.Button(bg='light green', text='jouer')
+bouton_play.grid(column=2, row=0)
 bouton_play.bind("<Button-1>", play)
 
 
@@ -191,33 +192,33 @@ bouton_melanger.grid(column=2, row=3)
 bouton_melanger.bind('<Button-1>', lambda e: random.shuffle(paquet))
 
 bouton_print = tkinter.Button(background='white', text='Print')
-bouton_print.grid(column=3, row=6)
+bouton_print.grid(column=4, row=18)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
 bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
-bouton_fin_manche.grid(column=3, row=4)
+bouton_fin_manche.grid(column=4, row=16)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
 bouton_donne_initiale = tkinter.Button(background='white',
                                        text='donne initiale')
-bouton_donne_initiale.grid(column=2, row=5)
+bouton_donne_initiale.grid(column=2, row=4)
 bouton_donne_initiale.bind('<Button-1>', lambda e: donne_initiale())
 
 bouton_pioche = tkinter.Button(bg='white', text='pioche')
-bouton_pioche.grid(column=1, row=4)
+bouton_pioche.grid(column=2, row=11)
 bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
                    main_joueur, 'bouton_pioche'))
 
 bouton_score = tkinter.Button(
     bg='white', text='score', command=lambda: score(main_joueur))
-bouton_score.grid(column=1, row=3)
+bouton_score.grid(column=1, row=11)
 
 bouton_score = tkinter.Button(
     bg='white', text='croupier test', command=croupier)
-bouton_score.grid(column=3, row=5)
+bouton_score.grid(column=4, row=17)
 
 stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
-stand_bouton.grid(column = 3, row = 3)
+stand_bouton.grid(column = 3, row = 11)
 stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
 
 # fonction qui place les cartes distribuées
@@ -261,39 +262,39 @@ def mise_joueur(event):
 
 
 bouton_mise = tkinter.Button(root, bg='khaki1', text='mise')
-bouton_mise.grid(column=4, row=5)
+bouton_mise.grid(column=2, row=14)
 bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_vert = tkinter.Button(bg='forest green', width=5, height=5)
-jeton_vert.grid(column=4, row=5)
+jeton_vert = tkinter.Button(bg='forest green', width=1, height=1)
+jeton_vert.grid(column=0, row=14)
 jeton_vert.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_bleu = tkinter.Button(bg='medium blue', width=5, height=5)
-jeton_bleu.grid(column=4, row=5)
+jeton_bleu = tkinter.Button(bg='medium blue', width=1, height=1)
+jeton_bleu.grid(column=1, row=14)
 jeton_bleu.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_rouge = tkinter.Button(bg='red4', width=5, height=5)
-jeton_rouge.grid(column=4, row=5)
+jeton_rouge = tkinter.Button(bg='red4', width=1, height=1)
+jeton_rouge.grid(column=4, row=14)
 jeton_rouge.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_noir = tkinter.Button(bg='gray15', width=5, height=5)
-jeton_noir.grid(column=4, row=5)
+jeton_noir = tkinter.Button(bg='gray15', width=1, height=1)
+jeton_noir.grid(column=3, row=14)
 jeton_noir.bind('<Double-1>', lambda e: mise_joueur())
 
 
 '''interface graphique'''
 
 # interface emplacement des cartes 1 et 2 du joueur
-cj1 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj1.grid(column=3, row=1)
-cj2 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj2.grid(column=4, row=1)
+cj1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cj1.grid(column=3, row=3)
+cj2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cj2.grid(column=4, row=3)
 
 # interface emplacement des cartes 1 et 2 du croupier
-cc1 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc1.grid(column=0, row=1)
-cc2 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc2.grid(column=1, row=1)
+cc1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cc1.grid(column=0, row=3)
+cc2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cc2.grid(column=1, row=3)
 
 # texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="Croupier", font=("helvetica", "15"),
@@ -303,7 +304,7 @@ labelc.grid(column=0, row=0)
 # texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text="Joueur 1", font=("helvetica", "15"),
                        fg="black")
-labelj.grid(column=3, row=0)
+labelj.grid(column=4, row=0)
 
 
 root.mainloop()
