@@ -61,18 +61,10 @@ def donne_initiale():
     return main_joueur, main_croupier
 
 
-"""je ne comprends pas l'interet"""
-
-
-def play(event):
-    if event.widget == bouton_play:
-        bouton_play.destroy()
-
 
 """bouton_nouvelle_partie['command'] = melange_distrib"""
 
 
-"""je ne comprends pas l'interet"""
 
 
 def pioche(nb_carte, main, bouton=0):
@@ -146,6 +138,7 @@ def croupier():
 
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
+    global stand_bouton
     points = 0
     score(main)
     if bouton == 'stand_bouton':
@@ -181,17 +174,59 @@ def surrender(mise=0):
 
 
 """fonction et bouton pour lancer une partie"""
-bouton_play = tkinter.Button(bg='light green', text='jouer')
-bouton_play.grid(column=2, row=0)
-bouton_play.bind("<Button-1>", play)
+
+bouton_play = tkinter.Button(bg='light green', text='Jouer')
+bouton_play.grid(column=2, row=2)
+
+#fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent chacun leur tour pour ne pas encombrer la fenêtre
+
+bouton_melanger = tkinter.Button(background='white', text='Mélanger', command = random.shuffle(paquet))
+def ordre_boutons(event):
+    global bouton_play
+    global bouton_melanger
+
+    if event.widget == bouton_play:
+        bouton_play.destroy()
+        
+        bouton_melanger.grid(column=2, row=3) 
+
+        bouton_pioche = tkinter.Button(bg='white', text='Pioche')
+        bouton_pioche.grid(column=2, row=18)
+        bouton_pioche.bind('<Button-1>', lambda e: pioche(2,main_joueur, 'bouton_pioche'))
+
+        bouton_score = tkinter.Button(bg='white', text='Score', command=lambda: score(main_joueur))
+        bouton_score.grid(column=1, row=18)    
+
+        stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
+        stand_bouton.grid(column = 3, row = 18)
+        stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))  
+bouton_play.bind('<Button-1>', ordre_boutons)
+
+bouton_donne_initiale = tkinter.Button(background='white',text='Donne initiale', command = donne_initiale)
+def ordre_boutons2(event):
+    global bouton_melanger
+    global bouton_donne_initiale
+    if event.widget == bouton_melanger:
+        bouton_melanger.destroy()
+
+        bouton_donne_initiale.grid(column=2, row=3)
+
+bouton_melanger.bind('<Button-1>',ordre_boutons2)
+
+def ordre_boutons3(event):
+    global bouton_donne_initiale
+    if event.widget == bouton_donne_initiale:
+        cc1['bg'] = 'red4'
+        cc2['bg'] = 'red4'
+        cj1['bg'] = 'white'
+        cj2['bg'] = 'white'
+        bouton_donne_initiale.destroy()
+bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
 
 
-"""fonction et bouton pour mélanger et distribuer le jeu"""
-bouton_melanger = tkinter.Button(background='white', text='Mélanger')
-bouton_melanger.grid(column=2, row=3)
-bouton_melanger.bind('<Button-1>', lambda e: random.shuffle(paquet))
 
-bouton_print = tkinter.Button(background='white', text='Print')
+
+bouton_print = tkinter.Button(background='white', text='print')
 bouton_print.grid(column=4, row=18)
 bouton_print.bind('<Button-1>', lambda e: print(paquet))
 
@@ -199,42 +234,13 @@ bouton_fin_manche = tkinter.Button(background='white', text='test fin manche')
 bouton_fin_manche.grid(column=4, row=16)
 bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
 
-bouton_donne_initiale = tkinter.Button(background='white',
-                                       text='donne initiale')
-bouton_donne_initiale.grid(column=2, row=4)
-bouton_donne_initiale.bind('<Button-1>', lambda e: donne_initiale())
-
-bouton_pioche = tkinter.Button(bg='white', text='pioche')
-bouton_pioche.grid(column=2, row=18)
-bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
-                   main_joueur, 'bouton_pioche'))
-
-bouton_score = tkinter.Button(
-    bg='white', text='score', command=lambda: score(main_joueur))
-bouton_score.grid(column=1, row=18)
 
 bouton_score = tkinter.Button(
     bg='white', text='croupier test', command=croupier)
 bouton_score.grid(column=4, row=17)
 
-stand_bouton = tkinter.Button(bg='salmon', command=stand, text='Stand')
-stand_bouton.grid(column=3, row=18)
-stand_bouton.bind("<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
-
-# fonction qui place les cartes distribuées
 
 
-def distrib(event):
-    if event.widget == bouton_donne_initiale:
-        cc1['bg'] = 'red4'
-        cc2['bg'] = 'red4'
-        cj1['bg'] = 'red4'
-        cj2['bg'] = 'red4'
-        bouton_melanger.destroy()
-        bouton_donne_initiale.destroy()
-
-
-bouton_donne_initiale.bind("<Button-1>", lambda e: donne_initiale())
 
 
 """ mise du jeu """
