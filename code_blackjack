@@ -39,7 +39,7 @@ root.geometry('500x400')
 root.configure(bg="green")
 
 
-cartes = tkinter.Canvas(root, width=60, height=100, bg="red")
+cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
 cartes.grid(column=2, row=2)
 
 
@@ -227,10 +227,10 @@ stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
 
 def distrib(event):
     if event.widget == bouton_donne_initiale:
-        cc1['bg'] = 'red'
-        cc2['bg'] = 'red'
-        cj1['bg'] = 'red'
-        cj2['bg'] = 'red'
+        cc1['bg'] = 'red4'
+        cc2['bg'] = 'red4'
+        cj1['bg'] = 'red4'
+        cj2['bg'] = 'red4'
         bouton_melanger.destroy()
         bouton_donne_initiale.destroy()
 
@@ -242,7 +242,7 @@ bouton_donne_initiale.bind("<Button-1>", distrib)
 
 
 mise_totale = 0
-mise = {'jeton_rouge': 5, 'jeton_bleu': 10, 'jeton_vert': 25,
+mise = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
         'jeton_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur ke bouton mise, pour faire \
@@ -252,13 +252,13 @@ mise = {'jeton_rouge': 5, 'jeton_bleu': 10, 'jeton_vert': 25,
 
 def mise_joueur(event):
     global mise_totale
-    while event.widget == jeton_vert:
-        mise_totale += 5
-    while event.widget == jeton_vert:
+    if event.widget == jeton_rouge:
         mise_totale += 10
-    while event.widget == jeton_vert:
+    elif event.widget == jeton_bleu:
         mise_totale += 25
-    while event.widget == jeton_vert:
+    elif event.widget == jeton_vert:
+        mise_totale += 50
+    elif event.widget == jeton_noir:
         mise_totale += 100
     return mise_totale
 
@@ -268,34 +268,34 @@ bouton_mise.grid(column=2, row=14)
 bouton_mise.bind('<Double-1>', lambda e: mise_joueur())
 
 jeton_vert = tkinter.Canvas(root, bg='forest green', width=15, height=15)
-jeton_vert.grid(column=0, row=14)
+jeton_vert.grid(column=3, row=14)
 jeton_vert.bind('<Double-1>', lambda e: mise_joueur())
 
 jeton_bleu = tkinter.Canvas(root, bg='medium blue', width=15, height=15)
 jeton_bleu.grid(column=1, row=14)
 jeton_bleu.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_rouge = tkinter.Canvas(root, bg='red4', width=15, height=15)
-jeton_rouge.grid(column=4, row=14)
+jeton_rouge = tkinter.Canvas(root, bg='red', width=15, height=15)
+jeton_rouge.grid(column=0, row=14)
 jeton_rouge.bind('<Double-1>', lambda e: mise_joueur())
 
-jeton_noir = tkinter.Canvas(root, bg='gray15', width=15, height=15)
-jeton_noir.grid(column=3, row=14)
+jeton_noir = tkinter.Canvas(root, bg='black', width=15, height=15)
+jeton_noir.grid(column=4, row=14)
 jeton_noir.bind('<Double-1>', lambda e: mise_joueur())
 
 
 '''interface graphique'''
 
 # interface emplacement des cartes 1 et 2 du joueur
-cj1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cj1 = tkinter.Canvas(root, width=60, height=100, bg= 'dark green')
 cj1.grid(column=3, row=3)
-cj2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cj2 = tkinter.Canvas(root, width=60, height=100, bg= 'dark green')
 cj2.grid(column=4, row=3)
 
 # interface emplacement des cartes 1 et 2 du croupier
-cc1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cc1 = tkinter.Canvas(root, width=60, height=100, bg= 'dark green')
 cc1.grid(column=0, row=3)
-cc2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cc2 = tkinter.Canvas(root, width=60, height=100, bg= 'dark green')
 cc2.grid(column=1, row=3)
 
 # texte qui définit le côté du croupier
