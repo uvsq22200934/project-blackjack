@@ -189,17 +189,7 @@ def ordre_boutons(event):
         bouton_play.destroy()
         
         bouton_melanger.grid(column=2, row=3) 
-
-        bouton_pioche = tkinter.Button(bg='white', text='Pioche')
-        bouton_pioche.grid(column=2, row=18)
-        bouton_pioche.bind('<Button-1>', lambda e: pioche(2,main_joueur, 'bouton_pioche'))
-
-        bouton_score = tkinter.Button(bg='white', text='Score', command=lambda: score(main_joueur))
-        bouton_score.grid(column=1, row=18)    
-
-        stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
-        stand_bouton.grid(column = 3, row = 18)
-        stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))  
+  
 bouton_play.bind('<Button-1>', ordre_boutons)
 
 bouton_donne_initiale = tkinter.Button(background='white',text='Donne initiale', command = donne_initiale)
@@ -221,6 +211,18 @@ def ordre_boutons3(event):
         cj1['bg'] = 'white'
         cj2['bg'] = 'white'
         bouton_donne_initiale.destroy()
+
+        bouton_pioche = tkinter.Button(bg='white', text='Pioche')
+        bouton_pioche.grid(column=2, row=18)
+        bouton_pioche.bind('<Button-1>', lambda e: pioche(2,main_joueur, 'bouton_pioche'))
+
+        bouton_score = tkinter.Button(bg='white', text='Score', command=lambda: score(main_joueur))
+        bouton_score.grid(column=1, row=18)    
+
+        stand_bouton= tkinter.Button(bg ='salmon', command= stand, text = 'Stand')
+        stand_bouton.grid(column = 3, row = 18)
+        stand_bouton.bind("<Button-1>", lambda e : stand(main_joueur, 'stand_bouton'))
+        
 bouton_donne_initiale.bind('<Button-1>',ordre_boutons3)
 
 
