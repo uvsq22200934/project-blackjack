@@ -54,7 +54,7 @@ def debut(event):
         win = tkinter.Toplevel(accueil)
         accueil.destroy()
     if event.widget == partie_en_cours :
-        lost = tkinter.Toplevel(historique)
+        lost = tkinter.Toplevel()
         accueil.destroy()
 
 partie_en_cours.bind('<Button-1>', debut)
