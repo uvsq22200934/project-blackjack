@@ -105,7 +105,7 @@ def hit(nb_carte, main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
-    if bouton == 'bouton_pioche':
+    if bouton == 'bouton_hit':
         main_joueur.append(paquet[0])
         del paquet[0]
         if len(main_joueur) == 3:
