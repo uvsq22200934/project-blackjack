@@ -42,6 +42,7 @@ play = tkinter.Button(accueil, text='Play', height=5,
 play = tkinter.Button(accueil, text='Play', height=5,
                       width=15, font=('helvetica', 20))
 play.pack()
+
 partie_en_cours = tkinter.Button(accueil, text='Partie en cours', 
                         width=15, height=5, font=('helvetica',20))
 partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
@@ -51,8 +52,9 @@ partie_en_cours.pack()
 
 def debut(event):
     if event.widget == play:
+        a = tkinter.Toplevel(accueil)
         accueil.destroy()
-    if event.widget == partie_en_cours :
+    if event.widget == partie_en_cours:
         accueil.destroy()
 
 partie_en_cours.bind('<Button-1>', debut)
@@ -99,7 +101,7 @@ def donne_initiale():
 """bouton_nouvelle_partie['command'] = melange_distrib"""
 
 
-def pioche(nb_carte, main, bouton=0):
+def hit(nb_carte, main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
@@ -253,7 +255,7 @@ def croupier():
     global main_croupier
     points_croupier = score(main_croupier)
     while points_croupier <= 16:
-        pioche(1, main_croupier)
+        hit(1, main_croupier)
         points_croupier = score(main_croupier)
     return main_croupier, points_croupier
 
@@ -278,22 +280,12 @@ def stand(main, bouton=0):
     return points
 
 
-def hit(nb_carte, main, bouton=0):
-    # fonction qui permet au joueur de "hit"
-    global paquet
-    global main_joueur
-    if bouton == 'bouton_hit':
-        main.append(paquet[0])
-        del paquet[0]
-        nb_carte += 1
-    return main
-
 
 def doubble_down(main, mise=0):
     # fonction qui permet au joueur de "double down"
     points = 0
     mise *= 2
-    pioche(1, main)
+    hit(1, main)
     score(main)
     return points
 
@@ -370,10 +362,10 @@ def ordre_boutons3(event):
         donne_initiale()
         bouton_donne_initiale.destroy()
 
-        bouton_pioche = tkinter.Button(bg='white', text='Pioche')
-        bouton_pioche.grid(column=2, row=3)
-        bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
-                           main_joueur, 'bouton_pioche'))
+        bouton_hit = tkinter.Button(bg='white', text='Hit')
+        bouton_hit.grid(column=2, row=3)
+        bouton_hit.bind('<Button-1>', lambda e: hit(2,
+                           main_joueur, 'bouton_hit'))
 
         stand_bouton = tkinter.Button(bg='salmon', text='Stand')
         stand_bouton.grid(column=6, row=11)
