@@ -1,6 +1,5 @@
 import random
 import tkinter
-from tkinter import *
 from PIL import Image, ImageTk
 
 """listes et variables"""
@@ -37,13 +36,13 @@ accueil.configure(bg='red')
 bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
-play = tkinter.Button(accueil, text='Play', height=5, 
-                        width=15, font =('helvetica',20))
+play = tkinter.Button(accueil, text='Play', height=5,
+                      width=15, font=('helvetica', 20))
 play = tkinter.Button(accueil, text='Play', height=5,
                       width=15, font=('helvetica', 20))
 play.pack()
-partie_en_cours = tkinter.Button(accueil, text='Partie en cours', 
-                        width=15, height=5, font=('helvetica',20))
+partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
+                                 width=15, height=5, font=('helvetica', 20))
 partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
                                  width=15, height=5, font=('helvetica', 20))
 partie_en_cours.pack()
@@ -53,9 +52,10 @@ def debut(event):
     if event.widget == play:
         win = tkinter.Toplevel(accueil)
         accueil.destroy()
-    if event.widget == partie_en_cours :
+    if event.widget == partie_en_cours:
         lost = tkinter.Toplevel()
         accueil.destroy()
+
 
 partie_en_cours.bind('<Button-1>', debut)
 play.bind('<Button-1>', debut)
@@ -69,10 +69,10 @@ root.geometry = accueil.geometry
 root.configure(bg="green")
 
 
-im=Image.open('gartedos.gif')
-logo=ImageTk.PhotoImage(im, master = root)
+im = Image.open('gartedos.gif')
+logo = ImageTk.PhotoImage(im, master=root)
 cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
-logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
+logo1 = cartes.create_image(33, 53, anchor='nw', image=logo)
 cartes.grid(column=2, row=3)
 
 
