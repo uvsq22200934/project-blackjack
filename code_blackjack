@@ -33,9 +33,13 @@ At = 0
 accueuil = tkinter.Tk()
 accueuil.geometry('700x600')
 accueuil.configure(bg='red')
-bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
+
+
+bj = tkinter.Label(text='BLACK JACK', fg='gold', bg='red',
                    font=('helvetica', 50))
 bj.pack()
+
+
 play = tkinter.Button(accueuil, text='Play', height=5,
                       width=15, font=('helvetica', 20))
 play.pack()
