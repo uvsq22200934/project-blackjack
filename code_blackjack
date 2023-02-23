@@ -175,7 +175,6 @@ def surrender(mise=0):
     fin_manche()
 
 
-
 def resultat(): 
     # fonction qui donne le résulat du jeu
     global main_joueur
@@ -195,7 +194,7 @@ def resultat():
         score__joueur.grid(column=9, row=1)
         resultat_label = tkinter.Label(root, text='EXECO', bg='green', fg='grey14')
         resultat_label.grid(column=10, row=2)
-    
+    print(score(main_joueur), score(main_croupier))
 
 """Boutons"""
 
