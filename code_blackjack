@@ -30,12 +30,15 @@ At = 0
 
 """Graphismes"""
 
+
 def fenêtre():
     F1 = tkinter.Toplevel(accueil)
+
+
 accueil = tkinter.Tk()
-accueil.geometry('700x600')  
+accueil.geometry('700x600')
 play = tkinter.Button(accueil, text='Play', height=5,
-                      width=15, font=('helvetica', 20), command = fenêtre)
+                      width=15, font=('helvetica', 20), command=fenêtre)
 play.pack(pady=10)
 
 accueil.configure(bg='red')
@@ -43,10 +46,11 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
 
-partie_en_cours = tkinter.Button(accueil, text='Partie en cours', 
-                        width=15, height=5, font=('helvetica',20))
+partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
+                                 width=15, height=5, font=('helvetica', 20))
 
 partie_en_cours.pack()
+
 
 def debut(event):
     if event.widget == play:
@@ -329,9 +333,11 @@ def resultat():
         resultat_label.grid(column=10, row=2)
     print(score(main_joueur), score(main_croupier))
 
-def quitter(event): 
+
+def quitter(event):
     if event.widget == bouton_quitter:
         root.destroy()
+
 
 """Boutons"""
 
@@ -377,13 +383,12 @@ def ordre_boutons3(event):
         bouton_hit = tkinter.Button(bg='white', text='Hit')
         bouton_hit.grid(column=2, row=3)
         bouton_hit.bind('<Button-1>', lambda e: hit(
-                                                    main_joueur, 'bouton_hit'))
+            main_joueur, 'bouton_hit'))
 
         stand_bouton = tkinter.Button(bg='salmon', text='Stand')
         stand_bouton.grid(column=6, row=11)
         stand_bouton.bind(
             "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
-
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
