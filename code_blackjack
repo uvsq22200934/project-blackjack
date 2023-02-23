@@ -1,7 +1,7 @@
 import random
 import tkinter
 from tkinter import *
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 
 """listes et variables"""
 
