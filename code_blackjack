@@ -1,5 +1,6 @@
 import random
 import tkinter
+from tkinter import *
 # from PIL import Image, ImageTk
 
 """listes et variables"""
@@ -58,6 +59,22 @@ def debut(event):
 partie_en_cours.bind('<Button-1>', debut)
 play.bind('<Button-1>', debut)
 
+username=tkinter.Label(accueil,text="Username:", font=('helvetica',10), fg='black')
+username.pack()
+
+
+def prenom():
+    print(my_entry.get())
+my_entry= Entry(accueil)
+my_entry.pack()
+
+credit=tkinter.Label(accueil,text="Crédit:", font=('helvetica',10), fg='black')
+credit.pack()
+
+def crédit():
+    print(my_entry2.get())
+my_entry2= Entry(accueil)
+my_entry2.pack()
 
 accueil.mainloop()
 
@@ -305,7 +322,7 @@ def resultat():
             root, text=score(main_joueur), bg='green', fg='red')
         score__joueur.grid(column=9, row=1)
         resultat_label = tkinter.Label(
-            root, text='Le JOUEUR1 est le vainqueur', bg='green', fg='yellow')
+            root, text='Vous êtes le vainqueur', bg='green', fg='yellow')
         resultat_label.grid(column=10, row=2)
     if score(main_joueur) < score(main_croupier) and score(main_croupier) < 21:
         score__joueur = tkinter.Label(root, text=score(
@@ -515,7 +532,7 @@ labelc = tkinter.Label(root, text="CROUPIER", font=(
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text="JOUEUR1", font=("helvetica", "15"),
+labelj = tkinter.Label(root, text= username, font=("helvetica", "15"),
                        bg="green", fg="black")
 labelj.grid(column=0, row=4)
 
