@@ -427,27 +427,28 @@ jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_vert.grid(column=3, row=9)
-jeton_vert.create_oval(1, 1, 25, 25, width=3,
-                       outline='light cyan', fill='mint cream')
+jeton_vert.create_oval(1,1,25,25, width=3, outline='light grey', fill='mint cream')
+
+valeur_vert=tkinter.Label(root, text='50', font=('helvetica',8),bg='mint cream',fg='black')
+valeur_vert.grid(column=3,row=9)
 
 jeton_bleu = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_bleu.grid(column=2, row=9)
-jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
+jeton_bleu.create_oval(1,1,25,25, width=3, outline='blue4',fill='navy')
 
 jeton_rouge = tkinter.Canvas(root, bg='green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_rouge.grid(column=1, row=9)
-jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
+jeton_rouge.create_oval(1,1,25,25, width=3, outline='brown4',fill='red')
 
 jeton_noir = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_noir.grid(column=5, row=9)
-jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
-
+jeton_noir.create_oval(1,1,25,25, width=3, outline='gray19',fill='gray14')
 
 def mise_rouge(event):
     global mise_totale
