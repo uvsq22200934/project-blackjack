@@ -31,12 +31,15 @@ At = 0
 
 """Graphismes"""
 
+
 def fenêtre():
     F1 = tkinter.Toplevel(accueil)
+
+
 accueil = tkinter.Tk()
-accueil.geometry('700x600')  
+accueil.geometry('700x600')
 play = tkinter.Button(accueil, text='Play', height=5,
-                      width=15, font=('helvetica', 20), command = fenêtre)
+                      width=15, font=('helvetica', 20), command=fenêtre)
 play.pack(pady=10)
 
 accueil.configure(bg='red')
@@ -44,10 +47,11 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
 
-partie_en_cours = tkinter.Button(accueil, text='Partie en cours', 
-                        width=15, height=5, font=('helvetica',20))
+partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
+                                 width=15, height=5, font=('helvetica', 20))
 
 partie_en_cours.pack()
+
 
 def debut(event):
     if event.widget == play:
@@ -89,7 +93,7 @@ root.configure(bg="green")
 
 # im=Image.open('gartedos.gif')
 # logo=ImageTk.PhotoImage(im, master = root)
-cartes = tkinter.Canvas(root, width=60, height=100, bg="red4", relief='raised', border=5)
+cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
 # logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
 cartes.grid(column=2, row=3)
 
@@ -119,7 +123,7 @@ def donne_initiale():
 """bouton_nouvelle_partie['command'] = melange_distrib"""
 
 
-def hit(nb_carte, main, bouton=0):
+def hit(main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
@@ -172,55 +176,61 @@ def hit(nb_carte, main, bouton=0):
                 14, 50, text=main_joueur[10], font=('helvetica', 15))
             cj11.grid(column=8, row=4)
     if main == main_croupier:
-        for i in range(nb_carte):
-            main.append(paquet[0])
-            del paquet[0]
-            if len(main_croupier) == 3:
-                cc3 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc3.create_text(
-                    20, 50, text=main_croupier[2], font=('helvetica', 15))
-                cc3.grid(column=4, row=1)
-            if len(main_croupier) == 4:
-                cc4 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc4.create_text(
-                    20, 50, text=main_croupier[3], font=('helvetica', 15))
-                cc4.grid(column=5, row=1)
-            if len(main_croupier) == 5:
-                cc5 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc5.create_text(
-                    20, 50, text=main_croupier[4], font=('helvetica', 15))
-                cc5.grid(column=6, row=1)
-            if len(main_croupier) == 6:
-                cc6 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc6.create_text(
-                    20, 50, text=main_croupier[5], font=('helvetica', 15))
-                cc6.grid(column=7, row=1)
-            if len(main_croupier) == 7:
-                cc7 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc7.create_text(
-                    20, 50, text=main_croupier[6], font=('helvetica', 15))
-                cc7.grid(column=8, row=1)
-            if len(main_croupier) == 8:
-                cc8 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc8.create_text(
-                    20, 50, text=main_croupier[7], font=('helvetica', 15))
-                cc8.grid(column=9, row=1)
-            if len(main_croupier) == 9:
-                cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc9.create_text(
-                    20, 50, text=main_croupier[8], font=('helvetica', 15))
-                cc9.grid(column=10, row=1)
-            if len(main_croupier) == 10:
-                cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc10.create_text(
-                    20, 50, text=main_croupier[9], font=('helvetica', 15))
-                cc10.grid(column=11, row=1)
-            if len(main_croupier) == 11:
-                cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
-                cc11.create_text(
-                    20, 50, text=main_croupier[10], font=('helvetica', 15))
-                cc11.grid(column=12, row=1)
+        main.append(paquet[0])
+        del paquet[0]
+        if len(main_croupier) == 3:
+            cc3 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc3.create_text(
+                20, 50, text=main_croupier[2], font=('helvetica', 15))
+            cc3.grid(column=4, row=1)
+        if len(main_croupier) == 4:
+            cc4 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc4.create_text(
+                20, 50, text=main_croupier[3], font=('helvetica', 15))
+            cc4.grid(column=5, row=1)
+        if len(main_croupier) == 5:
+            cc5 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc5.create_text(
+                20, 50, text=main_croupier[4], font=('helvetica', 15))
+            cc5.grid(column=6, row=1)
+        if len(main_croupier) == 6:
+            cc6 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc6.create_text(
+                20, 50, text=main_croupier[5], font=('helvetica', 15))
+            cc6.grid(column=7, row=1)
+        if len(main_croupier) == 7:
+            cc7 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc7.create_text(
+                20, 50, text=main_croupier[6], font=('helvetica', 15))
+            cc7.grid(column=8, row=1)
+        if len(main_croupier) == 8:
+            cc8 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc8.create_text(
+                20, 50, text=main_croupier[7], font=('helvetica', 15))
+            cc8.grid(column=9, row=1)
+        if len(main_croupier) == 9:
+            cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc9.create_text(
+                20, 50, text=main_croupier[8], font=('helvetica', 15))
+            cc9.grid(column=10, row=1)
+        if len(main_croupier) == 10:
+            cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc10.create_text(
+                20, 50, text=main_croupier[9], font=('helvetica', 15))
+            cc10.grid(column=11, row=1)
+        if len(main_croupier) == 11:
+            cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cc11.create_text(
+                20, 50, text=main_croupier[10], font=('helvetica', 15))
+            cc11.grid(column=12, row=1)
+    test_score()
     return main
+
+
+def test_score():
+    global main_joueur
+    if score(main_joueur) >= 21:
+        fin_manche()
 
 
 def fin_manche():
@@ -341,12 +351,20 @@ def resultat():
     print(score(main_joueur), score(main_croupier))
 
 
+def quitter(event):
+    if event.widget == bouton_quitter:
+        root.destroy()
+
+
 """Boutons"""
 
 
 # fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent
 # chacun leur tour pour ne pas encombrer la fenêtre
 
+bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
+bouton_quitter.grid(columnspan=10, row=10)
+bouton_quitter.bind('<Button-1>', quitter)
 
 bouton_melanger = tkinter.Button(
     text='Mélanger', fg='blue', command=random.shuffle(paquet))
@@ -381,14 +399,13 @@ def ordre_boutons3(event):
 
         bouton_hit = tkinter.Button(bg='white', text='Hit')
         bouton_hit.grid(column=2, row=3)
-        bouton_hit.bind('<Button-1>', lambda e: hit(2,
-                                                    main_joueur, 'bouton_hit'))
+        bouton_hit.bind('<Button-1>', lambda e: hit(
+            main_joueur, 'bouton_hit'))
 
         stand_bouton = tkinter.Button(bg='salmon', text='Stand')
         stand_bouton.grid(column=6, row=11)
         stand_bouton.bind(
             "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
-
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
