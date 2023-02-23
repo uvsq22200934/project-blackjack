@@ -29,16 +29,23 @@ At = 0
 
 
 """Graphismes"""
-accueuil=tkinter.Tk()
+
+accueuil = tkinter.Tk()
 accueuil.geometry('700x600')
 accueuil.configure(bg='red')
-bj = tkinter.Label(text = 'BLACK JACK', bg = 'red', fg ='gold',font =('helvetica',50))
+bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
+                   font=('helvetica', 50))
 bj.pack()
-play = tkinter.Button(accueuil, text='Play', height = 5, width=10, font =('helvetica',30))
+play = tkinter.Button(accueuil, text='Play', height=5,
+                      width=10, font=('helvetica', 30))
 play.pack()
+
+
 def debut(event):
     if event.widget == play:
         accueuil.destroy()
+
+
 play.bind('<Button-1>', debut)
 accueuil.mainloop()
 
@@ -46,7 +53,7 @@ root = tkinter.Tk()
 root.title('Blackjack 21')
 """root.state('zoomed')"""
 
-root.geometry('700x600')
+root.geometry = accueuil.geometry
 root.configure(bg="green")
 
 
