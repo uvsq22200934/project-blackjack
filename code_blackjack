@@ -31,35 +31,36 @@ At = 0
 
 """Graphismes"""
 
+def fenêtre():
+    F1 = tkinter.Toplevel(accueil)
 accueil = tkinter.Tk()
-accueil.geometry('700x600')
+accueil.geometry('700x600')  
+play = tkinter.Button(accueil, text='Play', height=5,
+                      width=15, font=('helvetica', 20), command = fenêtre)
+play.pack(pady=10)
+
 accueil.configure(bg='red')
 bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
-play = tkinter.Button(accueil, text='Play', height=5, 
-                        width=15, font =('helvetica',20))
-play = tkinter.Button(accueil, text='Play', height=5,
-                      width=15, font=('helvetica', 20))
-play.pack()
 
 partie_en_cours = tkinter.Button(accueil, text='Partie en cours', 
                         width=15, height=5, font=('helvetica',20))
-partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
-                                 width=15, height=5, font=('helvetica', 20))
-partie_en_cours.pack()
 
+partie_en_cours.pack()
 
 def debut(event):
     if event.widget == play:
-        a = tkinter.Toplevel(accueil)
         accueil.destroy()
     if event.widget == partie_en_cours:
         accueil.destroy()
 
 partie_en_cours.bind('<Button-1>', debut)
 play.bind('<Button-1>', debut)
+
+
 accueil.mainloop()
+
 
 root = tkinter.Tk()
 root.title('Blackjack 21')
@@ -372,10 +373,6 @@ def ordre_boutons3(event):
         stand_bouton.bind(
             "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
 
-        bouton_hit = tkinter.Button(fg='green', text='Hit')
-        bouton_hit.grid(column=6, row=10)
-        bouton_hit.bind(
-            "<Button-1>", lambda e: hit(main_joueur, 'bouton_hit'))
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
