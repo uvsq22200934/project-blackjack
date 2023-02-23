@@ -79,7 +79,6 @@ def pioche(nb_carte, main, bouton=0):
         for i in range(nb_carte):
             main.append(paquet[0])
             del paquet[0]
-    print(main)
     return main
 
 
@@ -127,7 +126,6 @@ def score(main):
                 break
     return points
 
-
 def croupier():
     # fonction qui définit les action du croupier en fonction de sa main
     global main_croupier
@@ -143,9 +141,7 @@ def stand(main, bouton=0):
     points = 0
     score(main)
     if bouton == 'stand_bouton':
-        stand_label = tkinter.Label(
-            root, bg='green', fg='black', text="<<Je m'arrête>>",
-            font=("helvetica", "10"))
+        stand_label = tkinter.Label(root, bg='green', fg='black', text="<<Je m'arrête>>", font=("helvetica", "10"))
         stand_label.grid(column=0, row=5)
         print("je m'arrête")
     else:
@@ -153,7 +149,7 @@ def stand(main, bouton=0):
     return points
 
 
-def hit(nb_carte, main, bouton=0):
+def hit(nb_carte, main, bouton = 0):
     # fonction qui permet au joueur de "hit"
     global paquet
     global main_joueur
@@ -179,33 +175,26 @@ def surrender(mise=0):
     fin_manche()
 
 
-def resultat():
+def resultat(): 
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
-    if score(main_joueur) > score(main_croupier):
-        score__joueur = tkinter.Label(root, text=score(main_joueur),
-                                      bg='green', fg='red')
+    if score(main_joueur) > score(main_croupier): 
+        score__joueur = tkinter.Label(root, text=score(main_joueur), bg='green', fg='red')
         score__joueur.grid(column=9, row=1)
-        resultat_label = tkinter.Label(
-            root, text='Le JOUEUR1 est le vainqueur', bg='green', fg='yellow')
+        resultat_label = tkinter.Label(root, text='Le JOUEUR1 est le vainqueur', bg='green', fg='yellow')
         resultat_label.grid(column=10, row=2)
-    if score(main_joueur) < score(main_croupier):
-        score__joueur = tkinter.Label(root, text=score(
-            main_joueur), bg='green', fg='black')
+    if score(main_joueur) < score(main_croupier): 
+        score__joueur = tkinter.Label(root, text=score(main_joueur), bg='green', fg='black')
         score__joueur.grid(column=9, row=1)
-        resultat_label = tkinter.Label(
-            root, text='Le CROUPIER est le vainqueur', bg='green', fg='yellow')
+        resultat_label = tkinter.Label(root, text='Le CROUPIER est le vainqueur', bg='green', fg='yellow')
         resultat_label.grid(column=10, row=2)
-    if score(main_joueur) == score(main_croupier):
-        score__joueur = tkinter.Label(root, text=score(
-            main_joueur), bg='green', fg='black')
+    if score(main_joueur) == score(main_croupier): 
+        score__joueur = tkinter.Label(root, text=score(main_joueur), bg='green', fg='black')
         score__joueur.grid(column=9, row=1)
-        resultat_label = tkinter.Label(
-            root, text='EXECO', bg='green', fg='grey14')
+        resultat_label = tkinter.Label(root, text='EXECO', bg='green', fg='grey14')
         resultat_label.grid(column=10, row=2)
     print(score(main_joueur), score(main_croupier))
-
 
 """Boutons"""
 
@@ -300,10 +289,10 @@ bouton_score = tkinter.Button(
     text='croupier test', fg='green', command=croupier)
 bouton_score.grid(column=6, row=8)
 
-score_bouton = tkinter.Button(
-    root, text='Score', bg='green', fg='black', font=("helvetica", "13"))
+score_bouton = tkinter.Button(root, text='Score', bg='green', fg='black', font = ("helvetica", "13"))
 score_bouton.grid(column=10, row=1)
 score_bouton.bind('<Button-1>', lambda e: resultat())
+
 
 
 """ mise du jeu """
@@ -403,7 +392,7 @@ labelc = tkinter.Label(root, text="CROUPIER", font=(
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text="JOUEUR1", font=("helvetica", "15"),
+labelj = tkinter.Label(root, text= "JOUEUR1", font=("helvetica", "15"),
                        bg="green", fg="black")
 labelj.grid(column=0, row=4)
 
