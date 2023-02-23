@@ -213,7 +213,7 @@ def hit(main, bouton=0):
 def test_score():
     global main_joueur
     if score(main_joueur) >= 21:
-        croupier()
+        fin_manche()
 
 
 def fin_manche():
