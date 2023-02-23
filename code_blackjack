@@ -75,11 +75,55 @@ def pioche(nb_carte, main, bouton=0):
     if bouton == 'bouton_pioche':
         main_joueur.append(paquet[0])
         del paquet[0]
+        if len(main_joueur) == 3:
+            cj3 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj3.create_text(
+                20, 50, text=main_joueur[2], font=('helvetica', 15))
+            cj3.grid(column=6, row=4)
+        if len(main_joueur) == 4:
+            cj4 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj4.create_text(
+                20, 50, text=main_joueur[3], font=('helvetica', 15))
+            cj4.grid(column=7, row=4)
+        if len(main_joueur) == 5:
+            cj5 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj5.create_text(
+                20, 50, text=main_joueur[4], font=('helvetica', 15))
+            cj5.grid(column=8, row=4)
+        if len(main_joueur) == 6:
+            cj6 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj6.create_text(
+                20, 50, text=main_joueur[5], font=('helvetica', 15))
+            cj6.grid(column=9, row=4)
+        if len(main_joueur) == 7:
+            cj7 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj7.create_text(20, 50, text=main_joueur[6],
+                            font=('helvetica', 15))
+            cj7.grid(column=10, row=4)
+        if len(main_joueur) == 8:
+            cj8 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj8.create_text(
+                20, 50, text=main_joueur[7], font=('helvetica', 15))
+            cj8.grid(column=11, row=4)
+        if len(main_joueur) == 9:
+            cj9 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj9.create_text(
+                20, 50, text=main_joueur[8], font=('helvetica', 15))
+            cj9.grid(column=12, row=4)
+        if len(main_joueur) == 10:
+            cj10 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj10.create_text(
+                20, 50, text=main_joueur[9], font=('helvetica', 15))
+            cj10.grid(column=13, row=4)
+        if len(main_joueur) == 11:
+            cj11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+            cj11.create_text(
+                14, 50, text=main_joueur[10], font=('helvetica', 15))
+            cj11.grid(column=8, row=4)
     else:
         for i in range(nb_carte):
             main.append(paquet[0])
             del paquet[0]
-    print(main)
     return main
 
 
