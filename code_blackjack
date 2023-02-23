@@ -38,20 +38,22 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
 bj.pack()
 play = tkinter.Button(accueil, text='Play', height=5, 
                         width=15, font =('helvetica',20))
-play = tkinter.Button(accueuil, text='Play', height=5,
+play = tkinter.Button(accueil, text='Play', height=5,
                       width=15, font=('helvetica', 20))
 play.pack()
 partie_en_cours = tkinter.Button(accueil, text='Partie en cours', 
                         width=15, height=5, font=('helvetica',20))
-partie_en_cours = tkinter.Button(accueuil, text='Partie en cours',
+partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
                                  width=15, height=5, font=('helvetica', 20))
 partie_en_cours.pack()
 
 
 def debut(event):
     if event.widget == play:
+        win = tkinter.Toplevel(accueil)
         accueil.destroy()
     if event.widget == partie_en_cours :
+        lost = tkinter.Toplevel(historique)
         accueil.destroy()
 
 partie_en_cours.bind('<Button-1>', debut)
