@@ -71,8 +71,8 @@ def prenom():
     print(my_entry.get())
 
 
-my_entry = Entry(accueil)
-my_entry.pack()
+"""my_entry = Entry(accueil)
+my_entry.pack()"""
 
 credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
                        fg='black')
@@ -289,7 +289,7 @@ def croupier():
     global main_croupier
     points_croupier = score(main_croupier)
     while points_croupier <= 16:
-        hit(1, main_croupier)
+        hit(main_croupier)
         points_croupier = score(main_croupier)
     return main_croupier, points_croupier
 
