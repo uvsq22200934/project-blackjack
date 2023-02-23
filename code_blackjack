@@ -1,6 +1,7 @@
 import random
 import tkinter
-
+from tkinter import *
+from PIL import Image, ImageTk
 
 """listes et variables"""
 
@@ -68,7 +69,10 @@ root.geometry = accueil.geometry
 root.configure(bg="green")
 
 
+im=Image.open('gartedos.gif')
+logo=ImageTk.PhotoImage(im, master = root)
 cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
+logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
 cartes.grid(column=2, row=3)
 
 
