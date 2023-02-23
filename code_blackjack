@@ -135,20 +135,25 @@ def croupier():
 
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
-    global stand_bouton
     points = 0
     score(main)
     if bouton == 'stand_bouton':
+        stand_label = tkinter.Label(root, bg='green', fg='black', text="<<Je m'arrête>>", font=("helvetica", "10"))
+        stand_label.grid(column=0, row=5)
         print("je m'arrête")
     else:
         print("je continue")
-    stand_bouton.destroy()
     return points
 
 
-def hit(main):
+def hit(nb_carte, main, bouton = 0):
     # fonction qui permet au joueur de "hit"
-    pioche(1, main)
+    global paquet
+    global main_joueur
+    if bouton == 'bouton_hit':
+        main.append(paquet[0])
+        del paquet[0]
+        nb_carte += 1
     return main
 
 
@@ -224,14 +229,19 @@ def ordre_boutons3(event):
         bouton_donne_initiale.destroy()
 
         bouton_pioche = tkinter.Button(bg='white', text='Pioche')
-        bouton_pioche.grid(column=1, row=3)
+        bouton_pioche.grid(column=2, row=3)
         bouton_pioche.bind('<Button-1>', lambda e: pioche(2,
                            main_joueur, 'bouton_pioche'))
 
-        stand_bouton = tkinter.Button(bg='salmon', command=stand, text='Stand')
-        stand_bouton.grid(column=3, row=3)
+        stand_bouton = tkinter.Button(bg='salmon', text='Stand')
+        stand_bouton.grid(column=6, row=11)
         stand_bouton.bind(
             "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
+
+        bouton_hit = tkinter.Button(fg='green', text='Hit')
+        bouton_hit.grid(column=6, row=10)
+        bouton_hit.bind(
+            "<Button-1>", lambda e: hit(main_joueur, 'bouton_hit'))
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
