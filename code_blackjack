@@ -50,6 +50,7 @@ def donne_initiale():
     # fonction qui distribue les cartes en début de partie
     global paquet
     global main_joueur
+    global main_croupier
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
@@ -57,6 +58,9 @@ def donne_initiale():
         main_croupier.append(paquet[0])
         del paquet[0]
         nb_carte += 1
+    cj1.create_text(20, 50, text=main_joueur[0], font=('helvetica', 15))
+    cj2.create_text(20, 50, text=main_joueur[1], font=('helvetica', 15))
+    cc1.create_text(20, 50, text=main_croupier[0], font=('helvetica', 15))
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
 
@@ -221,6 +225,7 @@ def ordre_boutons3(event):
         cc2['bg'] = 'red4'
         cj1['bg'] = 'white'
         cj2['bg'] = 'white'
+        donne_initiale()
         bouton_donne_initiale.destroy()
 
         bouton_pioche = tkinter.Button(bg='white', text='Pioche')
@@ -332,6 +337,7 @@ jeton_noir.bind('<Button-1>', mise_noir)
 
 
 '''interface graphique'''
+
 
 # interface emplacement des cartes 1 et 2 du joueur
 cj1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
