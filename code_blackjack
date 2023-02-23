@@ -34,8 +34,10 @@ accueuil.geometry('700x600')
 accueuil.configure(bg='red')
 bj = tkinter.Label(text = 'BLACK JACK', bg = 'red', fg ='gold',font =('helvetica',50))
 bj.pack()
-play = tkinter.Button(accueuil, text='Play', height = 5, width=10, font =('helvetica',30))
+play = tkinter.Button(accueuil, text='Play', height = 5, width=15, font =('helvetica',20))
 play.pack()
+partie_en_cours = tkinter.Button(accueuil, text='Partie en cours', width=15, height=5, font=('helvetica',20))
+partie_en_cours.pack()
 def debut(event):
     if event.widget == play:
         accueuil.destroy()
@@ -407,7 +409,7 @@ bouton_score.grid(column=6, row=8)
 
 score_bouton = tkinter.Button(
     root, text='Score', bg='green', fg='black', font=("helvetica", "13"))
-score_bouton.grid(column=10, row=1)
+score_bouton.grid(column=10, row=1, rowspan =1, padx =8, pady =12)
 score_bouton.bind('<Button-1>', lambda e: resultat())
 
 
