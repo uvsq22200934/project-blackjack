@@ -171,6 +171,7 @@ def score(main):
                 break
     return points
 
+
 def croupier():
     # fonction qui définit les action du croupier en fonction de sa main
     global main_croupier
@@ -188,7 +189,11 @@ def stand(main, bouton=0):
     if bouton == 'stand_bouton':
         stand_label = tkinter.Label(root, bg='green', fg='black', text="<<Je m'arrête>>", font=("helvetica", "10"))
         stand_label.grid(column=0, row=5)
+
         print("je m'arrête")
+        cc2['bg'] = 'white'
+        cc2.create_text(20, 50, text=main_croupier[1], font=('helvetica', 15))
+        cc2.grid(column=3, row=1)
     else:
         print("je continue")
     return points
