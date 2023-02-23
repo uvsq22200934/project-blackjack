@@ -323,6 +323,9 @@ def resultat():
         resultat_label.grid(column=10, row=2)
     print(score(main_joueur), score(main_croupier))
 
+def quitter(event): 
+    if event.widget == bouton_quitter:
+        root.destroy()
 
 """Boutons"""
 
@@ -330,6 +333,9 @@ def resultat():
 # fonctions pour que les boutons qui ne s'utilisent qu'une fois apparaisaent
 # chacun leur tour pour ne pas encombrer la fenêtre
 
+bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
+bouton_quitter.grid(columnspan=10, row=10)
+bouton_quitter.bind('<Button-1>', quitter)
 
 bouton_melanger = tkinter.Button(
     text='Mélanger', fg='blue', command=random.shuffle(paquet))
