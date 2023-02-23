@@ -1,7 +1,6 @@
 import random
 import tkinter
-#from tkinter import *
-#from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 """listes et variables"""
 
@@ -55,6 +54,7 @@ def debut(event):
     if event.widget == partie_en_cours:
         accueil.destroy()
 
+
 partie_en_cours.bind('<Button-1>', debut)
 play.bind('<Button-1>', debut)
 
@@ -70,10 +70,10 @@ root.geometry = accueil.geometry
 root.configure(bg="green")
 
 
-#im=Image.open('gartedos.gif')
-#logo=ImageTk.PhotoImage(im, master = root)
-cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
-#logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
+# im=Image.open('gartedos.gif')
+# logo=ImageTk.PhotoImage(im, master = root)
+cartes = tkinter.Canvas(root, width=60, height=100, bg="red4", relief='raised', border=5)
+# logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
 cartes.grid(column=2, row=3)
 
 
@@ -106,7 +106,7 @@ def hit(nb_carte, main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
-    if bouton == 'bouton_pioche':
+    if bouton == 'bouton_hit':
         main_joueur.append(paquet[0])
         del paquet[0]
         if len(main_joueur) == 3:
@@ -281,7 +281,6 @@ def stand(main, bouton=0):
     return points
 
 
-
 def doubble_down(main, mise=0):
     # fonction qui permet au joueur de "double down"
     points = 0
@@ -366,7 +365,7 @@ def ordre_boutons3(event):
         bouton_hit = tkinter.Button(bg='white', text='Hit')
         bouton_hit.grid(column=2, row=3)
         bouton_hit.bind('<Button-1>', lambda e: hit(2,
-                           main_joueur, 'bouton_hit'))
+                                                    main_joueur, 'bouton_hit'))
 
         stand_bouton = tkinter.Button(bg='salmon', text='Stand')
         stand_bouton.grid(column=6, row=11)
@@ -421,22 +420,35 @@ miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
 miser.grid(column=0, row=9)
 
 
-
-jeton_vert = tkinter.Canvas(root, bg='green', width= 30, height=30,relief='raised',borderwidth=0, highlightthickness=0)
+jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
 jeton_vert.grid(column=3, row=9)
-jeton_vert.create_oval(1,1,25,25, width=3, outline='light cyan', fill='mint cream')
+jeton_vert.create_oval(1, 1, 25, 25, width=3,
+                       outline='light grey', fill='mint cream')
 
-jeton_bleu = tkinter.Canvas(root, bg='green',width= 30, height=30,relief='raised',borderwidth=0, highlightthickness=0)
+valeur_vert = tkinter.Label(root, text='50', font=('helvetica', 8),
+                            bg='mint cream', fg='black')
+valeur_vert.grid(column=3, row=9)
+
+jeton_bleu = tkinter.Canvas(root, bg='green', width=30, height=30,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
 jeton_bleu.grid(column=2, row=9)
-jeton_bleu.create_oval(1,1,25,25, width=3, outline='blue4',fill='navy')
+jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
 
-jeton_rouge = tkinter.Canvas(root, bg='green',width= 30, height=30,relief='raised',borderwidth=0, highlightthickness=0)
+jeton_rouge = tkinter.Canvas(root, bg='green', width=30, height=30,
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
 jeton_rouge.grid(column=1, row=9)
-jeton_rouge.create_oval(1,1,25,25, width=3, outline='brown4',fill='red')
+jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
 
-jeton_noir = tkinter.Canvas(root, bg='green',width=30, height=30,relief='raised',borderwidth=0, highlightthickness=0)
+jeton_noir = tkinter.Canvas(root, bg='green', width=30, height=30,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
 jeton_noir.grid(column=5, row=9)
-jeton_noir.create_oval(1,1,25,25, width=3, outline='gray19',fill='gray14')
+jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
+
 
 def mise_rouge(event):
     global mise_totale
