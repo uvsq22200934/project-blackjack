@@ -217,7 +217,7 @@ bouton_melanger.bind('<Button-1>', ordre_boutons2)
 def ordre_boutons3(event):
     global bouton_donne_initiale
     if event.widget == bouton_donne_initiale:
-        cc1['bg'] = 'red4'
+        cc1['bg'] = 'white'
         cc2['bg'] = 'red4'
         cj1['bg'] = 'white'
         cj2['bg'] = 'white'
