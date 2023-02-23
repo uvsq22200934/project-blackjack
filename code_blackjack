@@ -1,6 +1,5 @@
 import random
 import tkinter
-from tkinter import *
 # from PIL import Image, ImageTk
 
 """listes et variables"""
@@ -63,22 +62,29 @@ def debut(event):
 partie_en_cours.bind('<Button-1>', debut)
 play.bind('<Button-1>', debut)
 
-username=tkinter.Label(accueil,text="Username:", font=('helvetica',10), fg='black')
+username = tkinter.Label(accueil, text="Username:",
+                         font=('helvetica', 10), fg='black')
 username.pack()
 
 
 def prenom():
     print(my_entry.get())
-my_entry= Entry(accueil)
+
+
+my_entry = Entry(accueil)
 my_entry.pack()
 
-credit=tkinter.Label(accueil,text="Crédit:", font=('helvetica',10), fg='black')
+credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
+                       fg='black')
 credit.pack()
+
 
 def crédit():
     print(my_entry2.get())
-my_entry2= Entry(accueil)
-my_entry2.pack()
+
+
+"""my_entry2 = Entry(accueil)
+my_entry2.pack()"""
 
 accueil.mainloop()
 
@@ -549,7 +555,7 @@ labelc = tkinter.Label(root, text="CROUPIER", font=(
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text= username, font=("helvetica", "15"),
+labelj = tkinter.Label(root, text=username, font=("helvetica", "15"),
                        bg="green", fg="black")
 labelj.grid(column=0, row=4)
 
