@@ -365,6 +365,38 @@ def disparition_mise():
     jeton_noir.destroy()
 
 
+def mise_rouge(event):
+    global mise_totale
+    if event.widget == jeton_rouge:
+        mise_totale += 10
+        valeur_mise['text'] = mise_totale
+    return mise_totale
+
+
+def mise_bleu(event):
+    global mise_totale
+    if event.widget == jeton_bleu:
+        mise_totale += 25
+        valeur_mise['text'] = mise_totale
+    return mise_totale
+
+
+def mise_vert(event):
+    global mise_totale
+    if event.widget == jeton_vert:
+        mise_totale += 50
+        valeur_mise['text'] = mise_totale
+    return mise_totale
+
+
+def mise_noir(event):
+    global mise_totale
+    if event.widget == jeton_noir:
+        mise_totale += 100
+        valeur_mise['text'] = mise_totale
+    return mise_totale
+
+
 """Fenêtres"""
 
 accueil = tkinter.Tk()
@@ -422,6 +454,7 @@ root.configure(bg="green")
 cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
 # logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
 cartes.grid(column=2, row=3)
+
 
 """Boutons"""
 
@@ -510,45 +543,13 @@ jeton_noir.grid(column=5, row=9)
 jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
 
 
-def mise_rouge(event):
-    global mise_totale
-    if event.widget == jeton_rouge:
-        mise_totale += 10
-        valeur_mise['text'] = mise_totale
-    return mise_totale
-
-
 jeton_rouge.bind('<Button-1>', mise_rouge)
-
-
-def mise_bleu(event):
-    global mise_totale
-    if event.widget == jeton_bleu:
-        mise_totale += 25
-        valeur_mise['text'] = mise_totale
-    return mise_totale
 
 
 jeton_bleu.bind('<Button-1>', mise_bleu)
 
 
-def mise_vert(event):
-    global mise_totale
-    if event.widget == jeton_vert:
-        mise_totale += 50
-        valeur_mise['text'] = mise_totale
-    return mise_totale
-
-
 jeton_vert.bind('<Button-1>', mise_vert)
-
-
-def mise_noir(event):
-    global mise_totale
-    if event.widget == jeton_noir:
-        mise_totale += 100
-        valeur_mise['text'] = mise_totale
-    return mise_totale
 
 
 jeton_noir.bind('<Button-1>', mise_noir)
