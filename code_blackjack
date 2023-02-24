@@ -49,12 +49,14 @@ def fenêtre():
 
 def prenom():
     print(my_entry.get())
-    name = my_entry.get(0, tkinter.END)
+    name = my_entry.get()
     return name
 
 
 def crédit():
     print(my_entry2.get())
+    money = my_entry2.get()
+    return money
 
 
 def donne_initiale():
@@ -73,6 +75,8 @@ def donne_initiale():
     cj2.create_text(20, 50, text=main_joueur[1], font=('helvetica', 15))
     cc1.create_text(20, 50, text=main_croupier[0], font=('helvetica', 15))
     disparition_mise()
+    if score(main_joueur) == 21:
+        fin_manche()
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
 
@@ -132,6 +136,7 @@ def hit(main, bouton=0):
             cj11.create_text(
                 14, 50, text=main[10], font=('helvetica', 15))
             cj11.grid(column=8, row=4)
+        test_score(main)
     if main == main_croupier:
         main.append(paquet[0])
         del paquet[0]
@@ -180,13 +185,11 @@ def hit(main, bouton=0):
             cc11.create_text(
                 20, 50, text=main_croupier[10], font=('helvetica', 15))
             cc11.grid(column=12, row=1)
-    test_score()
     return main
 
 
-def test_score():
-    global main_joueur
-    if score(main_joueur) >= 21:
+def test_score(main):
+    if score(main) >= 21:
         disparition_bouton_joueur()
         croupier()
 
