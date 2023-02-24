@@ -1,6 +1,6 @@
 import random
 import tkinter
-# from PIL import Image, ImageTk
+from PIL import Image, ImageTk
 
 
 """listes et variables"""
@@ -406,11 +406,15 @@ def mise_noir(event):
 """Fenêtres"""
 
 accueil = tkinter.Tk()
+accueil.title('Menu BlackJack 21')
 accueil.geometry('700x600')
 
 
 """Graphismes"""
 
+"""img = Image.open("C:\\Users\\arias\\OneDrive\\Bureau\\Projet info\\project-blackjack\\Images\\jeton_tombe.jpg")
+label = tkinter.Label(accueil, image=ImageTk.PhotoImage(img))
+label.pack()"""
 
 play = tkinter.Button(accueil, text='Play', height=5,
                       width=15, font=('helvetica', 20), command=fenêtre)
