@@ -122,6 +122,7 @@ def donne_initiale():
     cj1.create_text(20, 50, text=main_joueur[0], font=('helvetica', 15))
     cj2.create_text(20, 50, text=main_joueur[1], font=('helvetica', 15))
     cc1.create_text(20, 50, text=main_croupier[0], font=('helvetica', 15))
+    disparition_mise()
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
 
@@ -236,7 +237,13 @@ def hit(main, bouton=0):
 def test_score():
     global main_joueur
     if score(main_joueur) >= 21:
+        disparition_bouton_joueur()
         fin_manche()
+
+
+def disparition_bouton_joueur():
+    bouton_hit.destroy()
+    stand_bouton.destroy()
 
 
 def fin_manche():
@@ -401,38 +408,24 @@ def ordre_boutons3(event):
         cj1['bg'] = 'white'
         cj2['bg'] = 'white'
         donne_initiale()
+        apparition_bouton_joueur()
         bouton_donne_initiale.destroy()
 
-        bouton_hit = tkinter.Button(bg='white', text='Hit')
+def apparition_bouton_joueur():
         bouton_hit.grid(column=2, row=3)
-        bouton_hit.bind('<Button-1>', lambda e: hit(
+        stand_bouton.grid(column=6, row=11)
+
+
+bouton_hit = tkinter.Button(bg='white', text='Hit')
+bouton_hit.bind('<Button-1>', lambda e: hit(
             main_joueur, 'bouton_hit'))
 
-        stand_bouton = tkinter.Button(bg='salmon', text='Stand')
-        stand_bouton.grid(column=6, row=11)
-        stand_bouton.bind(
+stand_bouton = tkinter.Button(bg='salmon', text='Stand')
+stand_bouton.bind(
             "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
-
-
-bouton_score = tkinter.Button(
-    text='Score', fg='green', command=lambda: score(main_joueur))
-bouton_score.grid(column=6, row=5)
-
-bouton_print = tkinter.Button(text='print', fg='green')
-bouton_print.grid(column=6, row=7)
-bouton_print.bind('<Button-1>', lambda e: print(paquet))
-
-bouton_fin_manche = tkinter.Button(text='test fin manche', fg='green')
-bouton_fin_manche.grid(column=6, row=9)
-bouton_fin_manche.bind('<Button-1>', lambda e: fin_manche())
-
-
-bouton_score = tkinter.Button(
-    text='croupier test', fg='green', command=croupier)
-bouton_score.grid(column=6, row=8)
 
 score_bouton = tkinter.Button(
     root, text='Score', bg='green', fg='black', font=("helvetica", "13"))
@@ -458,6 +451,21 @@ valeur_mise.grid(column=1, row=8)
 
 miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
 miser.grid(column=0, row=9)
+
+def apparition_mise():
+    jeton_vert.grid(column=3, row=9)
+    valeur_vert.grid(column=3, row=9)
+    jeton_bleu.grid(column=2, row=9)
+    jeton_rouge.grid(column=1, row=9)
+    jeton_noir.grid(column=5, row=9)
+
+
+def disparition_mise():
+    jeton_vert.destroy()
+    valeur_vert.destroy()
+    jeton_bleu.destroy()
+    jeton_rouge.destroy()
+    jeton_noir.destroy()
 
 
 jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
