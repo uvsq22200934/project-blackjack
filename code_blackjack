@@ -53,7 +53,9 @@ partie_en_cours.pack()
 
 
 def debut(event):
+    global name
     if event.widget == play:
+        name = my_entry.get()
         accueil.destroy()
     if event.widget == partie_en_cours:
         accueil.destroy()
@@ -66,13 +68,17 @@ username = tkinter.Label(accueil, text="Username:",
                          font=('helvetica', 10), fg='black')
 username.pack()
 
+name = 'Joueur'
+
 
 def prenom():
     print(my_entry.get())
+    name = my_entry.get(0, tkinter.END)
+    return name
 
 
-"""my_entry = Entry(accueil)
-my_entry.pack()"""
+my_entry = tkinter.Entry(accueil)
+my_entry.pack()
 
 credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
                        fg='black')
@@ -83,8 +89,8 @@ def crédit():
     print(my_entry2.get())
 
 
-"""my_entry2 = Entry(accueil)
-my_entry2.pack()"""
+my_entry2 = tkinter.Entry(accueil)
+my_entry2.pack()
 
 accueil.mainloop()
 
@@ -569,7 +575,7 @@ labelc = tkinter.Label(root, text="CROUPIER", font=(
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text=username, font=("helvetica", "15"),
+labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
                        bg="green", fg="black")
 labelj.grid(column=0, row=4)
 
