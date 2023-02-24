@@ -2,6 +2,7 @@ import random
 import tkinter
 # from PIL import Image, ImageTk
 
+
 """listes et variables"""
 
 
@@ -27,29 +28,10 @@ Ap = 0
 Ac = 0
 At = 0
 
-
-"""Graphismes"""
-
-
-def fenêtre():
-    F1 = tkinter.Toplevel(accueil)
+name = 'Joueur'
 
 
-accueil = tkinter.Tk()
-accueil.geometry('700x600')
-play = tkinter.Button(accueil, text='Play', height=5,
-                      width=15, font=('helvetica', 20), command=fenêtre)
-play.pack(pady=10)
-
-accueil.configure(bg='red')
-bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
-                   font=('helvetica', 50))
-bj.pack()
-
-partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
-                                 width=15, height=5, font=('helvetica', 20))
-
-partie_en_cours.pack()
+"""Fonctions"""
 
 
 def debut(event):
@@ -61,14 +43,8 @@ def debut(event):
         accueil.destroy()
 
 
-partie_en_cours.bind('<Button-1>', debut)
-play.bind('<Button-1>', debut)
-
-username = tkinter.Label(accueil, text="Username:",
-                         font=('helvetica', 10), fg='black')
-username.pack()
-
-name = 'Joueur'
+def fenêtre():
+    F1 = tkinter.Toplevel(accueil)
 
 
 def prenom():
@@ -77,40 +53,8 @@ def prenom():
     return name
 
 
-my_entry = tkinter.Entry(accueil)
-my_entry.pack()
-
-credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
-                       fg='black')
-credit.pack()
-
-
 def crédit():
     print(my_entry2.get())
-
-
-my_entry2 = tkinter.Entry(accueil)
-my_entry2.pack()
-
-accueil.mainloop()
-
-
-root = tkinter.Tk()
-root.title('Blackjack 21')
-"""root.state('zoomed')"""
-
-root.geometry = accueil.geometry
-root.configure(bg="green")
-
-
-# im=Image.open('gartedos.gif')
-# logo=ImageTk.PhotoImage(im, master = root)
-cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
-# logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
-cartes.grid(column=2, row=3)
-
-
-"""Def fonctions"""
 
 
 def donne_initiale():
@@ -379,6 +323,106 @@ def quitter(event):
         root.destroy()
 
 
+def ordre_boutons2(event):
+    global bouton_melanger
+    global bouton_donne_initiale
+    if event.widget == bouton_melanger:
+        bouton_melanger.destroy()
+
+        bouton_donne_initiale.grid(column=2, row=3)
+
+
+def ordre_boutons3(event):
+    global bouton_donne_initiale
+    if event.widget == bouton_donne_initiale:
+        cc1['bg'] = 'white'
+        cc2['bg'] = 'red4'
+        cj1['bg'] = 'white'
+        cj2['bg'] = 'white'
+        donne_initiale()
+        apparition_bouton_joueur()
+        bouton_donne_initiale.destroy()
+
+
+def apparition_bouton_joueur():
+    bouton_hit.grid(column=2, row=3)
+    stand_bouton.grid(column=6, row=11)
+
+
+def apparition_mise():
+    jeton_vert.grid(column=3, row=9)
+    valeur_vert.grid(column=3, row=9)
+    jeton_bleu.grid(column=2, row=9)
+    jeton_rouge.grid(column=1, row=9)
+    jeton_noir.grid(column=5, row=9)
+
+
+def disparition_mise():
+    jeton_vert.destroy()
+    valeur_vert.destroy()
+    jeton_bleu.destroy()
+    jeton_rouge.destroy()
+    jeton_noir.destroy()
+
+
+"""Fenêtres"""
+
+accueil = tkinter.Tk()
+accueil.geometry('700x600')
+
+
+"""Graphismes"""
+
+
+play = tkinter.Button(accueil, text='Play', height=5,
+                      width=15, font=('helvetica', 20), command=fenêtre)
+play.pack(pady=10)
+
+accueil.configure(bg='red')
+bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
+                   font=('helvetica', 50))
+bj.pack()
+
+partie_en_cours = tkinter.Button(accueil, text='Partie en cours',
+                                 width=15, height=5, font=('helvetica', 20))
+
+partie_en_cours.pack()
+
+partie_en_cours.bind('<Button-1>', debut)
+play.bind('<Button-1>', debut)
+
+username = tkinter.Label(accueil, text="Username:",
+                         font=('helvetica', 10), fg='black')
+username.pack()
+
+my_entry = tkinter.Entry(accueil)
+my_entry.pack()
+
+credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
+                       fg='black')
+credit.pack()
+
+
+my_entry2 = tkinter.Entry(accueil)
+my_entry2.pack()
+
+accueil.mainloop()
+
+
+root = tkinter.Tk()
+root.title('Blackjack 21')
+"""root.state('zoomed')"""
+
+root.geometry = accueil.geometry
+root.configure(bg="green")
+
+
+# im=Image.open('gartedos.gif')
+# logo=ImageTk.PhotoImage(im, master = root)
+cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
+# logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
+cartes.grid(column=2, row=3)
+
 """Boutons"""
 
 
@@ -398,34 +442,7 @@ bouton_donne_initiale = tkinter.Button(
     text='Donne initiale', fg="blue", command=donne_initiale)
 
 
-def ordre_boutons2(event):
-    global bouton_melanger
-    global bouton_donne_initiale
-    if event.widget == bouton_melanger:
-        bouton_melanger.destroy()
-
-        bouton_donne_initiale.grid(column=2, row=3)
-
-
 bouton_melanger.bind('<Button-1>', ordre_boutons2)
-
-
-def ordre_boutons3(event):
-    global bouton_donne_initiale
-    if event.widget == bouton_donne_initiale:
-        cc1['bg'] = 'white'
-        cc2['bg'] = 'red4'
-        cj1['bg'] = 'white'
-        cj2['bg'] = 'white'
-        donne_initiale()
-        apparition_bouton_joueur()
-        bouton_donne_initiale.destroy()
-
-
-def apparition_bouton_joueur():
-    bouton_hit.grid(column=2, row=3)
-    stand_bouton.grid(column=6, row=11)
-
 
 bouton_hit = tkinter.Button(bg='white', text='Hit')
 bouton_hit.bind('<Button-1>', lambda e: hit(
@@ -462,23 +479,6 @@ valeur_mise.grid(column=1, row=8)
 
 miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
 miser.grid(column=0, row=9)
-
-
-def apparition_mise():
-    jeton_vert.grid(column=3, row=9)
-    valeur_vert.grid(column=3, row=9)
-    jeton_bleu.grid(column=2, row=9)
-    jeton_rouge.grid(column=1, row=9)
-    jeton_noir.grid(column=5, row=9)
-
-
-def disparition_mise():
-    jeton_vert.destroy()
-    valeur_vert.destroy()
-    jeton_bleu.destroy()
-    jeton_rouge.destroy()
-    jeton_noir.destroy()
-
 
 jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
