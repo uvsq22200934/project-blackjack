@@ -248,6 +248,7 @@ def croupier():
     cc2.grid(column=3, row=1)
     points_croupier = score(main_croupier)
     while points_croupier <= 16:
+        print(points_croupier)
         hit(main_croupier)
         points_croupier = score(main_croupier)
     resultat()
@@ -294,14 +295,15 @@ def resultat():
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
-    if score(main_joueur) > score(main_croupier) and score(main_joueur) < 21:
+    if score(main_joueur) > score(main_croupier) and score(main_joueur) <= 21:
         score__joueur = tkinter.Label(
             root, text=score(main_joueur), bg='green', fg='red')
         score__joueur.grid(column=9, row=1)
         resultat_label = tkinter.Label(
             root, text='Vous êtes le vainqueur', bg='green', fg='yellow')
         resultat_label.grid(column=10, row=2)
-    if score(main_joueur) < score(main_croupier) and score(main_croupier) < 21:
+    if score(main_joueur) < score(main_croupier) and\
+            score(main_croupier) <= 21:
         score__joueur = tkinter.Label(root, text=score(
             main_joueur), bg='green', fg='black')
         score__joueur.grid(column=9, row=1)
@@ -479,11 +481,11 @@ bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
 bouton_hit = tkinter.Button(bg='white', text='Hit')
 bouton_hit.bind('<Button-1>', lambda e: hit(
-            main_joueur, 'bouton_hit'))
+    main_joueur, 'bouton_hit'))
 
 stand_bouton = tkinter.Button(bg='salmon', text='Stand')
 stand_bouton.bind(
-            "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
+    "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
