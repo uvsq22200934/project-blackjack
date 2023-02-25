@@ -23,6 +23,7 @@ defausse = []
 main_joueur = []
 main_croupier = []
 
+bj21 = 0
 
 """Fonctions"""
 
@@ -71,16 +72,18 @@ def donne_initiale():
     cc1.itemconfigure(carte_c1, text=main_croupier[0])
     disparition_mise()
     if score(main_joueur) == 21:
-        resultat('blackjack')
+        resultat(action='blackjack')
+        bj21 = 1
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
 
 
-def hit(main, bouton=0):
+def hit(main, pointeur):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
+    global main_croupier
     global paquet
-    if main == main_joueur:
+    if pointeur == 'main_joueur':
         bouton_double_down.grid_forget()
         main.append(paquet[0])
         del paquet[0]
@@ -112,11 +115,12 @@ def hit(main, bouton=0):
             cj11.itemconfigure(carte_j11, text=main_joueur[10])
             cj11.grid(column=13, row=7)
         test_score(main)
-    if main == main_croupier:
+    if pointeur == 'main_croupier':
+        print(len(main))
         main.append(paquet[0])
         del paquet[0]
         cc2['bg'] = 'white'
-        cc2.itemconfig(carte_c2, text=main_croupier[1])
+        cc2.itemconfigure(carte_c2, text=main_croupier[1])
         if len(main_croupier) == 3:
             cc3.itemconfigure(carte_c3, text=main_croupier[2])
             cc3.grid(column=4, row=1)
@@ -153,6 +157,8 @@ def test_score(main):
 
 
 def disparition_bouton_joueur():
+    global bouton_hit
+    print("bouton test", bouton_hit.grid_info())
     bouton_hit.grid_forget()
     stand_bouton.grid_forget()
     bouton_surrender.grid_forget()
@@ -167,12 +173,16 @@ def fin_manche():
     global defausse
     disparition_bouton_joueur()
     while len(main_joueur) != 0:
-        defausse.append(main_joueur[0])
+        paquet.append(main_joueur[0])
         del main_joueur[0]
     while len(main_croupier) != 0:
-        defausse.append(paquet[0])
+        paquet.append(main_croupier[0])
         del main_croupier[0]
+    print(len(paquet), paquet)
     print('mains croupier ', main_croupier, 'main joueur', main_joueur)
+    bouton_rejouer.grid(column=2, row=3)
+    random.shuffle(paquet)
+    bj21 = 0
     return main_croupier, main_joueur
 
 
@@ -185,6 +195,7 @@ def score(main):
     At = 0
     for element in main:
         points += valeurs.get(element)
+        print(points, valeurs.get(element), element)
     for element in main:
         while points > 21:
             if 'Aca' in element and Aca == 0:
@@ -201,6 +212,7 @@ def score(main):
                 points -= 10
             else:
                 break
+    print('point final', points)
     return points
 
 
@@ -210,21 +222,18 @@ def croupier():
     cc2.itemconfig(carte_c2, text=main_croupier[1])
     cc2.grid(column=3, row=1)
     points_croupier = score(main_croupier)
-    while points_croupier <= 16:
-        print(points_croupier)
-        hit(main_croupier)
-        points_croupier = score(main_croupier)
+    while score(main_croupier) <= 16:
+        print(points_croupier, main_croupier)
+        hit(main_croupier, 'main_croupier')
     resultat()
     return main_croupier, points_croupier
 
 
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
-    points = 0
-    score(main)
+    points = score(main)
     if bouton == 'stand_bouton':
         stand_label.grid(column=0, row=5)
-
         print("je m'arrête")
         cc2['bg'] = 'white'
         cc2.itemconfig(carte_c2, text=main_croupier[1])
@@ -236,7 +245,7 @@ def stand(main, bouton=0):
 def doubble_down(main, mise=0):
     # fonction qui permet au joueur de "double down"
     mise *= 2
-    hit(main)
+    hit(main, 'main_joueur')
     print(main)
     points_joueur = score(main)
     croupier()
@@ -310,7 +319,6 @@ def resultat(action=0):
                 resultat_label.grid(column=10, row=2)
     print(score(main_joueur), score(main_croupier))
     fin_manche()
-    bouton_rejouer.grid(column=2, row=3)
 
 
 def rejouer():
@@ -387,7 +395,8 @@ def ordre_boutons3(event):
         cj2['bg'] = 'white'
         donne_initiale()
         bouton_donne_initiale.grid_forget()
-        apparition_bouton_joueur()
+        if bj21 != 0:
+            apparition_bouton_joueur()
 
 
 def apparition_bouton_joueur():
@@ -530,8 +539,7 @@ bouton_rejouer = tkinter.Button(
 bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
 bouton_hit = tkinter.Button(bg='white', text='Hit')
-bouton_hit.bind('<Button-1>', lambda e: hit(
-    main_joueur, 'bouton_hit'))
+bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
 
 bouton_double_down = tkinter.Button(bg='white', text='Double Down')
 bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
@@ -679,15 +687,15 @@ carte_c10 = cc10.create_text(20, 50, text='', font=('helvetica', 15))
 carte_c11 = cc11.create_text(20, 50, text='', font=('helvetica', 15))
 
 stand_label = tkinter.Label(root, bg='green', fg='black',
-                                    text="<<Je m'arrête>>",
-                                    font=("helvetica", "10"))
+                            text="<<Je m'arrête>>",
+                            font=("helvetica", "10"))
 
 score__joueur = tkinter.Label(
-            root, text=score(main_joueur), bg='green', fg='red')
+    root, text=score(main_joueur), bg='green', fg='red')
 resultat_final = tkinter.Label(
-                    root, text='annonce', bg='green', fg='red')
+    root, text='annonce', bg='green', fg='red')
 resultat_label = tkinter.Label(
-                    root, text='Vous avez un meilleur score que le croupier:\
+    root, text='Vous avez un meilleur score que le croupier:\
                         vous avez gagné !', bg='green', fg='yellow')
 
 root.mainloop()
