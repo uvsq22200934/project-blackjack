@@ -23,11 +23,6 @@ defausse = []
 main_joueur = []
 main_croupier = []
 
-Aca = 0
-Ap = 0
-Ac = 0
-At = 0
-
 
 """Fonctions"""
 
@@ -214,10 +209,10 @@ def fin_manche():
 def score(main):
     # fonction qui permet de calculer la valeur d'une main
     points = 0
-    global Aca
-    global Ap
-    global Aco
-    global At
+    Aca = 0
+    Ap = 0
+    Aco = 0
+    At = 0
     for element in main:
         points += valeurs.get(element)
     for element in main:
@@ -231,7 +226,7 @@ def score(main):
             if 'At' in element and At == 0:
                 At = 1
                 points -= 10
-            if 'Aco' in element and Ac == 0:
+            if 'Aco' in element and Aco == 0:
                 Aco = 1
                 points -= 10
             else:
@@ -549,11 +544,6 @@ bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
-
-score_bouton = tkinter.Button(
-    root, text='Score', bg='green', fg='black', font=("helvetica", "13"))
-score_bouton.grid(column=10, row=1, rowspan=1, padx=8, pady=12)
-score_bouton.bind('<Button-1>', lambda e: resultat())
 
 
 """ mise du jeu """
