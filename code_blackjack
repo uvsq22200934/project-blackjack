@@ -56,6 +56,9 @@ def donne_initiale():
     global paquet
     global main_joueur
     global main_croupier
+    global carte_j1
+    global carte_j2
+    global carte_c1
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
@@ -63,9 +66,9 @@ def donne_initiale():
         main_croupier.append(paquet[0])
         del paquet[0]
         nb_carte += 1
-    cj1.create_text(20, 50, text=main_joueur[0], font=('helvetica', 15))
-    cj2.create_text(20, 50, text=main_joueur[1], font=('helvetica', 15))
-    cc1.create_text(20, 50, text=main_croupier[0], font=('helvetica', 15))
+    cj1.itemconfigure(carte_j1, text=main_joueur[0])
+    cj2.itemconfigure(carte_j2, text=main_joueur[1])
+    cc1.itemconfigure(carte_c1, text=main_croupier[0])
     disparition_mise()
     if score(main_joueur) == 21:
         resultat('blackjack')
@@ -82,80 +85,64 @@ def hit(main, bouton=0):
         main.append(paquet[0])
         del paquet[0]
         if len(main) == 3:
-            cj3.create_text(
-                20, 50, text=main[2], font=('helvetica', 15))
+            cj3.itemconfigure(carte_j3, text=main_joueur[2])
             cj3.grid(column=5, row=7)
         if len(main) == 4:
-            cj4.create_text(
-                20, 50, text=main[3], font=('helvetica', 15))
+            cj4.itemconfigure(carte_j4, text=main_joueur[3])
             cj4.grid(column=6, row=7)
         if len(main) == 5:
-            cj5.create_text(
-                20, 50, text=main[4], font=('helvetica', 15))
+            cj5.itemconfigure(carte_j5, text=main_joueur[4])
             cj5.grid(column=7, row=7)
         if len(main) == 6:
-            cj6.create_text(
-                20, 50, text=main[5], font=('helvetica', 15))
+            cj6.itemconfigure(carte_j6, text=main_joueur[5])
             cj6.grid(column=8, row=7)
         if len(main) == 7:
-            cj7.create_text(20, 50, text=main[6],
-                            font=('helvetica', 15))
+            cj7.itemconfigure(carte_j7, text=main_joueur[6])
             cj7.grid(column=9, row=7)
         if len(main) == 8:
-            cj8.create_text(
-                20, 50, text=main[7], font=('helvetica', 15))
+            cj8.itemconfigure(carte_j8, text=main_joueur[7])
             cj8.grid(column=10, row=7)
         if len(main) == 9:
-            cj9.create_text(
-                20, 50, text=main[8], font=('helvetica', 15))
+            cj9.itemconfigure(carte_j9, text=main_joueur[8])
             cj9.grid(column=11, row=7)
         if len(main) == 10:
-            cj10.create_text(
-                20, 50, text=main[9], font=('helvetica', 15))
+            cj10.itemconfigure(carte_j10, text=main_joueur[9])
             cj10.grid(column=12, row=7)
         if len(main) == 11:
-            cj11.create_text(
-                14, 50, text=main[10], font=('helvetica', 15))
+            cj11.itemconfigure(carte_j11, text=main_joueur[10])
             cj11.grid(column=13, row=7)
         test_score(main)
     if main == main_croupier:
         main.append(paquet[0])
         del paquet[0]
+        cc2['bg'] = 'white'
+        cc2.itemconfig(carte_c2, text=main_croupier[1])
         if len(main_croupier) == 3:
-            cc3.create_text(
-                20, 50, text=main_croupier[2], font=('helvetica', 15))
+            cc3.itemconfigure(carte_c3, text=main_croupier[2])
             cc3.grid(column=4, row=1)
         if len(main_croupier) == 4:
-            cc4.create_text(
-                20, 50, text=main_croupier[3], font=('helvetica', 15))
+            cc4.itemconfigure(carte_c4, text=main_croupier[3])
             cc4.grid(column=5, row=1)
         if len(main_croupier) == 5:
-            cc5.create_text(
-                20, 50, text=main_croupier[4], font=('helvetica', 15))
+            cc5.itemconfigure(carte_c5, text=main_croupier[4])
             cc5.grid(column=6, row=1)
         if len(main_croupier) == 6:
-            cc6.create_text(
-                20, 50, text=main_croupier[5], font=('helvetica', 15))
+            cc6.itemconfigure(carte_c6, text=main_croupier[5])
             cc6.grid(column=7, row=1)
         if len(main_croupier) == 7:
-            cc7.create_text(
-                20, 50, text=main_croupier[6], font=('helvetica', 15))
+            cc7.itemconfigure(carte_c7, text=main_croupier[6])
             cc7.grid(column=8, row=1)
         if len(main_croupier) == 8:
-            cc8.create_text(
-                20, 50, text=main_croupier[7], font=('helvetica', 15))
+            cc8.itemconfigure(carte_c8, text=main_croupier[7])
             cc8.grid(column=9, row=1)
         if len(main_croupier) == 9:
-            cc9.create_text(
-                20, 50, text=main_croupier[8], font=('helvetica', 15))
+            cc9.itemconfigure(carte_c9, text=main_croupier[8])
             cc9.grid(column=10, row=1)
         if len(main_croupier) == 10:
-            cc10.create_text(
-                20, 50, text=main_croupier[9], font=('helvetica', 15))
+            cc10.itemconfigure(carte_c10, text=main_croupier[9])
             cc10.grid(column=11, row=1)
         if len(main_croupier) == 11:
-            cc11.create_text(
-                20, 50, text=main_croupier[10], font=('helvetica', 15))
+            cc11.itemconfigure(carte_c11, text=main_croupier[10])
             cc11.grid(column=12, row=1)
     return main
 
@@ -178,6 +165,7 @@ def fin_manche():
     global main_croupier
     global main_joueur
     global defausse
+    disparition_bouton_joueur()
     while len(main_joueur) != 0:
         defausse.append(main_joueur[0])
         del main_joueur[0]
@@ -219,8 +207,7 @@ def score(main):
 def croupier():
     # fonction qui définit les action du croupier en fonction de sa main
     global main_croupier
-    cc2 = tkinter.Canvas(root, width=60, height=100, bg='white')
-    cc2.create_text(20, 50, text=main_croupier[1], font=('helvetica', 15))
+    cc2.itemconfig(carte_c2, text=main_croupier[1])
     cc2.grid(column=3, row=1)
     points_croupier = score(main_croupier)
     while points_croupier <= 16:
@@ -243,11 +230,9 @@ def stand(main, bouton=0):
 
         print("je m'arrête")
         cc2['bg'] = 'white'
-        cc2.create_text(20, 50, text=main_croupier[1], font=('helvetica', 15))
+        cc2.itemconfig(carte_c2, text=main_croupier[1])
         cc2.grid(column=3, row=1)
         croupier()
-    else:
-        print("je continue")
     return points
 
 
@@ -272,7 +257,6 @@ def resultat(action=0):
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
-    disparition_bouton_joueur()
     if action == 'blackjack':
         score__joueur['text'] = score(main_joueur)
         score__joueur.grid(column=9, row=1)
@@ -340,6 +324,28 @@ def rejouer():
     cj2['bg'] = 'dark green'
     cc1['bg'] = 'dark green'
     cc2['bg'] = 'dark green'
+    cc1.itemconfigure(carte_c1, text='')
+    cc2.itemconfigure(carte_c2, text='')
+    cc3.itemconfigure(carte_c3, text='')
+    cc4.itemconfigure(carte_c4, text='')
+    cc5.itemconfigure(carte_c5, text='')
+    cc6.itemconfigure(carte_c6, text='')
+    cc7.itemconfigure(carte_c7, text='')
+    cc8.itemconfigure(carte_c8, text='')
+    cc9.itemconfigure(carte_c9, text='')
+    cc10.itemconfigure(carte_c10, text='')
+    cc11.itemconfigure(carte_c11, text='')
+    cj1.itemconfigure(carte_j1, text='')
+    cj2.itemconfigure(carte_j2, text='')
+    cj3.itemconfigure(carte_j3, text='')
+    cj4.itemconfigure(carte_j4, text='')
+    cj5.itemconfigure(carte_j5, text='')
+    cj6.itemconfigure(carte_j6, text='')
+    cj7.itemconfigure(carte_j7, text='')
+    cj8.itemconfigure(carte_j8, text='')
+    cj9.itemconfigure(carte_j9, text='')
+    cj10.itemconfigure(carte_j10, text='')
+    cj11.itemconfigure(carte_j11, text='')
     cc3.grid_forget()
     cc4.grid_forget()
     cc5.grid_forget()
@@ -517,7 +523,6 @@ bouton_melanger = tkinter.Button(
     text='Mélanger', fg='blue', command=random.shuffle(paquet))
 bouton_melanger.grid(column=2, row=3)
 
-
 bouton_donne_initiale = tkinter.Button(
     text='Donne initiale', fg="blue")
 
@@ -650,6 +655,30 @@ cc8 = tkinter.Canvas(root, width=60, height=100, bg='white')
 cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
 cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
 cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+
+carte_j1 = cj1.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j2 = cj2.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j3 = cj3.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j4 = cj4.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j5 = cj5.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j6 = cj6.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j7 = cj7.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j8 = cj8.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j9 = cj9.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j10 = cj10.create_text(20, 50, text='', font=('helvetica', 15))
+carte_j11 = cj11.create_text(20, 50, text='', font=('helvetica', 15))
+
+carte_c1 = cc1.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c2 = cc2.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c3 = cc3.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c4 = cc4.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c5 = cc5.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c6 = cc6.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c7 = cc7.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c8 = cc8.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c9 = cc9.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c10 = cc10.create_text(20, 50, text='', font=('helvetica', 15))
+carte_c11 = cc11.create_text(20, 50, text='', font=('helvetica', 15))
 
 score__joueur = tkinter.Label(
             root, text=score(main_joueur), bg='green', fg='red')
