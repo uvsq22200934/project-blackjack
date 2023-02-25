@@ -395,7 +395,7 @@ def ordre_boutons3(event):
         cj2['bg'] = 'white'
         donne_initiale()
         bouton_donne_initiale.grid_forget()
-        if bj21 != 0:
+        if bj21 == 0:
             apparition_bouton_joueur()
 
 
