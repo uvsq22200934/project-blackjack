@@ -76,7 +76,7 @@ def donne_initiale():
     cc1.create_text(20, 50, text=main_croupier[0], font=('helvetica', 15))
     disparition_mise()
     if score(main_joueur) == 21:
-        fin_manche()
+        resultat('blackjack')
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
 
@@ -85,7 +85,7 @@ def hit(main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
-    if main == main_joueur :
+    if main == main_joueur:
         main.append(paquet[0])
         del paquet[0]
         if len(main) == 3:
@@ -194,6 +194,8 @@ def test_score(main):
 def disparition_bouton_joueur():
     bouton_hit.destroy()
     stand_bouton.destroy()
+    bouton_surrender.destroy()
+    bouton_double_down.destroy()
 
 
 def fin_manche():
@@ -252,7 +254,6 @@ def croupier():
         hit(main_croupier)
         points_croupier = score(main_croupier)
     resultat()
-    fin_manche()
     return main_croupier, points_croupier
 
 
@@ -289,14 +290,29 @@ def doubble_down(main, mise=0):
 def surrender(mise=0):
     # fonction qui permet au joueur de "surrender"
     mise /= 2
-    fin_manche()
+    resultat(action='surrender')
     return mise
 
 
-def resultat():
+def resultat(action=0):
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
+    if action == 'surrender':
+        score__joueur = tkinter.Label(root, text=score(
+            main_joueur), bg='green', fg='black')
+        score__joueur.grid(column=9, row=1)
+        resultat_label = tkinter.Label(
+            root, text='Le CROUPIER est le vainqueur', bg='green', fg='yellow')
+        resultat_label.grid(column=10, row=2)
+    if action == 'blackjack':
+        score__joueur = tkinter.Label(
+            root, text=score(main_joueur), bg='green', fg='red')
+        score__joueur.grid(column=9, row=1)
+        resultat_label = tkinter.Label(
+            root, text='BLACKJACK: vous êtes le vainqueur', bg='green',
+            fg='yellow')
+        resultat_label.grid(column=10, row=2)
     if score(main_joueur) > score(main_croupier) and score(main_joueur) <= 21:
         score__joueur = tkinter.Label(
             root, text=score(main_joueur), bg='green', fg='red')
@@ -320,6 +336,7 @@ def resultat():
             root, text='EXECO', bg='green', fg='grey14')
         resultat_label.grid(column=10, row=2)
     print(score(main_joueur), score(main_croupier))
+    fin_manche()
 
 
 def quitter(event):
@@ -352,6 +369,7 @@ def apparition_bouton_joueur():
     bouton_hit.grid(column=2, row=3)
     bouton_double_down.grid(column=2, row=4)
     stand_bouton.grid(column=2, row=5)
+    bouton_surrender.grid(column=2, row=6)
 
 
 def apparition_mise():
@@ -494,6 +512,9 @@ bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
 stand_bouton = tkinter.Button(bg='salmon', text='Stand')
 stand_bouton.bind(
     "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
+
+bouton_surrender = tkinter.Button(bg='red', text='Surrender')
+bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
