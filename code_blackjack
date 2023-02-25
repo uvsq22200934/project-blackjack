@@ -28,8 +28,6 @@ Ap = 0
 Ac = 0
 At = 0
 
-name = 'Joueur'
-
 
 """Fonctions"""
 
@@ -38,6 +36,8 @@ def debut(event):
     global name
     if event.widget == play:
         name = my_entry.get()
+        if name == '':
+            name = 'Joueur'
         accueil.destroy()
     if event.widget == partie_en_cours:
         accueil.destroy()
@@ -45,12 +45,6 @@ def debut(event):
 
 def fenêtre():
     F1 = tkinter.Toplevel(accueil)
-
-
-def prenom():
-    print(my_entry.get())
-    name = my_entry.get()
-    return name
 
 
 def crédit():
