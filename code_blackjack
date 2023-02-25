@@ -81,14 +81,11 @@ def donne_initiale():
     return main_joueur, main_croupier
 
 
-"""bouton_nouvelle_partie['command'] = melange_distrib"""
-
-
 def hit(main, bouton=0):
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global paquet
-    if bouton == 'bouton_hit':
+    if main == main_joueur :
         main.append(paquet[0])
         del paquet[0]
         if len(main) == 3:
@@ -281,11 +278,12 @@ def stand(main, bouton=0):
 
 def doubble_down(main, mise=0):
     # fonction qui permet au joueur de "double down"
-    points = 0
     mise *= 2
-    hit(1, main)
-    score(main)
-    return points
+    hit(main)
+    print(main)
+    points_joueur = score(main)
+    croupier()
+    return points_joueur
 
 
 def surrender(mise=0):
@@ -346,13 +344,14 @@ def ordre_boutons3(event):
         cj1['bg'] = 'white'
         cj2['bg'] = 'white'
         donne_initiale()
-        apparition_bouton_joueur()
         bouton_donne_initiale.destroy()
+        apparition_bouton_joueur()
 
 
 def apparition_bouton_joueur():
     bouton_hit.grid(column=2, row=3)
-    stand_bouton.grid(column=6, row=11)
+    bouton_double_down.grid(column=2, row=4)
+    stand_bouton.grid(column=2, row=5)
 
 
 def apparition_mise():
@@ -412,9 +411,6 @@ accueil.geometry('700x600')
 
 """Graphismes"""
 
-"""img = Image.open("C:\\Users\\arias\\OneDrive\\Bureau\\Projet info\\project-blackjack\\Images\\jeton_tombe.jpg")
-label = tkinter.Label(accueil, image=ImageTk.PhotoImage(img))
-label.pack()"""
 
 play = tkinter.Button(accueil, text='Play', height=5,
                       width=15, font=('helvetica', 20), command=fenêtre)
@@ -490,6 +486,10 @@ bouton_melanger.bind('<Button-1>', ordre_boutons2)
 bouton_hit = tkinter.Button(bg='white', text='Hit')
 bouton_hit.bind('<Button-1>', lambda e: hit(
     main_joueur, 'bouton_hit'))
+
+bouton_double_down = tkinter.Button(bg='white', text='Double Down')
+bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
+    main_joueur, 'bouton_double_down'))
 
 stand_bouton = tkinter.Button(bg='salmon', text='Stand')
 stand_bouton.bind(
