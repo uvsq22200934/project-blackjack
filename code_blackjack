@@ -86,47 +86,47 @@ def hit(main, bouton=0):
             cj3 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj3.create_text(
                 20, 50, text=main[2], font=('helvetica', 15))
-            cj3.grid(column=6, row=4)
+            cj3.grid(column=6, row=7)
         if len(main) == 4:
             cj4 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj4.create_text(
                 20, 50, text=main[3], font=('helvetica', 15))
-            cj4.grid(column=7, row=4)
+            cj4.grid(column=7, row=7)
         if len(main) == 5:
             cj5 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj5.create_text(
                 20, 50, text=main[4], font=('helvetica', 15))
-            cj5.grid(column=8, row=4)
+            cj5.grid(column=8, row=7)
         if len(main) == 6:
             cj6 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj6.create_text(
                 20, 50, text=main[5], font=('helvetica', 15))
-            cj6.grid(column=9, row=4)
+            cj6.grid(column=9, row=7)
         if len(main) == 7:
             cj7 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj7.create_text(20, 50, text=main[6],
                             font=('helvetica', 15))
-            cj7.grid(column=10, row=4)
+            cj7.grid(column=10, row=7)
         if len(main) == 8:
             cj8 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj8.create_text(
                 20, 50, text=main[7], font=('helvetica', 15))
-            cj8.grid(column=11, row=4)
+            cj8.grid(column=11, row=7)
         if len(main) == 9:
             cj9 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj9.create_text(
                 20, 50, text=main[8], font=('helvetica', 15))
-            cj9.grid(column=12, row=4)
+            cj9.grid(column=12, row=7)
         if len(main) == 10:
             cj10 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj10.create_text(
                 20, 50, text=main[9], font=('helvetica', 15))
-            cj10.grid(column=13, row=4)
+            cj10.grid(column=13, row=7)
         if len(main) == 11:
             cj11 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj11.create_text(
                 14, 50, text=main[10], font=('helvetica', 15))
-            cj11.grid(column=8, row=4)
+            cj11.grid(column=8, row=7)
         test_score(main)
     if main == main_croupier:
         main.append(paquet[0])
@@ -481,7 +481,7 @@ cartes.grid(column=2, row=3)
 # chacun leur tour pour ne pas encombrer la fenêtre
 
 bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
-bouton_quitter.grid(columnspan=10, row=10)
+bouton_quitter.grid(column=2, row=10)
 bouton_quitter.bind('<Button-1>', quitter)
 
 bouton_melanger = tkinter.Button(
@@ -585,9 +585,9 @@ jeton_noir.bind('<Button-1>', mise_noir)
 
 # interface emplacement des cartes 1 et 2 du joueur
 cj1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
-cj1.grid(column=1, row=4)
+cj1.grid(column=1, row=7)
 cj2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
-cj2.grid(column=3, row=4)
+cj2.grid(column=3, row=7)
 
 # interface emplacement des cartes 1 et 2 du croupier
 cc1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
@@ -603,7 +603,7 @@ labelc.grid(column=0, row=1)
 # texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
                        bg="green", fg="black")
-labelj.grid(column=0, row=4)
+labelj.grid(column=0, row=7)
 
 
 root.mainloop()
