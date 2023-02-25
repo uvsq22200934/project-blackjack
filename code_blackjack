@@ -223,9 +223,6 @@ def stand(main, bouton=0):
     points = 0
     score(main)
     if bouton == 'stand_bouton':
-        stand_label = tkinter.Label(root, bg='green', fg='black',
-                                    text="<<Je m'arrête>>",
-                                    font=("helvetica", "10"))
         stand_label.grid(column=0, row=5)
 
         print("je m'arrête")
@@ -367,6 +364,7 @@ def rejouer():
     resultat_label.grid_forget()
     resultat_final.grid_forget()
     score__joueur.grid_forget()
+    stand_label.grid_forget()
 
 
 def quitter(event):
@@ -679,6 +677,10 @@ carte_c8 = cc8.create_text(20, 50, text='', font=('helvetica', 15))
 carte_c9 = cc9.create_text(20, 50, text='', font=('helvetica', 15))
 carte_c10 = cc10.create_text(20, 50, text='', font=('helvetica', 15))
 carte_c11 = cc11.create_text(20, 50, text='', font=('helvetica', 15))
+
+stand_label = tkinter.Label(root, bg='green', fg='black',
+                                    text="<<Je m'arrête>>",
+                                    font=("helvetica", "10"))
 
 score__joueur = tkinter.Label(
             root, text=score(main_joueur), bg='green', fg='red')
