@@ -78,51 +78,42 @@ def hit(main, bouton=0):
     global main_joueur
     global paquet
     if main == main_joueur:
-        bouton_double_down.destroy()
+        bouton_double_down.grid_forget()
         main.append(paquet[0])
         del paquet[0]
         if len(main) == 3:
-            cj3 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj3.create_text(
                 20, 50, text=main[2], font=('helvetica', 15))
             cj3.grid(column=5, row=7)
         if len(main) == 4:
-            cj4 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj4.create_text(
                 20, 50, text=main[3], font=('helvetica', 15))
             cj4.grid(column=6, row=7)
         if len(main) == 5:
-            cj5 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj5.create_text(
                 20, 50, text=main[4], font=('helvetica', 15))
             cj5.grid(column=7, row=7)
         if len(main) == 6:
-            cj6 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj6.create_text(
                 20, 50, text=main[5], font=('helvetica', 15))
             cj6.grid(column=8, row=7)
         if len(main) == 7:
-            cj7 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj7.create_text(20, 50, text=main[6],
                             font=('helvetica', 15))
             cj7.grid(column=9, row=7)
         if len(main) == 8:
-            cj8 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj8.create_text(
                 20, 50, text=main[7], font=('helvetica', 15))
             cj8.grid(column=10, row=7)
         if len(main) == 9:
-            cj9 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj9.create_text(
                 20, 50, text=main[8], font=('helvetica', 15))
             cj9.grid(column=11, row=7)
         if len(main) == 10:
-            cj10 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj10.create_text(
                 20, 50, text=main[9], font=('helvetica', 15))
             cj10.grid(column=12, row=7)
         if len(main) == 11:
-            cj11 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cj11.create_text(
                 14, 50, text=main[10], font=('helvetica', 15))
             cj11.grid(column=13, row=7)
@@ -131,47 +122,38 @@ def hit(main, bouton=0):
         main.append(paquet[0])
         del paquet[0]
         if len(main_croupier) == 3:
-            cc3 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc3.create_text(
                 20, 50, text=main_croupier[2], font=('helvetica', 15))
             cc3.grid(column=4, row=1)
         if len(main_croupier) == 4:
-            cc4 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc4.create_text(
                 20, 50, text=main_croupier[3], font=('helvetica', 15))
             cc4.grid(column=5, row=1)
         if len(main_croupier) == 5:
-            cc5 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc5.create_text(
                 20, 50, text=main_croupier[4], font=('helvetica', 15))
             cc5.grid(column=6, row=1)
         if len(main_croupier) == 6:
-            cc6 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc6.create_text(
                 20, 50, text=main_croupier[5], font=('helvetica', 15))
             cc6.grid(column=7, row=1)
         if len(main_croupier) == 7:
-            cc7 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc7.create_text(
                 20, 50, text=main_croupier[6], font=('helvetica', 15))
             cc7.grid(column=8, row=1)
         if len(main_croupier) == 8:
-            cc8 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc8.create_text(
                 20, 50, text=main_croupier[7], font=('helvetica', 15))
             cc8.grid(column=9, row=1)
         if len(main_croupier) == 9:
-            cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc9.create_text(
                 20, 50, text=main_croupier[8], font=('helvetica', 15))
             cc9.grid(column=10, row=1)
         if len(main_croupier) == 10:
-            cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc10.create_text(
                 20, 50, text=main_croupier[9], font=('helvetica', 15))
             cc10.grid(column=11, row=1)
         if len(main_croupier) == 11:
-            cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
             cc11.create_text(
                 20, 50, text=main_croupier[10], font=('helvetica', 15))
             cc11.grid(column=12, row=1)
@@ -184,10 +166,10 @@ def test_score(main):
 
 
 def disparition_bouton_joueur():
-    bouton_hit.destroy()
-    stand_bouton.destroy()
-    bouton_surrender.destroy()
-    bouton_double_down.destroy()
+    bouton_hit.grid_forget()
+    stand_bouton.grid_forget()
+    bouton_surrender.grid_forget()
+    bouton_double_down.grid_forget()
 
 
 def fin_manche():
@@ -292,77 +274,93 @@ def resultat(action=0):
     global main_croupier
     disparition_bouton_joueur()
     if action == 'blackjack':
-        score__joueur = tkinter.Label(
-            root, text=score(main_joueur), bg='green', fg='red')
+        score__joueur['text'] = score(main_joueur)
         score__joueur.grid(column=9, row=1)
-        resultat_label = tkinter.Label(
-            root, text='BLACKJACK: vous êtes le vainqueur', bg='green',
-            fg='yellow')
+        resultat_label['text'] = 'BLACKJACK: vous êtes le vainqueur'
         resultat_label.grid(column=10, row=2)
     elif action == 'surrender':
-        score__joueur = tkinter.Label(root, text=score(
-            main_joueur), bg='green', fg='black')
+        score__joueur['text'] = score(main_joueur)
         score__joueur.grid(column=9, row=1)
-        resultat_label = tkinter.Label(
-            root, text='Le CROUPIER est le vainqueur', bg='green', fg='yellow')
-        resultat_label.grid(column=10, row=2)
+        resultat_label['text'] = 'Le CROUPIER est le vainqueur'
     elif score(main_joueur) > 21:
         annonce = 'Votre score: ' + str(score(main_joueur))
-        resultat_final = tkinter.Label(
-            root, text=annonce, bg='green', fg='red')
+        resultat_final['text'] = annonce
         resultat_final.grid(column=9, row=1)
-        resultat_label = tkinter.Label(
-            root, text='Votre main vaut plus que 21, vous avez perdu.',
-            bg='green', fg='yellow')
+        resultat_label['text'] = 'Votre main vaut plus que 21, vous avez\
+            perdu.'
         resultat_label.grid(column=10, row=2)
     elif score(main_joueur) <= 21:
         if score(main_croupier) > 21:
             annonce = 'Votre score: ' + \
                 str(score(main_joueur)) + '\n Score du croupier: ' + \
                 str(score(main_croupier))
-            resultat_final = tkinter.Label(
-                root, text=annonce, bg='green', fg='red')
+            resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
-            resultat_label = tkinter.Label(
-                root, text='Le croupier a dépassé 21: vous avez gagné !',
-                bg='green', fg='yellow')
+            resultat_label['text'] = 'Le croupier a dépassé 21: vous avez\
+                gagné !'
             resultat_label.grid(column=10, row=2)
         elif score(main_croupier) <= 21:
             if score(main_joueur) < score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
                     str(score(main_croupier))
-                resultat_final = tkinter.Label(
-                    root, text=annonce, bg='green', fg='red')
+                resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label = tkinter.Label(
-                    root, text='Le croupier a un meilleur score, vous avez\
-                    perdu.', bg='green', fg='yellow')
+                resultat_label['text'] = 'Le croupier a un meilleur score,\
+                    vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
             elif (score(main_joueur)) == score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
                     str(score(main_croupier))
-                resultat_final = tkinter.Label(
-                    root, text=annonce, bg='green', fg='red')
+                resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label = tkinter.Label(
-                    root, text='Vous avez le même score que le croupier:\
-                        ex aequo', bg='green', fg='yellow')
+                resultat_label['text'] = 'Vous avez le même score que le\
+                    croupier: ex aequo'
                 resultat_label.grid(column=10, row=2)
             elif score(main_joueur) > score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
                     str(score(main_croupier))
-                resultat_final = tkinter.Label(
-                    root, text=annonce, bg='green', fg='red')
+                resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label = tkinter.Label(
-                    root, text='Vous avez un meilleur score que le croupier:\
-                        vous avez gagné !', bg='green', fg='yellow')
+                resultat_label['text'] = 'Vous avez un meilleur score que le\
+                    croupier: vous avez gagné !'
                 resultat_label.grid(column=10, row=2)
     print(score(main_joueur), score(main_croupier))
     fin_manche()
+    bouton_rejouer.grid(column=2, row=3)
+
+
+def rejouer():
+    bouton_rejouer.grid_forget()
+    apparition_mise()
+    bouton_donne_initiale.grid(column=2, row=3)
+    cj1['bg'] = 'dark green'
+    cj2['bg'] = 'dark green'
+    cc1['bg'] = 'dark green'
+    cc2['bg'] = 'dark green'
+    cc3.grid_forget()
+    cc4.grid_forget()
+    cc5.grid_forget()
+    cc6.grid_forget()
+    cc7.grid_forget()
+    cc8.grid_forget()
+    cc9.grid_forget()
+    cc10.grid_forget()
+    cc11.grid_forget()
+    cj3.grid_forget()
+    cj4.grid_forget()
+    cj5.grid_forget()
+    cj6.grid_forget()
+    cj7.grid_forget()
+    cj8.grid_forget()
+    cj9.grid_forget()
+    cj10.grid_forget()
+    cj11.grid_forget()
+    resultat_label.grid_forget()
+    resultat_final.grid_forget()
+    score__joueur.grid_forget()
 
 
 def quitter(event):
@@ -371,23 +369,20 @@ def quitter(event):
 
 
 def ordre_boutons2(event):
-    global bouton_melanger
-    global bouton_donne_initiale
     if event.widget == bouton_melanger:
-        bouton_melanger.destroy()
-
+        bouton_melanger.grid_forget()
         bouton_donne_initiale.grid(column=2, row=3)
 
 
 def ordre_boutons3(event):
-    global bouton_donne_initiale
     if event.widget == bouton_donne_initiale:
+        print('ok')
         cc1['bg'] = 'white'
         cc2['bg'] = 'red4'
         cj1['bg'] = 'white'
         cj2['bg'] = 'white'
         donne_initiale()
-        bouton_donne_initiale.destroy()
+        bouton_donne_initiale.grid_forget()
         apparition_bouton_joueur()
 
 
@@ -408,12 +403,12 @@ def apparition_mise():
 
 
 def disparition_mise():
-    jeton_vert.destroy()
-    valeur_vert.destroy()
-    jeton_bleu.destroy()
-    jeton_rouge.destroy()
-    jeton_noir.destroy()
-    miser.destroy()
+    jeton_vert.grid_forget()
+    valeur_vert.grid_forget()
+    jeton_bleu.grid_forget()
+    jeton_rouge.grid_forget()
+    jeton_noir.grid_forget()
+    miser.grid_forget()
 
 
 def mise_rouge(event):
@@ -524,8 +519,10 @@ bouton_melanger.grid(column=2, row=3)
 
 
 bouton_donne_initiale = tkinter.Button(
-    text='Donne initiale', fg="blue", command=donne_initiale)
+    text='Donne initiale', fg="blue")
 
+bouton_rejouer = tkinter.Button(
+    text='Rejouer', fg="blue", command=rejouer)
 
 bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
@@ -634,5 +631,32 @@ labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
                        bg="green", fg="black")
 labelj.grid(column=0, row=7)
 
+cj3 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj4 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj5 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj6 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj7 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj8 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj9 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj10 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+
+cc3 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc4 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc5 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc6 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc7 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc8 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+
+score__joueur = tkinter.Label(
+            root, text=score(main_joueur), bg='green', fg='red')
+resultat_final = tkinter.Label(
+                    root, text='annonce', bg='green', fg='red')
+resultat_label = tkinter.Label(
+                    root, text='Vous avez un meilleur score que le croupier:\
+                        vous avez gagné !', bg='green', fg='yellow')
 
 root.mainloop()
