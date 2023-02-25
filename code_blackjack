@@ -78,6 +78,7 @@ def hit(main, bouton=0):
     global main_joueur
     global paquet
     if main == main_joueur:
+        bouton_double_down.destroy()
         main.append(paquet[0])
         del paquet[0]
         if len(main) == 3:
@@ -179,7 +180,6 @@ def hit(main, bouton=0):
 
 def test_score(main):
     if score(main) >= 21:
-        disparition_bouton_joueur()
         croupier()
 
 
@@ -290,8 +290,8 @@ def resultat(action=0):
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
+    disparition_bouton_joueur()
     if action == 'blackjack':
-        disparition_bouton_joueur()
         score__joueur = tkinter.Label(
             root, text=score(main_joueur), bg='green', fg='red')
         score__joueur.grid(column=9, row=1)
