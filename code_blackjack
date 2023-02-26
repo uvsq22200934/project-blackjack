@@ -25,6 +25,7 @@ main_croupier = []
 
 bj21 = 0
 
+
 """Fonctions"""
 
 
@@ -60,6 +61,7 @@ def donne_initiale():
     global carte_j1
     global carte_j2
     global carte_c1
+    global bj21
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
@@ -119,8 +121,6 @@ def hit(main, pointeur):
         print(len(main))
         main.append(paquet[0])
         del paquet[0]
-        cc2['bg'] = 'white'
-        cc2.itemconfigure(carte_c2, text=main_croupier[1])
         if len(main_croupier) == 3:
             cc3.itemconfigure(carte_c3, text=main_croupier[2])
             cc3.grid(column=4, row=1)
@@ -168,6 +168,7 @@ def disparition_bouton_joueur():
 def fin_manche():
     # fonction qui enlève les cartes des mains des joueurs et les place dans
     # la défausse
+    global bj21
     global main_croupier
     global main_joueur
     global defausse
@@ -219,7 +220,8 @@ def score(main):
 def croupier():
     # fonction qui définit les action du croupier en fonction de sa main
     global main_croupier
-    cc2.itemconfig(carte_c2, text=main_croupier[1])
+    cc2['bg'] = 'white'
+    cc2.itemconfigure(carte_c2, text=main_croupier[1])
     cc2.grid(column=3, row=1)
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 16:
@@ -387,6 +389,7 @@ def ordre_boutons2(event):
 
 
 def ordre_boutons3(event):
+    global bj21
     if event.widget == bouton_donne_initiale:
         print('ok')
         cc1['bg'] = 'white'
