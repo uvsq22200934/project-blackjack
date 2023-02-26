@@ -24,6 +24,7 @@ main_joueur = []
 main_croupier = []
 
 bj21 = 0
+money = 0
 
 
 """Fonctions"""
@@ -31,26 +32,27 @@ bj21 = 0
 
 def debut(event):
     global name
+    global money
     if event.widget == play:
         name = my_entry.get()
+        money = my_entry2.get()
         if name == '':
             name = 'Joueur'
+        if money == '':
+            money = 1000
         accueil.destroy()
     if event.widget == partie_en_cours:
+        money = my_entry2.get()
         name = my_entry.get()
         if name == '':
             name = 'Joueur'
+        if money == '':
+            money = 1000
         accueil.destroy()
 
 
 def fenêtre():
     F1 = tkinter.Toplevel(accueil)
-
-
-def crédit():
-    print(my_entry2.get())
-    money = my_entry2.get()
-    return money
 
 
 def donne_initiale():
@@ -570,13 +572,17 @@ mise = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
         totale."""
 
+argent = tkinter.Label(root, text='Crédits: '+str(money), bg='green',
+                       fg='white')
+argent.grid(column=0, row=8)
+
 mise = tkinter.Label(root, text="Mise totale:", bg='green', fg='white')
-mise.grid(column=0, row=8)
+mise.grid(column=0, row=9)
 valeur_mise = tkinter.Label(root, text='', bg='green', fg='white')
-valeur_mise.grid(column=1, row=8)
+valeur_mise.grid(column=1, row=9)
 
 miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
-miser.grid(column=0, row=9)
+miser.grid(column=0, row=10)
 
 jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
