@@ -422,42 +422,49 @@ def apparition_mise():
 
 def disparition_mise():
     jeton_vert.grid_forget()
-    valeur_vert.grid_forget()
     jeton_bleu.grid_forget()
     jeton_rouge.grid_forget()
     jeton_noir.grid_forget()
     miser.grid_forget()
 
 
-def mise_rouge(event):
+def mise_rouge():
     global mise_totale
-    if event.widget == jeton_rouge:
-        mise_totale += 10
-        valeur_mise['text'] = mise_totale
+    global money
+    mise_totale += 10
+    money -= 10
+    mise['text'] = "Mise totale: "+str(mise_totale)
+    argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
-def mise_bleu(event):
+def mise_bleu():
     global mise_totale
-    if event.widget == jeton_bleu:
-        mise_totale += 25
-        valeur_mise['text'] = mise_totale
+    global money
+    mise_totale += 25
+    money -= 25
+    mise['text'] = "Mise totale: "+str(mise_totale)
+    argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
-def mise_vert(event):
+def mise_vert():
     global mise_totale
-    if event.widget == jeton_vert:
-        mise_totale += 50
-        valeur_mise['text'] = mise_totale
+    global money
+    mise_totale += 50
+    money -= 50
+    mise['text'] = "Mise totale: "+str(mise_totale)
+    argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
-def mise_noir(event):
+def mise_noir():
     global mise_totale
-    if event.widget == jeton_noir:
-        mise_totale += 100
-        valeur_mise['text'] = mise_totale
+    global money
+    mise_totale += 100
+    money -= 100
+    mise['text'] = "Mise totale: "+str(mise_totale)
+    argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
@@ -576,10 +583,9 @@ argent = tkinter.Label(root, text='Crédits: '+str(money), bg='green',
                        fg='white')
 argent.grid(column=0, row=8)
 
-mise = tkinter.Label(root, text="Mise totale:", bg='green', fg='white')
+mise = tkinter.Label(root, text='Mise totale: ', bg='green', fg='white')
 mise.grid(column=0, row=9)
-valeur_mise = tkinter.Label(root, text='', bg='green', fg='white')
-valeur_mise.grid(column=1, row=9)
+
 
 miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
 miser.grid(column=0, row=10)
@@ -587,43 +593,44 @@ miser.grid(column=0, row=10)
 jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_vert.grid(column=3, row=9)
+jeton_vert.grid(column=4, row=9)
 jeton_vert.create_oval(1, 1, 25, 25, width=3,
                        outline='light grey', fill='mint cream')
 
-valeur_vert = tkinter.Label(root, text='50', font=('helvetica', 8),
-                            bg='mint cream', fg='black')
-valeur_vert.grid(column=3, row=9)
+jeton_vert.create_text(13, 13, text='50', font=('helvetica', 8))
 
 jeton_bleu = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_bleu.grid(column=2, row=9)
+jeton_bleu.grid(column=3, row=9)
 jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
+jeton_bleu.create_text(13, 13, text='25', font=('helvetica', 8), fill='white')
 
 jeton_rouge = tkinter.Canvas(root, bg='green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
-jeton_rouge.grid(column=1, row=9)
+jeton_rouge.grid(column=2, row=9)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
+jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8))
 
 jeton_noir = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_noir.grid(column=5, row=9)
+jeton_noir.grid(column=6, row=9)
 jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
+jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 
 
-jeton_rouge.bind('<Button-1>', mise_rouge)
+jeton_rouge.bind('<Button-1>', lambda e: mise_rouge())
 
 
-jeton_bleu.bind('<Button-1>', mise_bleu)
+jeton_bleu.bind('<Button-1>', lambda e: mise_bleu())
 
 
-jeton_vert.bind('<Button-1>', mise_vert)
+jeton_vert.bind('<Button-1>', lambda e: mise_vert())
 
 
-jeton_noir.bind('<Button-1>', mise_noir)
+jeton_noir.bind('<Button-1>', lambda e: mise_noir())
 
 
 '''interface graphique'''
