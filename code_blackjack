@@ -413,7 +413,6 @@ def apparition_bouton_joueur():
 
 def apparition_mise():
     jeton_vert.grid(column=3, row=9)
-    valeur_vert.grid(column=3, row=9)
     jeton_bleu.grid(column=2, row=9)
     jeton_rouge.grid(column=1, row=9)
     jeton_noir.grid(column=5, row=9)
@@ -431,41 +430,53 @@ def disparition_mise():
 def mise_rouge():
     global mise_totale
     global money
-    mise_totale += 10
-    money -= 10
-    mise['text'] = "Mise totale: "+str(mise_totale)
-    argent['text'] = 'Crédits: '+str(money)
+    if test_mise(10) == True:
+        mise_totale += 10
+        money -= 10
+        mise['text'] = "Mise totale: "+str(mise_totale)
+        argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
 def mise_bleu():
     global mise_totale
     global money
-    mise_totale += 25
-    money -= 25
-    mise['text'] = "Mise totale: "+str(mise_totale)
-    argent['text'] = 'Crédits: '+str(money)
+    if test_mise(25) == True:
+        mise_totale += 25
+        money -= 25
+        mise['text'] = "Mise totale: "+str(mise_totale)
+        argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
 def mise_vert():
     global mise_totale
     global money
-    mise_totale += 50
-    money -= 50
-    mise['text'] = "Mise totale: "+str(mise_totale)
-    argent['text'] = 'Crédits: '+str(money)
+    if test_mise(50) == True:
+        mise_totale += 50
+        money -= 50
+        mise['text'] = "Mise totale: "+str(mise_totale)
+        argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
 
 def mise_noir():
     global mise_totale
     global money
-    mise_totale += 100
-    money -= 100
-    mise['text'] = "Mise totale: "+str(mise_totale)
-    argent['text'] = 'Crédits: '+str(money)
+    if test_mise(100) == True:
+        mise_totale += 100
+        money -= 100
+        mise['text'] = "Mise totale: "+str(mise_totale)
+        argent['text'] = 'Crédits: '+str(money)
     return mise_totale
+
+
+def test_mise(mise):
+    global money
+    if (money - mise) < 0:
+        return False
+    else:
+        return True
 
 
 """Fenêtres"""
