@@ -35,11 +35,13 @@ def debut(event):
     global money
     if event.widget == play:
         name = my_entry.get()
-        money = int(my_entry2.get())
+        money = my_entry2.get()
         if name == '':
             name = 'Joueur'
         if money == '':
             money = 1000
+        elif money != ':':
+            money = int(money)
         accueil.destroy()
     if event.widget == partie_en_cours:
         money = my_entry2.get()
@@ -393,15 +395,22 @@ def ordre_boutons2(event):
 def ordre_boutons3(event):
     global bj21
     if event.widget == bouton_donne_initiale:
-        print('ok')
-        cc1['bg'] = 'white'
-        cc2['bg'] = 'red4'
-        cj1['bg'] = 'white'
-        cj2['bg'] = 'white'
-        donne_initiale()
-        bouton_donne_initiale.grid_forget()
-        if bj21 == 0:
-            apparition_bouton_joueur()
+        if mise_totale != 0:
+            erreur.grid_forget()
+            print('ok')
+            cc1['bg'] = 'white'
+            cc2['bg'] = 'red4'
+            cj1['bg'] = 'white'
+            cj2['bg'] = 'white'
+            donne_initiale()
+            bouton_donne_initiale.grid_forget()
+            if bj21 == 0:
+                apparition_bouton_joueur()
+        else:
+            bouton_donne_initiale.grid_forget()
+            erreur.grid(column=2, row=3)
+            erreur.lift()
+            erreur['text'] = 'Veuillez miser pour jouer'
 
 
 def apparition_bouton_joueur():
@@ -431,6 +440,8 @@ def mise(montant_mise):
     global mise_totale
     global money
     if (money - montant_mise) >= 0:
+        erreur.grid_forget()
+        bouton_donne_initiale.grid(column=2, row=3)
         mise_totale += montant_mise
         money -= montant_mise
         mise_texte['text'] = "Mise totale: "+str(mise_totale)
@@ -482,7 +493,6 @@ my_entry2.pack()
 
 accueil.mainloop()
 
-
 root = tkinter.Tk()
 root.title('Blackjack 21')
 """root.state('zoomed')"""
@@ -490,6 +500,8 @@ root.title('Blackjack 21')
 root.geometry = accueil.geometry
 root.configure(bg="green")
 
+erreur = tkinter.Label(root, text='', font=('helvetica', 10),
+                       fg='black')
 
 # im=Image.open('gartedos.gif')
 # logo=ImageTk.PhotoImage(im, master = root)
