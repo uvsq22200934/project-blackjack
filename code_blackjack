@@ -78,6 +78,7 @@ def donne_initiale():
     cc1.itemconfigure(carte_c1, text=main_croupier[0])
     disparition_mise()
     if score(main_joueur) == 21:
+        croupier()
         resultat(action='blackjack')
         bj21 = 1
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
@@ -237,20 +238,22 @@ def croupier():
 
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
-    points = score(main)
-    if bouton == 'stand_bouton':
-        stand_label.grid(column=0, row=5)
-        print("je m'arrête")
-        cc2['bg'] = 'white'
-        cc2.itemconfig(carte_c2, text=main_croupier[1])
-        cc2.grid(column=3, row=1)
-        croupier()
-    return points
+    stand_label.grid(column=0, row=5)
+    print("je m'arrête")
+    cc2['bg'] = 'white'
+    cc2.itemconfig(carte_c2, text=main_croupier[1])
+    cc2.grid(column=3, row=1)
+    croupier()
 
 
-def doubble_down(main, mise=0):
+def doubble_down(main):
     # fonction qui permet au joueur de "double down"
-    mise *= 2
+    global mise_totale
+    global money
+    money -= mise_totale
+    mise_totale *= 2
+    mise_texte['text'] = "Mise totale: " + str(mise_totale)
+    argent['text'] = 'Crédits: ' + str(money)
     hit(main, 'main_joueur')
     print(main)
     points_joueur = score(main)
@@ -258,26 +261,44 @@ def doubble_down(main, mise=0):
     return points_joueur
 
 
-def surrender(mise=0):
+def surrender():
     # fonction qui permet au joueur de "surrender"
-    mise /= 2
     resultat(action='surrender')
-    return mise
 
 
 def resultat(action=0):
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
+    consequence = 0
     if action == 'blackjack':
-        score__joueur['text'] = score(main_joueur)
-        score__joueur.grid(column=9, row=1)
-        resultat_label['text'] = 'BLACKJACK: vous êtes le vainqueur'
-        resultat_label.grid(column=10, row=2)
+        if score(main_croupier) != 21:
+            score__joueur['text'] = score(main_joueur)
+            score__joueur.grid(column=9, row=1)
+            resultat_label['text'] = 'BLACKJACK: vous êtes le vainqueur'
+            resultat_label.grid(column=10, row=2)
+            consequence = 'Blackjack'
+        elif score(main_croupier) == 21 and len(main_croupier) == 2:
+            annonce = 'Votre score: ' + \
+                    str(score(main_joueur)) + '\n Score du croupier: ' + \
+                    str(score(main_croupier))
+            resultat_final['text'] = annonce
+            resultat_final.grid(column=9, row=1)
+            resultat_label['text'] = 'Vous avez le même score que le\
+                    croupier: ex aequo'
+            resultat_label.grid(column=10, row=2)
+            consequence = 'egalite'
+        else:
+            score__joueur['text'] = score(main_joueur)
+            score__joueur.grid(column=9, row=1)
+            resultat_label['text'] = 'BLACKJACK: vous êtes le vainqueur'
+            resultat_label.grid(column=10, row=2)
+            consequence = 'Blackjack'
     elif action == 'surrender':
         score__joueur['text'] = score(main_joueur)
         score__joueur.grid(column=9, row=1)
-        resultat_label['text'] = 'Le CROUPIER est le vainqueur'
+        resultat_label['text'] = 'Vous avez abadonné'
+        consequence = 'ff'
     elif score(main_joueur) > 21:
         annonce = 'Votre score: ' + str(score(main_joueur))
         resultat_final['text'] = annonce
@@ -295,6 +316,7 @@ def resultat(action=0):
             resultat_label['text'] = 'Le croupier a dépassé 21: vous avez\
                 gagné !'
             resultat_label.grid(column=10, row=2)
+            consequence = 'win'
         elif score(main_croupier) <= 21:
             if score(main_joueur) < score(main_croupier):
                 annonce = 'Votre score: ' + \
@@ -314,6 +336,7 @@ def resultat(action=0):
                 resultat_label['text'] = 'Vous avez le même score que le\
                     croupier: ex aequo'
                 resultat_label.grid(column=10, row=2)
+                consequence = 'egalite'
             elif score(main_joueur) > score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
@@ -323,14 +346,36 @@ def resultat(action=0):
                 resultat_label['text'] = 'Vous avez un meilleur score que le\
                     croupier: vous avez gagné !'
                 resultat_label.grid(column=10, row=2)
+                consequence = 'win'
     print(score(main_joueur), score(main_croupier))
     fin_manche()
+    calcul_gain(consequence)
+
+
+def calcul_gain(consequence=0):
+    global mise_totale
+    global money
+    gain = 0
+    if consequence == 'Blackjack':
+        gain = mise_totale * 3 / 2
+    if consequence == 'egalite':
+        gain = mise_totale
+    if consequence == 'ff':
+        gain = mise_totale / 2
+    if consequence == 'win':
+        gain = 2 * mise_totale
+    money += gain
+    argent['text'] = 'Crédits: ' + str(money-gain) + ' + ' + str(gain)
 
 
 def rejouer():
+    global mise_totale
     bouton_rejouer.grid_forget()
     apparition_mise()
     bouton_donne_initiale.grid(column=2, row=3)
+    mise_totale = 0
+    mise_texte['text'] = "Mise totale: "
+    argent['text'] = 'Crédits: ' + str(money)
     cj1['bg'] = 'dark green'
     cj2['bg'] = 'dark green'
     cc1['bg'] = 'dark green'
@@ -390,6 +435,7 @@ def ordre_boutons2(event):
     if event.widget == bouton_melanger:
         bouton_melanger.grid_forget()
         bouton_donne_initiale.grid(column=2, row=3)
+        apparition_mise()
 
 
 def ordre_boutons3(event):
@@ -416,17 +462,18 @@ def ordre_boutons3(event):
 
 def apparition_bouton_joueur():
     bouton_hit.grid(column=2, row=3)
-    bouton_double_down.grid(column=2, row=4)
     stand_bouton.grid(column=2, row=5)
     bouton_surrender.grid(column=2, row=6)
+    if money >= mise_totale:
+        bouton_double_down.grid(column=2, row=4)
 
 
 def apparition_mise():
-    jeton_vert.grid(column=3, row=9)
-    jeton_bleu.grid(column=2, row=9)
-    jeton_rouge.grid(column=1, row=9)
-    jeton_noir.grid(column=5, row=9)
-    miser.grid(column=0, row=9)
+    jeton_vert.grid(column=3, row=10)
+    jeton_bleu.grid(column=2, row=10)
+    jeton_rouge.grid(column=1, row=10)
+    jeton_noir.grid(column=5, row=10)
+    miser.grid(column=0, row=10)
 
 
 def disparition_mise():
@@ -445,8 +492,8 @@ def mise(montant_mise):
         bouton_donne_initiale.grid(column=2, row=3)
         mise_totale += montant_mise
         money -= montant_mise
-        mise_texte['text'] = "Mise totale: "+str(mise_totale)
-        argent['text'] = 'Crédits: '+str(money)
+        mise_texte['text'] = "Mise totale: " + str(mise_totale)
+        argent['text'] = 'Crédits: ' + str(money)
     return mise_totale
 
 
@@ -518,7 +565,7 @@ cartes.grid(column=2, row=3)
 # chacun leur tour pour ne pas encombrer la fenêtre
 
 bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
-bouton_quitter.grid(column=2, row=10)
+bouton_quitter.grid(column=2, row=11)
 bouton_quitter.bind('<Button-1>', quitter)
 
 bouton_melanger = tkinter.Button(
@@ -538,11 +585,11 @@ bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
 
 bouton_double_down = tkinter.Button(bg='white', text='Double Down')
 bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
-    main_joueur, 'bouton_double_down'))
+    main_joueur))
 
 stand_bouton = tkinter.Button(bg='salmon', text='Stand')
 stand_bouton.bind(
-    "<Button-1>", lambda e: stand(main_joueur, 'stand_bouton'))
+    "<Button-1>", lambda e: stand(main_joueur))
 
 bouton_surrender = tkinter.Button(bg='red', text='Surrender')
 bouton_surrender.bind('<Button-1>', lambda e: surrender())
@@ -576,7 +623,6 @@ miser.grid(column=0, row=10)
 jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_vert.grid(column=4, row=9)
 jeton_vert.create_oval(1, 1, 25, 25, width=3,
                        outline='light grey', fill='mint cream')
 
@@ -585,21 +631,18 @@ jeton_vert.create_text(13, 13, text='50', font=('helvetica', 8))
 jeton_bleu = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_bleu.grid(column=3, row=9)
 jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
 jeton_bleu.create_text(13, 13, text='25', font=('helvetica', 8), fill='white')
 
 jeton_rouge = tkinter.Canvas(root, bg='green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
-jeton_rouge.grid(column=2, row=9)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
 jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8))
 
 jeton_noir = tkinter.Canvas(root, bg='green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_noir.grid(column=6, row=9)
 jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
 jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 
