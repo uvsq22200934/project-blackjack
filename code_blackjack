@@ -35,7 +35,7 @@ def debut(event):
     global money
     if event.widget == play:
         name = my_entry.get()
-        money = my_entry2.get()
+        money = int(my_entry2.get())
         if name == '':
             name = 'Joueur'
         if money == '':
