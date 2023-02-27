@@ -430,20 +430,12 @@ def disparition_mise():
 def mise(montant_mise):
     global mise_totale
     global money
-    if test_mise(montant_mise) == True:
+    if (money - montant_mise) >= 0:
         mise_totale += montant_mise
         money -= montant_mise
         mise_texte['text'] = "Mise totale: "+str(mise_totale)
         argent['text'] = 'Crédits: '+str(money)
     return mise_totale
-
-
-def test_mise(mise):
-    global money
-    if (money - mise) < 0:
-        return False
-    else:
-        return True
 
 
 """Fenêtres"""
