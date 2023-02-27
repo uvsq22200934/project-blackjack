@@ -405,6 +405,7 @@ def ordre_boutons3(event):
             donne_initiale()
             bouton_donne_initiale.grid_forget()
             if bj21 == 0:
+                bouton_melanger.grid_forget()
                 apparition_bouton_joueur()
         else:
             bouton_donne_initiale.grid_forget()
