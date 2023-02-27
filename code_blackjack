@@ -427,46 +427,13 @@ def disparition_mise():
     miser.grid_forget()
 
 
-def mise_rouge():
+def mise(montant_mise):
     global mise_totale
     global money
-    if test_mise(10) == True:
-        mise_totale += 10
-        money -= 10
-        mise['text'] = "Mise totale: "+str(mise_totale)
-        argent['text'] = 'Crédits: '+str(money)
-    return mise_totale
-
-
-def mise_bleu():
-    global mise_totale
-    global money
-    if test_mise(25) == True:
-        mise_totale += 25
-        money -= 25
-        mise['text'] = "Mise totale: "+str(mise_totale)
-        argent['text'] = 'Crédits: '+str(money)
-    return mise_totale
-
-
-def mise_vert():
-    global mise_totale
-    global money
-    if test_mise(50) == True:
-        mise_totale += 50
-        money -= 50
-        mise['text'] = "Mise totale: "+str(mise_totale)
-        argent['text'] = 'Crédits: '+str(money)
-    return mise_totale
-
-
-def mise_noir():
-    global mise_totale
-    global money
-    if test_mise(100) == True:
-        mise_totale += 100
-        money -= 100
-        mise['text'] = "Mise totale: "+str(mise_totale)
+    if test_mise(montant_mise) == True:
+        mise_totale += montant_mise
+        money -= montant_mise
+        mise_texte['text'] = "Mise totale: "+str(mise_totale)
         argent['text'] = 'Crédits: '+str(money)
     return mise_totale
 
@@ -583,8 +550,8 @@ bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
 
 mise_totale = 0
-mise = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
-        'jeton_noir': 100}
+mise_valeur = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
+               'jeton_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
@@ -594,8 +561,8 @@ argent = tkinter.Label(root, text='Crédits: '+str(money), bg='green',
                        fg='white')
 argent.grid(column=0, row=8)
 
-mise = tkinter.Label(root, text='Mise totale: ', bg='green', fg='white')
-mise.grid(column=0, row=9)
+mise_texte = tkinter.Label(root, text='Mise totale: ', bg='green', fg='white')
+mise_texte.grid(column=0, row=9)
 
 
 miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
@@ -632,16 +599,13 @@ jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
 jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 
 
-jeton_rouge.bind('<Button-1>', lambda e: mise_rouge())
+jeton_rouge.bind('<Button-1>', lambda e: mise(10))
 
+jeton_bleu.bind('<Button-1>', lambda e: mise(25))
 
-jeton_bleu.bind('<Button-1>', lambda e: mise_bleu())
+jeton_vert.bind('<Button-1>', lambda e: mise(50))
 
-
-jeton_vert.bind('<Button-1>', lambda e: mise_vert())
-
-
-jeton_noir.bind('<Button-1>', lambda e: mise_noir())
+jeton_noir.bind('<Button-1>', lambda e: mise(100))
 
 
 '''interface graphique'''
