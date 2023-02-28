@@ -77,6 +77,7 @@ def donne_initiale():
     cj2.itemconfigure(carte_j2, text=main_joueur[1])
     cc1.itemconfigure(carte_c1, text=main_croupier[0])
     disparition_mise()
+    bj21 = 0
     if score(main_joueur) == 21:
         croupier()
         resultat(action='blackjack')
@@ -173,7 +174,6 @@ def disparition_bouton_joueur():
 def fin_manche():
     # fonction qui enlève les cartes des mains des joueurs et les place dans
     # la défausse
-    global bj21
     global main_croupier
     global main_joueur
     global defausse
@@ -188,7 +188,6 @@ def fin_manche():
     print('mains croupier ', main_croupier, 'main joueur', main_joueur)
     bouton_rejouer.grid(column=2, row=3)
     random.shuffle(paquet)
-    bj21 = 0
     return main_croupier, main_joueur
 
 
