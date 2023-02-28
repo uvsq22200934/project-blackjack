@@ -229,7 +229,7 @@ def croupier():
     cc2.itemconfigure(carte_c2, text=main_croupier[1])
     cc2.grid(column=3, row=1)
     points_croupier = score(main_croupier)
-    while score(main_croupier) <= 16:
+    while score(main_croupier) <= 17:
         print(points_croupier, main_croupier)
         hit(main_croupier, 'main_croupier')
     resultat()
@@ -365,7 +365,7 @@ def calcul_gain(consequence=0):
     if consequence == 'win':
         gain = 2 * mise_totale
     money += gain
-    argent['text'] = 'Crédits: ' + str(money-gain) + ' + ' + str(gain)
+    argent['text'] = 'Crédits: ' + str(money-gain//2) + ' + ' + str(gain//2)
 
 
 def rejouer():
