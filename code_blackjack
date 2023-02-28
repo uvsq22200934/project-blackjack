@@ -18,10 +18,11 @@ valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
            '8ca': 8, '9ca': 9, '10ca': 10, 'Vca': 10, 'Dca': 10, 'Rca': 10,
            'Aca': 11}
 
-paquet = list(valeurs.keys())
+paquet = list(valeurs.keys())*6
 defausse = []
 main_joueur = []
 main_croupier = []
+coupe = random.randint(52, len(paquet)-52)
 
 bj21 = 0
 money = 0
@@ -70,8 +71,12 @@ def donne_initiale():
     while nb_carte < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet))
         main_croupier.append(paquet[0])
         del paquet[0]
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet))
         nb_carte += 1
     cj1.itemconfigure(carte_j1, text=main_joueur[0])
     cj2.itemconfigure(carte_j2, text=main_joueur[1])
@@ -95,6 +100,8 @@ def hit(main, pointeur):
         bouton_double_down.grid_forget()
         main.append(paquet[0])
         del paquet[0]
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet))
         if len(main) == 3:
             cj3.itemconfigure(carte_j3, text=main_joueur[2])
             cj3.grid(column=5, row=7)
@@ -127,6 +134,8 @@ def hit(main, pointeur):
         print(len(main))
         main.append(paquet[0])
         del paquet[0]
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet))
         if len(main_croupier) == 3:
             cc3.itemconfigure(carte_c3, text=main_croupier[2])
             cc3.grid(column=4, row=1)
@@ -179,15 +188,14 @@ def fin_manche():
     global defausse
     disparition_bouton_joueur()
     while len(main_joueur) != 0:
-        paquet.append(main_joueur[0])
+        defausse.append(main_joueur[0])
         del main_joueur[0]
     while len(main_croupier) != 0:
-        paquet.append(main_croupier[0])
+        defausse.append(main_croupier[0])
         del main_croupier[0]
     print(len(paquet), paquet)
     print('mains croupier ', main_croupier, 'main joueur', main_joueur)
     bouton_rejouer.grid(column=2, row=3)
-    random.shuffle(paquet)
     return main_croupier, main_joueur
 
 
@@ -373,6 +381,20 @@ def calcul_gain(consequence=0):
 
 def rejouer():
     global mise_totale
+    global coupe
+    nb_paquet['text'] = 'Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet))
+    nb_defausse['text'] = 'Nombre de cartes restantes dans la\
+                          défausse: '+str(len(defausse))
+    if len(defausse) >= coupe:
+        for element in defausse:
+            paquet.append(defausse[0])
+            del defausse[0]
+            nb_paquet['text'] = 'Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet))
+            nb_defausse['text'] = 'Nombre de cartes restantes dans la\
+                          défausse: '+str(len(defausse))
+        random.shuffle(paquet)
     bouton_rejouer.grid_forget()
     apparition_mise()
     bouton_donne_initiale.grid(column=2, row=3)
@@ -427,6 +449,7 @@ def rejouer():
     resultat_final.grid_forget()
     score__joueur.grid_forget()
     stand_label.grid_forget()
+    return coupe
 
 
 def quitter(event):
@@ -739,5 +762,13 @@ resultat_final = tkinter.Label(
 resultat_label = tkinter.Label(
     root, text='Vous avez un meilleur score que le croupier:\
                         vous avez gagné !', bg='green', fg='yellow')
+
+nb_paquet = tkinter.Label(root, text='Nombre de cartes restantes dans le\
+                          paquet: '+str(len(paquet)), bg='green')
+nb_paquet.grid(column=10, row=0)
+
+nb_defausse = tkinter.Label(root, text='Nombre de cartes restantes dans la\
+                            défausse: '+str(len(defausse)), bg='green')
+nb_defausse.grid(column=10, row=1)
 
 root.mainloop()
