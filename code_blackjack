@@ -272,13 +272,7 @@ def resultat(action=0):
     global main_croupier
     consequence = 0
     if action == 'blackjack':
-        if score(main_croupier) != 21:
-            score__joueur['text'] = score(main_joueur)
-            score__joueur.grid(column=9, row=1)
-            resultat_label['text'] = 'BLACKJACK: vous êtes le vainqueur'
-            resultat_label.grid(column=10, row=2)
-            consequence = 'Blackjack'
-        elif score(main_croupier) == 21 and len(main_croupier) == 2:
+        if score(main_croupier) == 21 and len(main_croupier) == 2:
             annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
                     str(score(main_croupier))
@@ -328,15 +322,25 @@ def resultat(action=0):
                     vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
             elif (score(main_joueur)) == score(main_croupier):
-                annonce = 'Votre score: ' + \
-                    str(score(main_joueur)) + '\n Score du croupier: ' + \
-                    str(score(main_croupier))
+                if len(main_croupier) != 2:
+                    annonce = 'Votre score: ' + \
+                        str(score(main_joueur)) + '\n Score du croupier: ' + \
+                        str(score(main_croupier))
+                    resultat_final['text'] = annonce
+                    resultat_final.grid(column=9, row=1)
+                    resultat_label['text'] = 'Vous avez le même score que le\
+                        croupier: ex aequo'
+                    resultat_label.grid(column=10, row=2)
+                    consequence = 'egalite'
+                else:
+                    annonce = 'Votre score: ' + \
+                        str(score(main_joueur)) + '\n Score du croupier: ' + \
+                        str(score(main_croupier))
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Vous avez le même score que le\
-                    croupier: ex aequo'
+                resultat_label['text'] = 'Le croupier a fait un Blacjack,\
+                    vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
-                consequence = 'egalite'
             elif score(main_joueur) > score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
@@ -357,11 +361,11 @@ def calcul_gain(consequence=0):
     global money
     gain = 0
     if consequence == 'Blackjack':
-        gain = mise_totale * 3 / 2
+        gain = mise_totale * 3 // 2
     if consequence == 'egalite':
         gain = mise_totale
     if consequence == 'ff':
-        gain = mise_totale / 2
+        gain = mise_totale // 2
     if consequence == 'win':
         gain = 2 * mise_totale
     money += gain
