@@ -29,6 +29,9 @@ bj21 = 0
 money = 0
 
 images = dict()
+image_dos = dict()
+
+
 """Fonctions"""
 
 
@@ -93,6 +96,14 @@ def creer_image(carte, position_carte, texte):
     position_carte.create_image(2, 2, anchor='nw', image=images[texte])
 
 
+def dos_carte(position, texte):
+    dir = os.path.dirname(__file__)
+    image_carte = Image.open(dir+"\\Images\\dos_cartes3.jpg")
+    image_fin = image_carte.resize((66, 100))
+    images[texte] = ImageTk.PhotoImage(image_fin)
+    position.create_image(2, 2, anchor='nw', image=images[texte])
+
+
 def debut(event):
     global name
     global money
@@ -146,7 +157,7 @@ def donne_initiale():
     creer_image(main_joueur[1], cj2, 'cj2')
     root.update()
     time.sleep(1)
-    cc2['bg'] = 'red4'
+    dos_carte(cc2, 'cc2')
     disparition_mise()
     bj21 = 0
     if score(main_joueur) == 21:
@@ -618,7 +629,8 @@ erreur = tkinter.Label(root, text='', font=('helvetica', 10),
 
 # im=Image.open('gartedos.gif')
 # logo=ImageTk.PhotoImage(im, master = root)
-cartes = tkinter.Canvas(root, width=60, height=100, bg="red4")
+cartes = tkinter.Canvas(root, width=66, height=100)
+dos_carte(cartes, 'cartes')
 # logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
 cartes.grid(column=2, row=3)
 
