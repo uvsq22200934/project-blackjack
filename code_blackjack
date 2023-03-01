@@ -1,7 +1,8 @@
 import random
 import tkinter
 from PIL import Image, ImageTk
-
+import time
+import os
 
 """listes et variables"""
 
@@ -27,8 +28,69 @@ coupe = random.randint(52, len(paquet)-52)
 bj21 = 0
 money = 0
 
-
+images = dict()
 """Fonctions"""
+
+
+def creer_image(carte, position_carte, texte):
+    dir = os.path.dirname(__file__)
+    image_carte = Image.open(dir+"\\Images\\cartes.png")
+    print('ok', carte)
+    a = 30
+    b = 30
+    c = 390
+    d = 570
+    if 'co' in carte:
+        b += 570
+        d += 570
+    if 'ca' in carte:
+        b += 570*2
+        d += 570*2
+    if 't' in carte:
+        b += 570*3
+        d += 570*3
+    if '2' in carte:
+        a += 390
+        c += 390
+    if '3' in carte:
+        a += 390*2
+        c += 390*2
+    if '4' in carte:
+        a += 390*3
+        c += 390*3
+    if '5' in carte:
+        a += 390*4
+        c += 390*4
+    if '6' in carte:
+        a += 390*5
+        c += 390*5
+    if '7' in carte:
+        a += 390*6
+        c += 390*6
+    if '8' in carte:
+        a += 390*7
+        c += 390*7
+    if '9' in carte:
+        a += 390*8
+        c += 390*8
+    if '10' in carte:
+        a += 390*9
+        c += 390*9
+    if 'V' in carte:
+        a += 390*10
+        c += 390*10
+    if 'D' in carte:
+        a += 390*11
+        c += 390*11
+    if 'R' in carte:
+        a += 390*12
+        c += 390*12
+    print(a, b, c, d)
+    crop_rectangle = (a, b, c, d)
+    cropped_im = image_carte.crop(crop_rectangle)
+    image_fin = cropped_im.resize((66, 100))
+    images[texte] = ImageTk.PhotoImage(image_fin)
+    position_carte.create_image(2, 2, anchor='nw', image=images[texte])
 
 
 def debut(event):
@@ -63,24 +125,28 @@ def donne_initiale():
     global paquet
     global main_joueur
     global main_croupier
-    global carte_j1
-    global carte_j2
-    global carte_c1
     global bj21
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
+            + str(len(paquet))
         main_croupier.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
+            + str(len(paquet))
         nb_carte += 1
-    cj1.itemconfigure(carte_j1, text=main_joueur[0])
-    cj2.itemconfigure(carte_j2, text=main_joueur[1])
-    cc1.itemconfigure(carte_c1, text=main_croupier[0])
+    creer_image(main_joueur[0], cj1, 'cj1')
+    root.update()
+    time.sleep(1)
+    creer_image(main_croupier[0], cc1, 'cc1')
+    root.update()
+    time.sleep(1)
+    creer_image(main_joueur[1], cj2, 'cj2')
+    root.update()
+    time.sleep(1)
+    cc2['bg'] = 'red4'
     disparition_mise()
     bj21 = 0
     if score(main_joueur) == 21:
@@ -100,69 +166,70 @@ def hit(main, pointeur):
         bouton_double_down.grid_forget()
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
+            + str(len(paquet))
         if len(main) == 3:
-            cj3.itemconfigure(carte_j3, text=main_joueur[2])
+            creer_image(main_joueur[2], cj3, 'cj3')
             cj3.grid(column=5, row=7)
         if len(main) == 4:
-            cj4.itemconfigure(carte_j4, text=main_joueur[3])
+            creer_image(main_joueur[3], cj4, 'cj4')
             cj4.grid(column=6, row=7)
         if len(main) == 5:
-            cj5.itemconfigure(carte_j5, text=main_joueur[4])
+            creer_image(main_joueur[4], cj5, 'cj5')
             cj5.grid(column=7, row=7)
         if len(main) == 6:
-            cj6.itemconfigure(carte_j6, text=main_joueur[5])
+            creer_image(main_joueur[5], cj6, 'cj6')
             cj6.grid(column=8, row=7)
         if len(main) == 7:
-            cj7.itemconfigure(carte_j7, text=main_joueur[6])
+            creer_image(main_joueur[6], cj7, 'cj7')
             cj7.grid(column=9, row=7)
         if len(main) == 8:
-            cj8.itemconfigure(carte_j8, text=main_joueur[7])
+            creer_image(main_joueur[7], cj8, 'cj8')
             cj8.grid(column=10, row=7)
         if len(main) == 9:
-            cj9.itemconfigure(carte_j9, text=main_joueur[8])
+            creer_image(main_joueur[8], cj9, 'cj9')
             cj9.grid(column=11, row=7)
         if len(main) == 10:
-            cj10.itemconfigure(carte_j10, text=main_joueur[9])
+            creer_image(main_joueur[9], cj10, 'cj10')
             cj10.grid(column=12, row=7)
         if len(main) == 11:
-            cj11.itemconfigure(carte_j11, text=main_joueur[10])
+            creer_image(main_joueur[10], cj11, 'cj11')
             cj11.grid(column=13, row=7)
         test_score(main)
     if pointeur == 'main_croupier':
         print(len(main))
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
+            + str(len(paquet))
         if len(main_croupier) == 3:
-            cc3.itemconfigure(carte_c3, text=main_croupier[2])
+            creer_image(main_croupier[2], cc3, 'cc3')
             cc3.grid(column=4, row=1)
         if len(main_croupier) == 4:
-            cc4.itemconfigure(carte_c4, text=main_croupier[3])
+            creer_image(main_croupier[3], cc4, 'cc4')
             cc4.grid(column=5, row=1)
         if len(main_croupier) == 5:
-            cc5.itemconfigure(carte_c5, text=main_croupier[4])
+            creer_image(main_croupier[4], cc5, 'cc5')
             cc5.grid(column=6, row=1)
         if len(main_croupier) == 6:
-            cc6.itemconfigure(carte_c6, text=main_croupier[5])
+            creer_image(main_croupier[5], cc6, 'cc6')
             cc6.grid(column=7, row=1)
         if len(main_croupier) == 7:
-            cc7.itemconfigure(carte_c7, text=main_croupier[6])
+            creer_image(main_croupier[6], cc7, 'cc7')
             cc7.grid(column=8, row=1)
         if len(main_croupier) == 8:
-            cc8.itemconfigure(carte_c8, text=main_croupier[7])
+            creer_image(main_croupier[7], cc8, 'cc8')
             cc8.grid(column=9, row=1)
         if len(main_croupier) == 9:
-            cc9.itemconfigure(carte_c9, text=main_croupier[8])
+            creer_image(main_croupier[8], cc9, 'cc9')
             cc9.grid(column=10, row=1)
         if len(main_croupier) == 10:
-            cc10.itemconfigure(carte_c10, text=main_croupier[9])
+            creer_image(main_croupier[9], cc10, 'cc10')
             cc10.grid(column=11, row=1)
         if len(main_croupier) == 11:
-            cc11.itemconfigure(carte_c11, text=main_croupier[10])
+            creer_image(main_croupier[10], cc11, 'cc11')
             cc11.grid(column=12, row=1)
+    root.update()
     return main
 
 
@@ -232,9 +299,9 @@ def score(main):
 def croupier():
     # fonction qui définit les action du croupier en fonction de sa main
     global main_croupier
-    cc2['bg'] = 'white'
-    cc2.itemconfigure(carte_c2, text=main_croupier[1])
+    creer_image(main_croupier[1], cc2, 'cc2')
     cc2.grid(column=3, row=1)
+    root.update()
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 17:
         print(points_croupier, main_croupier)
@@ -247,9 +314,6 @@ def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
     stand_label.grid(column=0, row=5)
     print("je m'arrête")
-    cc2['bg'] = 'white'
-    cc2.itemconfig(carte_c2, text=main_croupier[1])
-    cc2.grid(column=3, row=1)
     croupier()
 
 
@@ -281,12 +345,12 @@ def resultat(action=0):
     if action == 'blackjack':
         if score(main_croupier) == 21 and len(main_croupier) == 2:
             annonce = 'Votre score: ' + \
-                    str(score(main_joueur)) + '\n Score du croupier: ' + \
-                    str(score(main_croupier))
+                str(score(main_joueur)) + '\n Score du croupier: ' + \
+                str(score(main_croupier))
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
-            resultat_label['text'] = 'Vous avez le même score que le\
-                    croupier: ex aequo'
+            resultat_label['text'] = 'Vous avez le même score que le ' + \
+                'croupier: ex aequo'
             resultat_label.grid(column=10, row=2)
             consequence = 'egalite'
         else:
@@ -304,8 +368,8 @@ def resultat(action=0):
         annonce = 'Votre score: ' + str(score(main_joueur))
         resultat_final['text'] = annonce
         resultat_final.grid(column=9, row=1)
-        resultat_label['text'] = 'Votre main vaut plus que 21, vous avez\
-            perdu.'
+        resultat_label['text'] = 'Votre main vaut plus que 21, vous' + \
+            ' avez perdu.'
         resultat_label.grid(column=10, row=2)
     elif score(main_joueur) <= 21:
         if score(main_croupier) > 21:
@@ -325,8 +389,8 @@ def resultat(action=0):
                     str(score(main_croupier))
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Le croupier a un meilleur score,\
-                    vous avez perdu.'
+                resultat_label['text'] = 'Le croupier a un meilleur ' + \
+                    'score, vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
             elif (score(main_joueur)) == score(main_croupier):
                 if len(main_croupier) != 2:
@@ -335,8 +399,8 @@ def resultat(action=0):
                         str(score(main_croupier))
                     resultat_final['text'] = annonce
                     resultat_final.grid(column=9, row=1)
-                    resultat_label['text'] = 'Vous avez le même score que le\
-                        croupier: ex aequo'
+                    resultat_label['text'] = 'Vous avez le même score' + \
+                        'que le croupier: ex aequo'
                     resultat_label.grid(column=10, row=2)
                     consequence = 'egalite'
                 else:
@@ -345,8 +409,8 @@ def resultat(action=0):
                         str(score(main_croupier))
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Le croupier a fait un Blacjack,\
-                    vous avez perdu.'
+                resultat_label['text'] = 'Le croupier a fait un Blacjack,' + \
+                    'vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
             elif score(main_joueur) > score(main_croupier):
                 annonce = 'Votre score: ' + \
@@ -354,8 +418,8 @@ def resultat(action=0):
                     str(score(main_croupier))
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Vous avez un meilleur score que le\
-                    croupier: vous avez gagné !'
+                resultat_label['text'] = 'Vous avez un meilleur score que' + \
+                    'le croupier: vous avez gagné !'
                 resultat_label.grid(column=10, row=2)
                 consequence = 'win'
     print(score(main_joueur), score(main_croupier))
@@ -382,18 +446,18 @@ def calcul_gain(consequence=0):
 def rejouer():
     global mise_totale
     global coupe
-    nb_paquet['text'] = 'Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet))
-    nb_defausse['text'] = 'Nombre de cartes restantes dans la\
-                          défausse: '+str(len(defausse))
+    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
+        str(len(paquet))
+    nb_defausse['text'] = 'Nombre de cartes restantes dans la défausse: ' + \
+        str(len(defausse))
     if len(defausse) >= coupe:
         for element in defausse:
             paquet.append(defausse[0])
             del defausse[0]
-            nb_paquet['text'] = 'Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet))
-            nb_defausse['text'] = 'Nombre de cartes restantes dans la\
-                          défausse: '+str(len(defausse))
+            nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
+                + str(len(paquet))
+            nb_defausse['text'] = 'Nombre de cartes restantes dans la' + \
+                'défausse: ' + str(len(defausse))
         random.shuffle(paquet)
     bouton_rejouer.grid_forget()
     apparition_mise()
@@ -401,32 +465,11 @@ def rejouer():
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = 'Crédits: ' + str(money)
-    cj1['bg'] = 'dark green'
-    cj2['bg'] = 'dark green'
-    cc1['bg'] = 'dark green'
+    cc1.delete('all')
+    cc2.delete('all')
+    cj1.delete('all')
+    cj2.delete('all')
     cc2['bg'] = 'dark green'
-    cc1.itemconfigure(carte_c1, text='')
-    cc2.itemconfigure(carte_c2, text='')
-    cc3.itemconfigure(carte_c3, text='')
-    cc4.itemconfigure(carte_c4, text='')
-    cc5.itemconfigure(carte_c5, text='')
-    cc6.itemconfigure(carte_c6, text='')
-    cc7.itemconfigure(carte_c7, text='')
-    cc8.itemconfigure(carte_c8, text='')
-    cc9.itemconfigure(carte_c9, text='')
-    cc10.itemconfigure(carte_c10, text='')
-    cc11.itemconfigure(carte_c11, text='')
-    cj1.itemconfigure(carte_j1, text='')
-    cj2.itemconfigure(carte_j2, text='')
-    cj3.itemconfigure(carte_j3, text='')
-    cj4.itemconfigure(carte_j4, text='')
-    cj5.itemconfigure(carte_j5, text='')
-    cj6.itemconfigure(carte_j6, text='')
-    cj7.itemconfigure(carte_j7, text='')
-    cj8.itemconfigure(carte_j8, text='')
-    cj9.itemconfigure(carte_j9, text='')
-    cj10.itemconfigure(carte_j10, text='')
-    cj11.itemconfigure(carte_j11, text='')
     cc3.grid_forget()
     cc4.grid_forget()
     cc5.grid_forget()
@@ -470,10 +513,6 @@ def ordre_boutons3(event):
         if mise_totale != 0:
             erreur.grid_forget()
             print('ok')
-            cc1['bg'] = 'white'
-            cc2['bg'] = 'red4'
-            cj1['bg'] = 'white'
-            cj2['bg'] = 'white'
             donne_initiale()
             bouton_donne_initiale.grid_forget()
             if bj21 == 0:
@@ -572,7 +611,7 @@ root.title('Blackjack 21')
 """root.state('zoomed')"""
 
 root.geometry = accueil.geometry
-root.configure(bg="green")
+root.configure(bg="#55AA55")
 
 erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
@@ -635,18 +674,19 @@ mise_valeur = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
         totale."""
 
-argent = tkinter.Label(root, text='Crédits: '+str(money), bg='green',
+argent = tkinter.Label(root, text='Crédits: '+str(money), bg='#55AA55',
                        fg='white')
 argent.grid(column=0, row=8)
 
-mise_texte = tkinter.Label(root, text='Mise totale: ', bg='green', fg='white')
+mise_texte = tkinter.Label(
+    root, text='Mise totale: ', bg='#55AA55', fg='white')
 mise_texte.grid(column=0, row=9)
 
 
-miser = tkinter.Label(root, text="Clic pour mise:", bg='green', fg='white')
+miser = tkinter.Label(root, text="Clic pour mise:", bg='#55AA55', fg='white')
 miser.grid(column=0, row=10)
 
-jeton_vert = tkinter.Canvas(root, bg='green', width=30, height=30,
+jeton_vert = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_vert.create_oval(1, 1, 25, 25, width=3,
@@ -654,19 +694,19 @@ jeton_vert.create_oval(1, 1, 25, 25, width=3,
 
 jeton_vert.create_text(13, 13, text='50', font=('helvetica', 8))
 
-jeton_bleu = tkinter.Canvas(root, bg='green', width=30, height=30,
+jeton_bleu = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
 jeton_bleu.create_text(13, 13, text='25', font=('helvetica', 8), fill='white')
 
-jeton_rouge = tkinter.Canvas(root, bg='green', width=30, height=30,
+jeton_rouge = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
 jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8))
 
-jeton_noir = tkinter.Canvas(root, bg='green', width=30, height=30,
+jeton_noir = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
@@ -686,25 +726,25 @@ jeton_noir.bind('<Button-1>', lambda e: mise(100))
 
 
 # interface emplacement des cartes 1 et 2 du joueur
-cj1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cj1 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
 cj1.grid(column=1, row=7)
-cj2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cj2 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
 cj2.grid(column=3, row=7)
 
 # interface emplacement des cartes 1 et 2 du croupier
-cc1 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cc1 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
 cc1.grid(column=1, row=1)
-cc2 = tkinter.Canvas(root, width=60, height=100, bg='dark green')
+cc2 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
 cc2.grid(column=3, row=1)
 
 # texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="CROUPIER", font=(
-    "helvetica", "15"), bg="green", fg="black")
+    "helvetica", "15"), bg="#55AA55", fg="black")
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
-                       bg="green", fg="black")
+                       bg="#55AA55", fg="black")
 labelj.grid(column=0, row=7)
 
 cj3 = tkinter.Canvas(root, width=60, height=100, bg='white')
@@ -727,48 +767,24 @@ cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
 cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
 cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
 
-carte_j1 = cj1.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j2 = cj2.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j3 = cj3.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j4 = cj4.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j5 = cj5.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j6 = cj6.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j7 = cj7.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j8 = cj8.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j9 = cj9.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j10 = cj10.create_text(20, 50, text='', font=('helvetica', 15))
-carte_j11 = cj11.create_text(20, 50, text='', font=('helvetica', 15))
-
-carte_c1 = cc1.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c2 = cc2.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c3 = cc3.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c4 = cc4.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c5 = cc5.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c6 = cc6.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c7 = cc7.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c8 = cc8.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c9 = cc9.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c10 = cc10.create_text(20, 50, text='', font=('helvetica', 15))
-carte_c11 = cc11.create_text(20, 50, text='', font=('helvetica', 15))
-
-stand_label = tkinter.Label(root, bg='green', fg='black',
+stand_label = tkinter.Label(root, bg='#55AA55', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "10"))
 
 score__joueur = tkinter.Label(
-    root, text=score(main_joueur), bg='green', fg='red')
+    root, text=score(main_joueur), bg='#55AA55', fg='red')
 resultat_final = tkinter.Label(
-    root, text='annonce', bg='green', fg='red')
+    root, text='annonce', bg='#55AA55', fg='red')
 resultat_label = tkinter.Label(
-    root, text='Vous avez un meilleur score que le croupier:\
-                        vous avez gagné !', bg='green', fg='yellow')
+    root, text='', bg='#55AA55', fg='yellow')
 
-nb_paquet = tkinter.Label(root, text='Nombre de cartes restantes dans le\
-                          paquet: '+str(len(paquet)), bg='green')
+nb_paquet = tkinter.Label(
+    root, text='Nombre de cartes restantes dans le paquet: '+str(len(paquet)),
+    bg='#55AA55')
 nb_paquet.grid(column=10, row=0)
 
-nb_defausse = tkinter.Label(root, text='Nombre de cartes restantes dans la\
-                            défausse: '+str(len(defausse)), bg='green')
+nb_defausse = tkinter.Label(root, text='Nombre de cartes restantes dans la' +
+                            'défausse: '+str(len(defausse)), bg='#55AA55')
 nb_defausse.grid(column=10, row=1)
 
 root.mainloop()
