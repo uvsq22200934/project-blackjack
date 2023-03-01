@@ -480,7 +480,7 @@ def rejouer():
     cc2.delete('all')
     cj1.delete('all')
     cj2.delete('all')
-    cc2['bg'] = 'dark green'
+    cc2['bg'] = '#55AA55'
     cc3.grid_forget()
     cc4.grid_forget()
     cc5.grid_forget()
@@ -622,16 +622,13 @@ root.title('Blackjack 21')
 """root.state('zoomed')"""
 
 root.geometry = accueil.geometry
-root.configure(bg="#55AA55")
+root.configure(bg="dark green")
 
 erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
 
-# im=Image.open('gartedos.gif')
-# logo=ImageTk.PhotoImage(im, master = root)
-cartes = tkinter.Canvas(root, width=66, height=100)
+cartes = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 dos_carte(cartes, 'cartes')
-# logo1=cartes.create_image(33,53, anchor=Tk.NW, image = logo)
 cartes.grid(column=2, row=3)
 
 
@@ -686,19 +683,19 @@ mise_valeur = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_vert': 50,
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
         totale."""
 
-argent = tkinter.Label(root, text='Crédits: '+str(money), bg='#55AA55',
+argent = tkinter.Label(root, text='Crédits: '+str(money), bg='dark green',
                        fg='white')
 argent.grid(column=0, row=8)
 
 mise_texte = tkinter.Label(
-    root, text='Mise totale: ', bg='#55AA55', fg='white')
+    root, text='Mise totale: ', bg='dark green', fg='white')
 mise_texte.grid(column=0, row=9)
 
 
-miser = tkinter.Label(root, text="Clic pour mise:", bg='#55AA55', fg='white')
+miser = tkinter.Label(root, text="Clic pour mise:", bg='dark green', fg='white')
 miser.grid(column=0, row=10)
 
-jeton_vert = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
+jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_vert.create_oval(1, 1, 25, 25, width=3,
@@ -706,19 +703,19 @@ jeton_vert.create_oval(1, 1, 25, 25, width=3,
 
 jeton_vert.create_text(13, 13, text='50', font=('helvetica', 8))
 
-jeton_bleu = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
+jeton_bleu = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
 jeton_bleu.create_text(13, 13, text='25', font=('helvetica', 8), fill='white')
 
-jeton_rouge = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
+jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
 jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8))
 
-jeton_noir = tkinter.Canvas(root, bg='#55AA55', width=30, height=30,
+jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
@@ -738,65 +735,65 @@ jeton_noir.bind('<Button-1>', lambda e: mise(100))
 
 
 # interface emplacement des cartes 1 et 2 du joueur
-cj1 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
+cj1 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj1.grid(column=1, row=7)
-cj2 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
+cj2 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj2.grid(column=3, row=7)
 
 # interface emplacement des cartes 1 et 2 du croupier
-cc1 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
+cc1 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc1.grid(column=1, row=1)
-cc2 = tkinter.Canvas(root, width=66, height=100, bg='dark green')
+cc2 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc2.grid(column=3, row=1)
 
 # texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="CROUPIER", font=(
-    "helvetica", "15"), bg="#55AA55", fg="black")
+    "helvetica", "15"), bg="dark green", fg="black")
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
-                       bg="#55AA55", fg="black")
+                       bg="dark green", fg="black")
 labelj.grid(column=0, row=7)
 
-cj3 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj4 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj5 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj6 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj7 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj8 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj9 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj10 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cj11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cj3 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj4 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj5 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj6 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj7 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj8 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj9 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj10 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj11 = tkinter.Canvas(root, width=66, height=100, bg='white')
 
-cc3 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc4 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc5 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc6 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc7 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc8 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc9 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc10 = tkinter.Canvas(root, width=60, height=100, bg='white')
-cc11 = tkinter.Canvas(root, width=60, height=100, bg='white')
+cc3 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc4 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc5 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc6 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc7 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc8 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc9 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc10 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc11 = tkinter.Canvas(root, width=66, height=100, bg='white')
 
-stand_label = tkinter.Label(root, bg='#55AA55', fg='black',
+stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "10"))
 
 score__joueur = tkinter.Label(
-    root, text=score(main_joueur), bg='#55AA55', fg='red')
+    root, text=score(main_joueur), bg='dark green', fg='red')
 resultat_final = tkinter.Label(
-    root, text='annonce', bg='#55AA55', fg='red')
+    root, text='annonce', bg='dark green', fg='red')
 resultat_label = tkinter.Label(
-    root, text='', bg='#55AA55', fg='yellow')
+    root, text='', bg='dark green', fg='yellow')
 
 nb_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet: '+str(len(paquet)),
-    bg='#55AA55')
+    bg='dark green')
 nb_paquet.grid(column=10, row=0)
 
 nb_defausse = tkinter.Label(root, text='Nombre de cartes restantes dans la' +
-                            'défausse: '+str(len(defausse)), bg='#55AA55')
+                            'défausse: '+str(len(defausse)), bg='dark green')
 nb_defausse.grid(column=10, row=1)
 
 root.mainloop()
