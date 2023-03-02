@@ -1,8 +1,22 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import random
 import tkinter
 from PIL import Image, ImageTk
 import time
 import os
+
+
+__author__ = "Mathilde, Maëlis, Joseph"
+__copyright__ = "Copyright 2023, Projet Blacjack"
+__credits__ = ["Mathilde", "Maëlis", "Joseph"]
+__license__ = "GPL"
+__version__ = "0.1.1"
+__maintainer__ = "Joseph ARIAS"
+__email__ = "joseph.arias@ens.uvsq.fr"
+__status__ = "Developement"
+
 
 """listes et variables"""
 
@@ -27,6 +41,9 @@ coupe = random.randint(52, len(paquet)-52)
 
 bj21 = 0
 money = 0
+assurance_prise = 0
+assurance_gagnante = 0
+prix_assurance = 0
 
 images = dict()
 image_dos = dict()
@@ -137,6 +154,8 @@ def donne_initiale():
     global main_joueur
     global main_croupier
     global bj21
+    global assurance_prise
+    global mise_totale
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
@@ -160,12 +179,53 @@ def donne_initiale():
     dos_carte(cc2, 'cc2')
     disparition_mise()
     bj21 = 0
-    if score(main_joueur) == 21:
+    assurance_prise = 0
+    if 'A' in main_croupier[0]:
+        prix_assurance = mise_totale // 2
+        if money >= prix_assurance:
+            texte_assurance['text'] = 'Le croupier viens de tirer un ' + \
+                f'As. Voulez vous payer une assurance ({prix_assurance})?'
+            texte_assurance.grid(column=2, row=3)
+            bouton_oui_assurance.grid(column=2, row=4)
+            bouton_non_assurance.grid(column=2, row=5)
+            root.update()
+    elif score(main_joueur) == 21:
         croupier()
-        resultat(action='blackjack')
         bj21 = 1
+    else:
+        if score(main_joueur) == 21:
+            croupier()
+            bj21 = 1
+        if bj21 == 0:
+            bouton_melanger.grid_forget()
+            apparition_bouton_joueur()
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
     return main_joueur, main_croupier
+
+
+def reponse_assurance(reponse=0):
+    global money
+    global assurance_prise
+    global bouton_non_assurance
+    global bouton_oui_assurance
+    global bj21
+    global mise_totale
+    prix_assurance = mise_totale // 2
+    if reponse == 'oui':
+        money -= prix_assurance
+        assurance_prise = 1
+        assurance_valeur['text'] = 'Assurance: '+str(prix_assurance)
+        assurance_valeur.grid(column=0, row=10)
+    bouton_non_assurance.grid_forget()
+    bouton_oui_assurance.grid_forget()
+    texte_assurance.grid_forget()
+    argent['text'] = 'Crédits: ' + str(money)
+    if score(main_joueur) == 21:
+        croupier()
+        bj21 = 1
+    if bj21 == 0:
+        bouton_melanger.grid_forget()
+        apparition_bouton_joueur()
 
 
 def hit(main, pointeur):
@@ -211,8 +271,9 @@ def hit(main, pointeur):
         print(len(main))
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
-            + str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
+            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
+            ' défausse: ' + str(len(defausse))
         if len(main_croupier) == 3:
             creer_image(main_croupier[2], cc3, 'cc3')
             cc3.grid(column=4, row=1)
@@ -317,6 +378,7 @@ def croupier():
     while score(main_croupier) <= 17:
         print(points_croupier, main_croupier)
         hit(main_croupier, 'main_croupier')
+    print('resultat dans croupier')
     resultat()
     return main_croupier, points_croupier
 
@@ -352,9 +414,14 @@ def resultat(action=0):
     # fonction qui donne le résulat du jeu
     global main_joueur
     global main_croupier
+    global assurance_prise
+    global assurance_gagnante
+    global bj21
     consequence = 0
-    if action == 'blackjack':
-        if score(main_croupier) == 21 and len(main_croupier) == 2:
+    if bj21 == 1:
+        print('taille main croupier', len(main_croupier), main_croupier,
+              score(main_croupier))
+        if (score(main_croupier) == 21) and (len(main_croupier) == 2):
             annonce = 'Votre score: ' + \
                 str(score(main_joueur)) + '\n Score du croupier: ' + \
                 str(score(main_croupier))
@@ -394,7 +461,28 @@ def resultat(action=0):
             resultat_label.grid(column=10, row=2)
             consequence = 'win'
         elif score(main_croupier) <= 21:
-            if score(main_joueur) < score(main_croupier):
+            if (score(main_croupier) == 21) and (len(main_croupier) == 2):
+                print('ok')
+                resultat_label['text'] = 'Le croupier a fait un Blacjack !\n'
+                resultat_label.grid(column=10, row=2)
+                annonce = 'Votre score: ' + \
+                    str(score(main_joueur)) + '\n Score du croupier: ' + \
+                    str(score(main_croupier))
+                resultat_final['text'] = annonce
+                resultat_final.grid(column=9, row=1)
+                if score(main_joueur) == 21 and len(main_joueur) == 2:
+                    resultat_label['text'] += 'Vous avez également un' +\
+                        'Blacjack, votre mise est remboursée \n'
+                    consequence = 'egalite'
+                if assurance_prise == 1:
+                    resultat_label['text'] += 'Vous avez payé l\'' +\
+                        'assurance, vous gagnez deux fois le montant de' +\
+                        'votre assurance \n'
+                    assurance_gagnante = 1
+                if score(main_joueur) != 21 or len(main_joueur) != 2:
+                    resultat_label['text'] += ' La main du croupier' +\
+                        'est meilleure, vous avez perdu.e'
+            elif score(main_joueur) < score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
                     str(score(main_croupier))
@@ -414,15 +502,6 @@ def resultat(action=0):
                         'que le croupier: ex aequo'
                     resultat_label.grid(column=10, row=2)
                     consequence = 'egalite'
-                else:
-                    annonce = 'Votre score: ' + \
-                        str(score(main_joueur)) + '\n Score du croupier: ' + \
-                        str(score(main_croupier))
-                resultat_final['text'] = annonce
-                resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Le croupier a fait un Blacjack,' + \
-                    'vous avez perdu.'
-                resultat_label.grid(column=10, row=2)
             elif score(main_joueur) > score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
@@ -434,41 +513,44 @@ def resultat(action=0):
                 resultat_label.grid(column=10, row=2)
                 consequence = 'win'
     print(score(main_joueur), score(main_croupier))
+    print('fin manche dans resultat')
     fin_manche()
-    calcul_gain(consequence)
+    calcul_gain(consequence, assurance_gagnante)
 
 
-def calcul_gain(consequence=0):
+def calcul_gain(consequence=0, assurance_gagnante=0):
     global mise_totale
     global money
     gain = 0
+    gain_assurance = 0
     if consequence == 'Blackjack':
-        gain = mise_totale * 3 // 2
+        gain += mise_totale * 3 // 2
     if consequence == 'egalite':
-        gain = mise_totale
+        gain += mise_totale
     if consequence == 'ff':
-        gain = mise_totale // 2
+        gain += mise_totale // 2
     if consequence == 'win':
-        gain = 2 * mise_totale
+        gain += 2 * mise_totale
+    if assurance_gagnante == 1:
+        gain_assurance += mise_totale
     money += gain
-    argent['text'] = 'Crédits: ' + str(money-gain//2) + ' + ' + str(gain//2)
+    argent['text'] = 'Crédits: ' + str(money-gain//2-gain_assurance//2) +\
+        ' + ' + str(gain//2) + ' + ' + str(gain_assurance)
 
 
 def rejouer():
     global mise_totale
     global coupe
     nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
-        str(len(paquet))
-    nb_defausse['text'] = 'Nombre de cartes restantes dans la défausse: ' + \
-        str(len(defausse))
+        str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
+        'défausse: ' + str(len(defausse))
     if len(defausse) >= coupe:
         for element in defausse:
             paquet.append(defausse[0])
             del defausse[0]
-            nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
-                + str(len(paquet))
-            nb_defausse['text'] = 'Nombre de cartes restantes dans la' + \
-                'défausse: ' + str(len(defausse))
+            nb_paquet['text'] = 'Nombre de cartes restantes dans le' + \
+                'paquet: ' + str(len(paquet)) + '\nNombre de cartes' + \
+                'restantes dans la défausse: ' + str(len(defausse))
         random.shuffle(paquet)
     bouton_rejouer.grid_forget()
     apparition_mise()
@@ -503,6 +585,7 @@ def rejouer():
     resultat_final.grid_forget()
     score__joueur.grid_forget()
     stand_label.grid_forget()
+    assurance_valeur.grid_forget()
     return coupe
 
 
@@ -519,16 +602,12 @@ def ordre_boutons2(event):
 
 
 def ordre_boutons3(event):
-    global bj21
     if event.widget == bouton_donne_initiale:
         if mise_totale != 0:
             erreur.grid_forget()
             print('ok')
             donne_initiale()
             bouton_donne_initiale.grid_forget()
-            if bj21 == 0:
-                bouton_melanger.grid_forget()
-                apparition_bouton_joueur()
         else:
             bouton_donne_initiale.grid_forget()
             erreur.grid(column=2, row=3)
@@ -671,6 +750,18 @@ bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
+texte_assurance = tkinter.Label(text='')
+
+bouton_oui_assurance = tkinter.Button(text='Oui')
+bouton_non_assurance = tkinter.Button(text='Non')
+
+bouton_oui_assurance.bind(
+    '<Button-1>', lambda e: reponse_assurance(reponse='oui'))
+bouton_non_assurance.bind(
+    '<Button-1>', lambda e: reponse_assurance(reponse='non'))
+
+assurance_valeur = tkinter.Label(text='')
+
 
 """ mise du jeu """
 
@@ -692,7 +783,8 @@ mise_texte = tkinter.Label(
 mise_texte.grid(column=0, row=9)
 
 
-miser = tkinter.Label(root, text="Clic pour mise:", bg='dark green', fg='white')
+miser = tkinter.Label(root, text="Cliquez pour miser:",
+                      bg='dark green', fg='white')
 miser.grid(column=0, row=10)
 
 jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
@@ -788,12 +880,10 @@ resultat_label = tkinter.Label(
     root, text='', bg='dark green', fg='yellow')
 
 nb_paquet = tkinter.Label(
-    root, text='Nombre de cartes restantes dans le paquet: '+str(len(paquet)),
+    root, text='Nombre de cartes restantes dans le paquet: ' +
+    str(len(paquet)) + '\nNombre de cartes restantes dans la défausse: ' +
+    str(len(defausse)),
     bg='dark green')
 nb_paquet.grid(column=10, row=0)
-
-nb_defausse = tkinter.Label(root, text='Nombre de cartes restantes dans la' +
-                            'défausse: '+str(len(defausse)), bg='dark green')
-nb_defausse.grid(column=10, row=1)
 
 root.mainloop()
