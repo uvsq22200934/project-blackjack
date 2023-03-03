@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import random
-import tkinter
-from PIL import Image, ImageTk
-import time
-import os
-
-
 __author__ = "Mathilde, Maëlis, Joseph"
 __copyright__ = "Copyright 2023, Projet Blacjack"
 __credits__ = ["Mathilde", "Maëlis", "Joseph"]
@@ -16,6 +9,12 @@ __version__ = "0.1.1"
 __maintainer__ = "Joseph ARIAS"
 __email__ = "joseph.arias@ens.uvsq.fr"
 __status__ = "Developement"
+
+import random
+import tkinter
+from PIL import Image, ImageTk
+import time
+import os
 
 
 """listes et variables"""
@@ -200,7 +199,6 @@ def donne_initiale():
             bouton_melanger.grid_forget()
             apparition_bouton_joueur()
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
-    return main_joueur, main_croupier
 
 
 def reponse_assurance(reponse=0):
@@ -302,7 +300,6 @@ def hit(main, pointeur):
             creer_image(main_croupier[10], cc11, 'cc11')
             cc11.grid(column=12, row=1)
     root.update()
-    return main
 
 
 def test_score(main):
@@ -335,7 +332,6 @@ def fin_manche():
     print(len(paquet), paquet)
     print('mains croupier ', main_croupier, 'main joueur', main_joueur)
     bouton_rejouer.grid(column=2, row=3)
-    return main_croupier, main_joueur
 
 
 def score(main):
@@ -380,7 +376,6 @@ def croupier():
         hit(main_croupier, 'main_croupier')
     print('resultat dans croupier')
     resultat()
-    return main_croupier, points_croupier
 
 
 def stand(main, bouton=0):
@@ -400,9 +395,7 @@ def doubble_down(main):
     argent['text'] = 'Crédits: ' + str(money)
     hit(main, 'main_joueur')
     print(main)
-    points_joueur = score(main)
     croupier()
-    return points_joueur
 
 
 def surrender():
@@ -456,8 +449,8 @@ def resultat(action=0):
                 str(score(main_croupier))
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
-            resultat_label['text'] = 'Le croupier a dépassé 21: vous avez\
-                gagné !'
+            resultat_label['text'] = 'Le croupier a dépassé 21: vous' +\
+                'avez gagné !'
             resultat_label.grid(column=10, row=2)
             consequence = 'win'
         elif score(main_croupier) <= 21:
@@ -562,7 +555,6 @@ def rejouer():
     cc2.delete('all')
     cj1.delete('all')
     cj2.delete('all')
-    cc2['bg'] = '#55AA55'
     cc3.grid_forget()
     cc4.grid_forget()
     cc5.grid_forget()
@@ -586,7 +578,6 @@ def rejouer():
     score__joueur.grid_forget()
     stand_label.grid_forget()
     assurance_valeur.grid_forget()
-    return coupe
 
 
 def quitter(event):
@@ -649,7 +640,6 @@ def mise(montant_mise):
         money -= montant_mise
         mise_texte['text'] = "Mise totale: " + str(mise_totale)
         argent['text'] = 'Crédits: ' + str(money)
-    return mise_totale
 
 
 """Fenêtres"""
