@@ -155,16 +155,19 @@ def donne_initiale():
     global bj21
     global assurance_prise
     global mise_totale
+    disparition_mise()
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
-            + str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
+            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
+            ' défausse: ' + str(len(defausse))
         main_croupier.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
-            + str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
+            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
+            ' défausse: ' + str(len(defausse))
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.update()
@@ -176,7 +179,6 @@ def donne_initiale():
     root.update()
     time.sleep(1)
     dos_carte(cc2, 'cc2')
-    disparition_mise()
     bj21 = 0
     assurance_prise = 0
     if 'A' in main_croupier[0]:
@@ -188,14 +190,11 @@ def donne_initiale():
             bouton_oui_assurance.grid(column=2, row=4)
             bouton_non_assurance.grid(column=2, row=5)
             root.update()
-    elif score(main_joueur) == 21:
-        croupier()
-        bj21 = 1
     else:
         if score(main_joueur) == 21:
-            croupier()
             bj21 = 1
-        if bj21 == 0:
+            croupier()
+        else:
             bouton_melanger.grid_forget()
             apparition_bouton_joueur()
     print('main joueur', main_joueur, '\n main croupier', main_croupier)
@@ -219,8 +218,8 @@ def reponse_assurance(reponse=0):
     texte_assurance.grid_forget()
     argent['text'] = 'Crédits: ' + str(money)
     if score(main_joueur) == 21:
-        croupier()
         bj21 = 1
+        croupier()
     if bj21 == 0:
         bouton_melanger.grid_forget()
         apparition_bouton_joueur()
@@ -235,8 +234,9 @@ def hit(main, pointeur):
         bouton_double_down.grid_forget()
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: '\
-            + str(len(paquet))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
+            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
+            ' défausse: ' + str(len(defausse))
         if len(main) == 3:
             creer_image(main_joueur[2], cj3, 'cj3')
             cj3.grid(column=4, row=7)
@@ -371,7 +371,7 @@ def croupier():
     cc2.grid(column=3, row=1)
     root.update()
     points_croupier = score(main_croupier)
-    while score(main_croupier) <= 17:
+    while score(main_croupier) <= 16:
         print(points_croupier, main_croupier)
         hit(main_croupier, 'main_croupier')
     print('resultat dans croupier')
@@ -449,7 +449,7 @@ def resultat(action=0):
                 str(score(main_croupier))
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
-            resultat_label['text'] = 'Le croupier a dépassé 21: vous' +\
+            resultat_label['text'] = 'Le croupier a dépassé 21: vous ' +\
                 'avez gagné !'
             resultat_label.grid(column=10, row=2)
             consequence = 'win'
@@ -464,16 +464,16 @@ def resultat(action=0):
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 if score(main_joueur) == 21 and len(main_joueur) == 2:
-                    resultat_label['text'] += 'Vous avez également un' +\
+                    resultat_label['text'] += 'Vous avez également un ' +\
                         'Blacjack, votre mise est remboursée \n'
                     consequence = 'egalite'
                 if assurance_prise == 1:
                     resultat_label['text'] += 'Vous avez payé l\'' +\
-                        'assurance, vous gagnez deux fois le montant de' +\
+                        'assurance, vous gagnez deux fois le montant de ' +\
                         'votre assurance \n'
                     assurance_gagnante = 1
                 if score(main_joueur) != 21 or len(main_joueur) != 2:
-                    resultat_label['text'] += ' La main du croupier' +\
+                    resultat_label['text'] += ' La main du croupier ' +\
                         'est meilleure, vous avez perdu.e'
             elif score(main_joueur) < score(main_croupier):
                 annonce = 'Votre score: ' + \
@@ -490,7 +490,7 @@ def resultat(action=0):
                     str(score(main_croupier))
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Vous avez le même score' + \
+                resultat_label['text'] = 'Vous avez le même score ' + \
                     'que le croupier: ex aequo'
                 resultat_label.grid(column=10, row=2)
                 consequence = 'egalite'
@@ -500,7 +500,7 @@ def resultat(action=0):
                     str(score(main_croupier))
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
-                resultat_label['text'] = 'Vous avez un meilleur score que' + \
+                resultat_label['text'] = 'Vous avez un meilleur score que ' + \
                     'le croupier: vous avez gagné !'
                 resultat_label.grid(column=10, row=2)
                 consequence = 'win'
@@ -526,8 +526,9 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     if assurance_gagnante == 1:
         gain_assurance += mise_totale
     money += gain
-    argent['text'] = 'Crédits: ' + str(money-gain//2-gain_assurance//2) +\
-        ' + ' + str(gain//2)
+    if gain != 0:
+        argent['text'] = 'Crédits: ' + str(money-gain//2-gain_assurance//2) +\
+            ' + ' + str(gain//2)
     if gain_assurance != 0:
         argent['text'] += ' + ' + str(gain_assurance)
 
@@ -621,6 +622,7 @@ def apparition_mise():
     jeton_rouge.grid(column=1, row=10)
     jeton_noir.grid(column=5, row=10)
     miser.grid(column=0, row=10)
+    mise_texte.grid(column=0, row=9)
 
 
 def disparition_mise():
@@ -629,6 +631,7 @@ def disparition_mise():
     jeton_rouge.grid_forget()
     jeton_noir.grid_forget()
     miser.grid_forget()
+    mise_texte.grid_forget()
 
 
 def mise(montant_mise):
@@ -771,12 +774,9 @@ argent.grid(column=0, row=8)
 
 mise_texte = tkinter.Label(
     root, text='Mise totale: ', bg='dark green', fg='white')
-mise_texte.grid(column=0, row=9)
-
 
 miser = tkinter.Label(root, text="Cliquez pour miser:",
                       bg='dark green', fg='white')
-miser.grid(column=0, row=10)
 
 jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
