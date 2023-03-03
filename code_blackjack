@@ -484,17 +484,16 @@ def resultat(action=0):
                 resultat_label['text'] = 'Le croupier a un meilleur ' + \
                     'score, vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
-            elif (score(main_joueur)) == score(main_croupier):
-                if len(main_croupier) != 2:
-                    annonce = 'Votre score: ' + \
-                        str(score(main_joueur)) + '\n Score du croupier: ' + \
-                        str(score(main_croupier))
-                    resultat_final['text'] = annonce
-                    resultat_final.grid(column=9, row=1)
-                    resultat_label['text'] = 'Vous avez le même score' + \
-                        'que le croupier: ex aequo'
-                    resultat_label.grid(column=10, row=2)
-                    consequence = 'egalite'
+            elif score(main_joueur) == score(main_croupier):
+                annonce = 'Votre score: ' + \
+                    str(score(main_joueur)) + '\n Score du croupier: ' + \
+                    str(score(main_croupier))
+                resultat_final['text'] = annonce
+                resultat_final.grid(column=9, row=1)
+                resultat_label['text'] = 'Vous avez le même score' + \
+                    'que le croupier: ex aequo'
+                resultat_label.grid(column=10, row=2)
+                consequence = 'egalite'
             elif score(main_joueur) > score(main_croupier):
                 annonce = 'Votre score: ' + \
                     str(score(main_joueur)) + '\n Score du croupier: ' + \
@@ -528,7 +527,9 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
         gain_assurance += mise_totale
     money += gain
     argent['text'] = 'Crédits: ' + str(money-gain//2-gain_assurance//2) +\
-        ' + ' + str(gain//2) + ' + ' + str(gain_assurance)
+        ' + ' + str(gain//2)
+    if gain_assurance != 0:
+        argent['text'] += ' + ' + str(gain_assurance)
 
 
 def rejouer():
