@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = "Mathilde, Maëlis, Joseph"
+__author__ = "Mathilde, Maïlys, Joseph"
 __copyright__ = "Copyright 2023, Projet Blacjack"
-__credits__ = ["Mathilde", "Maëlis", "Joseph"]
+__credits__ = ["Mathilde", "Maïlys", "Joseph"]
 __license__ = "GPL"
 __version__ = "0.1.1"
 __maintainer__ = "Joseph ARIAS"
