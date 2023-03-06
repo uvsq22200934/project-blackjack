@@ -47,7 +47,7 @@ prix_assurance = 0
 images = dict()
 image_dos = dict()
 
-debug = 0
+debug = 1
 
 
 """Fonctions"""
@@ -71,33 +71,10 @@ def creer_image(carte, position_carte, texte):
     if 't' in carte:
         b += 570*3
         d += 570*3
-    if '2' in carte:
-        a += 390
-        c += 390
-    if '3' in carte:
-        a += 390*2
-        c += 390*2
-    if '4' in carte:
-        a += 390*3
-        c += 390*3
-    if '5' in carte:
-        a += 390*4
-        c += 390*4
-    if '6' in carte:
-        a += 390*5
-        c += 390*5
-    if '7' in carte:
-        a += 390*6
-        c += 390*6
-    if '8' in carte:
-        a += 390*7
-        c += 390*7
-    if '9' in carte:
-        a += 390*8
-        c += 390*8
-    if '10' in carte:
-        a += 390*9
-        c += 390*9
+    for i in range(2, 11):
+        if str(i) in carte:
+            a += 390 * (i-1)
+            c += 390 * (i-1)
     if 'V' in carte:
         a += 390*10
         c += 390*10
