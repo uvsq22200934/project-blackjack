@@ -47,6 +47,8 @@ prix_assurance = 0
 images = dict()
 image_dos = dict()
 
+debug = 0
+
 
 """Fonctions"""
 
@@ -54,7 +56,8 @@ image_dos = dict()
 def creer_image(carte, position_carte, texte):
     dir = os.path.dirname(__file__)
     image_carte = Image.open(dir+"\\Images\\cartes.png")
-    print('ok', carte)
+    if debug == 1:
+        print('ok', carte)
     a = 30
     b = 30
     c = 390
@@ -104,7 +107,8 @@ def creer_image(carte, position_carte, texte):
     if 'R' in carte:
         a += 390*12
         c += 390*12
-    print(a, b, c, d)
+    if debug == 1:
+        print(a, b, c, d)
     crop_rectangle = (a, b, c, d)
     cropped_im = image_carte.crop(crop_rectangle)
     image_fin = cropped_im.resize((66, 100))
@@ -197,7 +201,8 @@ def donne_initiale():
         else:
             bouton_melanger.grid_forget()
             apparition_bouton_joueur()
-    print('main joueur', main_joueur, '\n main croupier', main_croupier)
+    if debug == 1:
+        print('main joueur', main_joueur, '\n main croupier', main_croupier)
 
 
 def reponse_assurance(reponse=0):
@@ -266,7 +271,8 @@ def hit(main, pointeur):
             cj11.grid(column=12, row=7)
         test_score(main)
     if pointeur == 'main_croupier':
-        print(len(main))
+        if debug == 1:
+            print(len(main))
         main.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
@@ -309,7 +315,8 @@ def test_score(main):
 
 def disparition_bouton_joueur():
     global bouton_hit
-    print("bouton test", bouton_hit.grid_info())
+    if debug == 1:
+        print("bouton test", bouton_hit.grid_info())
     bouton_hit.grid_forget()
     stand_bouton.grid_forget()
     bouton_surrender.grid_forget()
@@ -329,8 +336,9 @@ def fin_manche():
     while len(main_croupier) != 0:
         defausse.append(main_croupier[0])
         del main_croupier[0]
-    print(len(paquet), paquet)
-    print('mains croupier ', main_croupier, 'main joueur', main_joueur)
+    if debug == 1:
+        print(len(paquet), paquet)
+        print('mains croupier ', main_croupier, 'main joueur', main_joueur)
     bouton_rejouer.grid(column=2, row=3)
 
 
@@ -343,7 +351,8 @@ def score(main):
     At = 0
     for element in main:
         points += valeurs.get(element)
-        print(points, valeurs.get(element), element)
+        if debug == 1:
+            print(points, valeurs.get(element), element)
     for element in main:
         while points > 21:
             if 'Aca' in element and Aca == 0:
@@ -360,7 +369,8 @@ def score(main):
                 points -= 10
             else:
                 break
-    print('point final', points)
+    if debug == 1:
+        print('point final', points)
     return points
 
 
@@ -372,9 +382,11 @@ def croupier():
     root.update()
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 16:
-        print(points_croupier, main_croupier)
+        if debug == 1:
+            print(points_croupier, main_croupier)
         hit(main_croupier, 'main_croupier')
-    print('resultat dans croupier')
+    if debug == 1:
+        print('resultat dans croupier')
     resultat()
 
 
@@ -394,7 +406,8 @@ def doubble_down(main):
     mise_texte['text'] = "Mise totale: " + str(mise_totale)
     argent['text'] = 'Crédits: ' + str(money)
     hit(main, 'main_joueur')
-    print(main)
+    if debug == 1:
+        print(main)
     croupier()
 
 
@@ -412,8 +425,9 @@ def resultat(action=0):
     global bj21
     consequence = 0
     if bj21 == 1:
-        print('taille main croupier', len(main_croupier), main_croupier,
-              score(main_croupier))
+        if debug == 1:
+            print('taille main croupier', len(main_croupier), main_croupier,
+                  score(main_croupier))
         if (score(main_croupier) == 21) and (len(main_croupier) == 2):
             annonce = 'Votre score: ' + \
                 str(score(main_joueur)) + '\n Score du croupier: ' + \
@@ -455,7 +469,8 @@ def resultat(action=0):
             consequence = 'win'
         elif score(main_croupier) <= 21:
             if (score(main_croupier) == 21) and (len(main_croupier) == 2):
-                print('ok')
+                if debug == 1:
+                    print('ok')
                 resultat_label['text'] = 'Le croupier a fait un Blacjack !\n'
                 resultat_label.grid(column=10, row=2)
                 annonce = 'Votre score: ' + \
@@ -504,8 +519,9 @@ def resultat(action=0):
                     'le croupier: vous avez gagné !'
                 resultat_label.grid(column=10, row=2)
                 consequence = 'win'
-    print(score(main_joueur), score(main_croupier))
-    print('fin manche dans resultat')
+    if debug == 1:
+        print(score(main_joueur), score(main_croupier))
+        print('fin manche dans resultat')
     fin_manche()
     calcul_gain(consequence, assurance_gagnante)
 
@@ -598,7 +614,8 @@ def ordre_boutons3(event):
     if event.widget == bouton_donne_initiale:
         if mise_totale != 0:
             erreur.grid_forget()
-            print('ok')
+            if debug == 1:
+                print('ok')
             donne_initiale()
             bouton_donne_initiale.grid_forget()
         else:
