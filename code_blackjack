@@ -141,14 +141,14 @@ def donne_initiale():
     while nb_carte < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
-            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
-            ' défausse: ' + str(len(defausse))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f'défausse: {str(len(defausse))}'
         main_croupier.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
-            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
-            ' défausse: ' + str(len(defausse))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f'défausse: {str(len(defausse))}'
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.update()
@@ -193,12 +193,12 @@ def reponse_assurance(reponse=0):
     if reponse == 'oui':
         money -= prix_assurance
         assurance_prise = 1
-        assurance_valeur['text'] = 'Assurance: '+str(prix_assurance)
+        assurance_valeur['text'] = f'Assurance: {str(prix_assurance)}'
         assurance_valeur.grid(column=0, row=10)
     bouton_non_assurance.grid_forget()
     bouton_oui_assurance.grid_forget()
     texte_assurance.grid_forget()
-    argent['text'] = 'Crédits: ' + str(money)
+    argent['text'] = f'Crédits: {str(money)}'
     if score(main_joueur) == 21:
         bj21 = 1
         croupier()
@@ -216,9 +216,9 @@ def hit(main, pointeur):
         bouton_double_down.grid_forget()
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
-            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
-            ' défausse: ' + str(len(defausse))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f'défausse: {str(len(defausse))}'
         if len(main) == 3:
             creer_image(main_joueur[2], cj3, 'cj3')
             cj3.grid(column=4, row=7)
@@ -252,9 +252,9 @@ def hit(main, pointeur):
             print(len(main))
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
-            str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
-            ' défausse: ' + str(len(defausse))
+        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f'défausse: {str(len(defausse))}'
         if len(main_croupier) == 3:
             creer_image(main_croupier[2], cc3, 'cc3')
             cc3.grid(column=4, row=1)
@@ -380,8 +380,8 @@ def doubble_down(main):
     global money
     money -= mise_totale
     mise_totale *= 2
-    mise_texte['text'] = "Mise totale: " + str(mise_totale)
-    argent['text'] = 'Crédits: ' + str(money)
+    mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
+    argent['text'] = f'Crédits: {str(money)}'
     hit(main, 'main_joueur')
     if debug == 1:
         print(main)
@@ -406,9 +406,8 @@ def resultat(action=0):
             print('taille main croupier', len(main_croupier), main_croupier,
                   score(main_croupier))
         if (score(main_croupier) == 21) and (len(main_croupier) == 2):
-            annonce = 'Votre score: ' + \
-                str(score(main_joueur)) + '\n Score du croupier: ' + \
-                str(score(main_croupier))
+            annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
+                f'du croupier: {str(score(main_croupier))}'
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
             resultat_label['text'] = 'Vous avez le même score que le ' + \
@@ -427,7 +426,7 @@ def resultat(action=0):
         resultat_label['text'] = 'Vous avez abadonné'
         consequence = 'ff'
     elif score(main_joueur) > 21:
-        annonce = 'Votre score: ' + str(score(main_joueur))
+        annonce = f'Votre score: {str(score(main_joueur))}'
         resultat_final['text'] = annonce
         resultat_final.grid(column=9, row=1)
         resultat_label['text'] = 'Votre main vaut plus que 21, vous' + \
@@ -435,9 +434,8 @@ def resultat(action=0):
         resultat_label.grid(column=10, row=2)
     elif score(main_joueur) <= 21:
         if score(main_croupier) > 21:
-            annonce = 'Votre score: ' + \
-                str(score(main_joueur)) + '\n Score du croupier: ' + \
-                str(score(main_croupier))
+            annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
+                f'du croupier: {str(score(main_croupier))}'
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
             resultat_label['text'] = 'Le croupier a dépassé 21: vous ' +\
@@ -450,9 +448,8 @@ def resultat(action=0):
                     print('ok')
                 resultat_label['text'] = 'Le croupier a fait un Blacjack !\n'
                 resultat_label.grid(column=10, row=2)
-                annonce = 'Votre score: ' + \
-                    str(score(main_joueur)) + '\n Score du croupier: ' + \
-                    str(score(main_croupier))
+                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
+                    f'du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 if score(main_joueur) == 21 and len(main_joueur) == 2:
@@ -468,18 +465,16 @@ def resultat(action=0):
                     resultat_label['text'] += ' La main du croupier ' +\
                         'est meilleure, vous avez perdu.e'
             elif score(main_joueur) < score(main_croupier):
-                annonce = 'Votre score: ' + \
-                    str(score(main_joueur)) + '\n Score du croupier: ' + \
-                    str(score(main_croupier))
+                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
+                    f'du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 resultat_label['text'] = 'Le croupier a un meilleur ' + \
                     'score, vous avez perdu.'
                 resultat_label.grid(column=10, row=2)
             elif score(main_joueur) == score(main_croupier):
-                annonce = 'Votre score: ' + \
-                    str(score(main_joueur)) + '\n Score du croupier: ' + \
-                    str(score(main_croupier))
+                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
+                    f'du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 resultat_label['text'] = 'Vous avez le même score ' + \
@@ -487,9 +482,8 @@ def resultat(action=0):
                 resultat_label.grid(column=10, row=2)
                 consequence = 'egalite'
             elif score(main_joueur) > score(main_croupier):
-                annonce = 'Votre score: ' + \
-                    str(score(main_joueur)) + '\n Score du croupier: ' + \
-                    str(score(main_croupier))
+                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
+                    f'du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 resultat_label['text'] = 'Vous avez un meilleur score que ' + \
@@ -529,16 +523,16 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
 def rejouer():
     global mise_totale
     global coupe
-    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet: ' + \
-        str(len(paquet)) + '\nNombre de cartes restantes dans la' + \
-        'défausse: ' + str(len(defausse))
+    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+        f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+        f'défausse: {str(len(defausse))}'
     if len(defausse) >= coupe:
         for element in defausse:
             paquet.append(defausse[0])
             del defausse[0]
-            nb_paquet['text'] = 'Nombre de cartes restantes dans le' + \
-                'paquet: ' + str(len(paquet)) + '\nNombre de cartes' + \
-                'restantes dans la défausse: ' + str(len(defausse))
+            nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+                f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+                f'défausse: {str(len(defausse))}'
         random.shuffle(paquet)
     bouton_rejouer.grid_forget()
     apparition_mise()
@@ -865,10 +859,9 @@ resultat_label = tkinter.Label(
     root, text='', bg='dark green', fg='yellow')
 
 nb_paquet = tkinter.Label(
-    root, text='Nombre de cartes restantes dans le paquet: ' +
-    str(len(paquet)) + '\nNombre de cartes restantes dans la défausse: ' +
-    str(len(defausse)),
-    bg='dark green')
+    root, text=f'Nombre de cartes restantes dans le paquet:' +
+    f'{str(len(paquet))} \nNombre de cartes restantes dans la' +
+    f'défausse: {str(len(defausse))}', bg='dark green')
 nb_paquet.grid(column=10, row=0)
 
 root.mainloop()
