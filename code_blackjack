@@ -47,7 +47,7 @@ prix_assurance = 0
 images = dict()
 image_dos = dict()
 
-debug = 1
+debug = 0
 
 
 """Fonctions"""
@@ -514,10 +514,14 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
         gain_assurance += mise_totale
     money += gain
     if gain != 0:
-        argent['text'] = 'Crédits: ' + str(money-gain//2-gain_assurance//2) +\
-            ' + ' + str(gain//2)
+        if consequence == 'Blackjack':
+            argent['text'] = 'Crédits:' +\
+                f'{str(money-gain//1.5-gain_assurance//2)} + {str(gain//1.5)}'
+        else:
+            argent['text'] = 'Crédits:' +\
+                f'{str(money-gain//2-gain_assurance//2)} + {str(gain//2)}'
     if gain_assurance != 0:
-        argent['text'] += ' + ' + str(gain_assurance)
+        argent['text'] += f' + {str(gain_assurance)}'
 
 
 def rejouer():
@@ -539,7 +543,7 @@ def rejouer():
     bouton_donne_initiale.grid(column=2, row=3)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
-    argent['text'] = 'Crédits: ' + str(money)
+    argent['text'] = f'Crédits: {str(money)}'
     cc1.delete('all')
     cc2.delete('all')
     cj1.delete('all')
@@ -630,8 +634,8 @@ def mise(montant_mise):
         bouton_donne_initiale.grid(column=2, row=3)
         mise_totale += montant_mise
         money -= montant_mise
-        mise_texte['text'] = "Mise totale: " + str(mise_totale)
-        argent['text'] = 'Crédits: ' + str(money)
+        mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
+        argent['text'] = f'Crédits: {str(money)}'
 
 
 """Fenêtres"""
@@ -859,7 +863,7 @@ resultat_label = tkinter.Label(
     root, text='', bg='dark green', fg='yellow')
 
 nb_paquet = tkinter.Label(
-    root, text=f'Nombre de cartes restantes dans le paquet:' +
+    root, text='Nombre de cartes restantes dans le paquet:' +
     f'{str(len(paquet))} \nNombre de cartes restantes dans la' +
     f'défausse: {str(len(defausse))}', bg='dark green')
 nb_paquet.grid(column=10, row=0)
