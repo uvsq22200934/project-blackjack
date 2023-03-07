@@ -111,7 +111,7 @@ def debut(event):
             name = 'Joueur'
         if money == '':
             money = 1000
-        elif money != ':':
+        elif money != '':
             money = int(money)
         accueil.destroy()
     if event.widget == partie_en_cours:
@@ -407,7 +407,7 @@ def resultat(action=0):
                   score(main_croupier))
         if (score(main_croupier) == 21) and (len(main_croupier) == 2):
             annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
-                f'du croupier: {str(score(main_croupier))}'
+                f' du croupier: {str(score(main_croupier))}'
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
             resultat_label['text'] = 'Vous avez le même score que le ' + \
@@ -435,7 +435,7 @@ def resultat(action=0):
     elif score(main_joueur) <= 21:
         if score(main_croupier) > 21:
             annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
-                f'du croupier: {str(score(main_croupier))}'
+                f' du croupier: {str(score(main_croupier))}'
             resultat_final['text'] = annonce
             resultat_final.grid(column=9, row=1)
             resultat_label['text'] = 'Le croupier a dépassé 21: vous ' +\
@@ -449,7 +449,7 @@ def resultat(action=0):
                 resultat_label['text'] = 'Le croupier a fait un Blacjack !\n'
                 resultat_label.grid(column=10, row=2)
                 annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f'du croupier: {str(score(main_croupier))}'
+                    f' du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 if score(main_joueur) == 21 and len(main_joueur) == 2:
@@ -466,7 +466,7 @@ def resultat(action=0):
                         'est meilleure, vous avez perdu.e'
             elif score(main_joueur) < score(main_croupier):
                 annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f'du croupier: {str(score(main_croupier))}'
+                    f' du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 resultat_label['text'] = 'Le croupier a un meilleur ' + \
@@ -474,7 +474,7 @@ def resultat(action=0):
                 resultat_label.grid(column=10, row=2)
             elif score(main_joueur) == score(main_croupier):
                 annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f'du croupier: {str(score(main_croupier))}'
+                    f' du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 resultat_label['text'] = 'Vous avez le même score ' + \
@@ -483,7 +483,7 @@ def resultat(action=0):
                 consequence = 'egalite'
             elif score(main_joueur) > score(main_croupier):
                 annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f'du croupier: {str(score(main_croupier))}'
+                    f' du croupier: {str(score(main_croupier))}'
                 resultat_final['text'] = annonce
                 resultat_final.grid(column=9, row=1)
                 resultat_label['text'] = 'Vous avez un meilleur score que ' + \
