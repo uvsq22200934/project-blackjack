@@ -948,8 +948,12 @@ action_texte=tkinter.Label(règle, text='Hit : vous piochez autant de cartes sou
                            bg='white', fg='gray13', font=('helvetica', 15))
 action_texte.pack(side='top')
 
-callback = tkinter.Label(règle, text='Revenir au jeu', width=20, height=20,
-                         highlightcolor='brown4', bg='white', fg='red', font=('helvetica',15))
-callback.pack(padx=10, pady=0)
+def revenir(event):
+    if event.widget == bouton_revenir:
+        règle.destroy()
+
+bouton_revenir = tkinter.Button(règle, text='Revenir au jeu', fg='red')
+bouton_revenir.pack()
+bouton_revenir.bind('<Button-1>', revenir)
 
 règle.mainloop()
