@@ -142,12 +142,12 @@ def donne_initiale():
         main_joueur.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
             f'défausse: {str(len(defausse))}'
         main_croupier.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
             f'défausse: {str(len(defausse))}'
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
@@ -217,7 +217,7 @@ def hit(main, pointeur):
         main.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
             f'défausse: {str(len(defausse))}'
         if len(main) == 3:
             creer_image(main_joueur[2], cj3, 'cj3')
@@ -253,7 +253,7 @@ def hit(main, pointeur):
         main.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
             f'défausse: {str(len(defausse))}'
         if len(main_croupier) == 3:
             creer_image(main_croupier[2], cc3, 'cc3')
@@ -370,7 +370,8 @@ def croupier():
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
     stand_label.grid(column=0, row=5)
-    print("je m'arrête")
+    if debug == 1:
+        print("je m'arrête")
     croupier()
 
 
@@ -528,14 +529,14 @@ def rejouer():
     global mise_totale
     global coupe
     nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-        f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f'défausse: {str(len(defausse))}'
     if len(defausse) >= coupe:
         for element in defausse:
             paquet.append(defausse[0])
             del defausse[0]
             nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-                f'{str(len(paquet))} \nNombre de cartes restantes dans la' +\
+                f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
                 f'défausse: {str(len(defausse))}'
         random.shuffle(paquet)
     bouton_rejouer.grid_forget()
@@ -864,7 +865,7 @@ resultat_label = tkinter.Label(
 
 nb_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
-    f'{str(len(paquet))} \nNombre de cartes restantes dans la' +
+    f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f'défausse: {str(len(defausse))}', bg='dark green')
 nb_paquet.grid(column=10, row=0)
 
