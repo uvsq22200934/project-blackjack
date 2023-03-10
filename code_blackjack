@@ -46,7 +46,7 @@ prix_assurance = 0
 images = dict()
 image_dos = dict()
 
-debug = 0
+debug = 1
 name = ''
 
 
@@ -637,6 +637,11 @@ def mise(montant_mise):
         money -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
         argent['text'] = f'Crédits: {str(money)}'
+    if money == 0:
+        banque= tkinter.Label(root, text='Vous êtes à cours de crédit', 
+                              font=('helvetica',15), bg='dark green', fg='red')
+        banque.grid(column=6, columnspan=5, row=3)
+    
 
 
 """Fenêtres"""
@@ -996,6 +1001,7 @@ action_texte.pack(side='top')
 
 def revenir(event):
     if event.widget == bouton_revenir:
+        F1 = tkinter.Toplevel(accueil)
         règle.destroy()
 
 
