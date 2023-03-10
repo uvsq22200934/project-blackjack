@@ -55,9 +55,7 @@ name = ''
 
 
 def creer_image(carte, position_carte, texte):
-    #dir = os.path.dirname(__file__)
-    #image_carte = Image.open(dir+"\\Images\\cartes.png")
-    image_carte = Image.open(".\\Images\\cartes.png")
+    image_carte = Image.open("./Images/cartes.png")
     if debug == 1:
         print('ok', carte)
     a = 30
@@ -505,8 +503,6 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     gain_assurance = 0
     if consequence == 'Blackjack':
         gain += mise_totale * 3 // 2
-    if consequence == 'egalite':
-        gain += mise_totale
     if consequence == 'ff':
         gain += mise_totale // 2
     if consequence == 'win':
@@ -521,6 +517,8 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
         else:
             argent['text'] = 'Crédits:' +\
                 f'{str(money-gain//2-gain_assurance//2)} + {str(gain//2)}'
+    if gain == 0:
+        argent['text'] = f'Crédits: {str(money)}'
     if gain_assurance != 0:
         argent['text'] += f' + {str(gain_assurance)}'
 
