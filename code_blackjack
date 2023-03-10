@@ -48,14 +48,16 @@ images = dict()
 image_dos = dict()
 
 debug = 0
+name = ''
 
 
 """Fonctions"""
 
 
 def creer_image(carte, position_carte, texte):
-    dir = os.path.dirname(__file__)
-    image_carte = Image.open(dir+"\\Images\\cartes.png")
+    #dir = os.path.dirname(__file__)
+    #image_carte = Image.open(dir+"\\Images\\cartes.png")
+    image_carte = Image.open(".\\Images\\cartes.png")
     if debug == 1:
         print('ok', carte)
     a = 30
