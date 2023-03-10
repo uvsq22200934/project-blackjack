@@ -638,11 +638,37 @@ def mise(montant_mise):
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
         argent['text'] = f'Crédits: {str(money)}'
     if money == 0:
+        def emprunter(event):
+            global money 
+            if event.widget == emprunt:
+                emprunt.grid_forget()
+                banque.grid_forget()
+                term.grid_forget()
+                eprnt= tkinter.Label(root, text='Combien souhaitez-vous emprunter ?',
+                                     fg ='black', bg='dark green')
+                eprnt.grid(column=5, row=3) 
+                my_entry3 = tkinter.Entry(root)
+                my_entry3.grid(column=5, columnspan=5, row=5)     
+                money= my_entry3.get()
+                eprnt.grid_forget()
+                def validd(event):
+                    if event.widget == valid :
+                        my_entry3.grid_forget()
+                        valid.grid_forget()
+                valid= tkinter.Button(root, text='valider la mise',
+                                      bg='dark green', fg='black')
+                valid.grid(column=6, row=6)
+                valid.bind('<Button-1>', validd)
         banque= tkinter.Label(root, text='Vous êtes à cours de crédit', 
                               font=('helvetica',15), bg='dark green', fg='red')
-        banque.grid(column=6, columnspan=5, row=3)
+        banque.grid(column=9, columnspan=5, row=3)
+        emprunt = tkinter.Button(root, text='Emprunt')
+        emprunt.grid(column=6, row=5)
+        emprunt.bind('<Button-1>',emprunter)
+        term= tkinter.Button(root, text='Terminer')
+        term.grid(column=10, row=5)
+        term.bind('<Button-1>', quitter)
     
-
 
 """Fenêtres"""
 
@@ -875,7 +901,7 @@ cc2 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc2.grid(column=3, row=1)
 
 # texte qui définit le côté du croupier
-labelc = tkinter.Label(root, text="Croupier·ère ", font=(
+labelc = tkinter.Label(root, text="Dealer ", font=(
     "helvetica", "15"), bg="dark green", fg="black")
 labelc.grid(column=0, row=1)
 
@@ -959,9 +985,9 @@ deroulement_partie.pack(side='top')
 
 deroulement_partie_texte = tkinter.Label(règle, text='Au début du jeu, ' +
                                          '2 cartes sont distribuées au ' +
-                                         'joueur.\n A chaque tour, le ' +
-                                         'joueur peut prendre des actions.' +
-                                         '\n Le croupier pioche jusqu’à ' +
+                                         'Player.\n A chaque tour, le ' +
+                                         'Player peut prendre des actions.' +
+                                         '\n Le Dealer pioche jusqu’à ' +
                                          'atteindre 17 points minimum.\n',
                                          bg='white', fg='grey13',
                                          font=('helvetica', 15))
@@ -971,10 +997,10 @@ gagnant_texte = tkinter.Label(règle, text='Comment gagner ?',
                               bg='white', fg='black', font=('helvetica', 17))
 gagnant_texte.pack(side='top')
 
-gagnanttexte = tkinter.Label(règle, text='Si le·a croupier·ère possède une ' +
+gagnanttexte = tkinter.Label(règle, text='Si le Dealer possède une ' +
                              'main supérieure à 21, vous gagnez la partie' +
                              ' en cours. Vous gagnez 150% de votre mise.\n ' +
-                             'Si le·a croupier·ère a une main comprise entre 17 ' +
+                             'Si le Dealer a une main comprise entre 17 ' +
                              'et 21 points, et que vous avez un score ' +
                              'supérieur alors vous gagnez.\n Si vous avez ' +
                              'une main supérieure à 21 points, vous ' +
@@ -989,11 +1015,11 @@ action = tkinter.Label(règle, text='Actions', bg='white',
 action.pack(side='top')
 action_texte = tkinter.Label(règle, text='Hit : vous piochez autant de ' +
                              'cartes souhaitées pour se rapprocher de ' +
-                             '21\n Stand : le·a joueur·se conserve ses cartes, ' +
-                             'iel annonce s’iel reste ou s’iel s’arrête\n ' +
-                             'Double Down : le·a joueur·se double sa mise, mais ' +
+                             '21\n Stand : le Player conserve ses cartes, ' +
+                             'il annonce s’il reste ou s’il s’arrête\n ' +
+                             'Double Down : le Player double sa mise, mais ' +
                              'ne peut recevoir qu’une seule carte\n' +
-                             'Surrender : le·a joueur·se abandonne et perd ' +
+                             'Surrender : le Player abandonne et perd ' +
                              'la moitié de sa mise',
                              bg='white', fg='gray13', font=('helvetica', 15))
 action_texte.pack(side='top')
