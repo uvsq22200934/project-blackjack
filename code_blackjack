@@ -148,13 +148,13 @@ def donne_initiale():
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.update()
-    time.sleep(1)
+    time.sleep(0.5)
     creer_image(main_croupier[0], cc1, 'cc1')
     root.update()
-    time.sleep(1)
+    time.sleep(0.5)
     creer_image(main_joueur[1], cj2, 'cj2')
     root.update()
-    time.sleep(1)
+    time.sleep(0.5)
     dos_carte(cc2, 'cc2')
     bj21 = 0
     assurance_prise = 0
@@ -608,10 +608,11 @@ def apparition_bouton_joueur():
 
 
 def apparition_mise():
-    jeton_blanc.grid(column=3, row=10)
-    jeton_bleu.grid(column=2, row=10)
-    jeton_rouge.grid(column=1, row=10)
-    jeton_noir.grid(column=5, row=10)
+    jeton_blanc.grid(column=4, row=10)
+    jeton_bleu.grid(column=3, row=10)
+    jeton_rouge.grid(column=2, row=10)
+    jeton_noir.grid(column=6, row=10)
+    jeton_vert.grid(column=1, row=10)
     miser.grid(column=0, row=10)
     mise_texte.grid(column=0, row=9)
 
@@ -621,6 +622,7 @@ def disparition_mise():
     jeton_bleu.grid_forget()
     jeton_rouge.grid_forget()
     jeton_noir.grid_forget()
+    jeton_vert.grid_forget()
     miser.grid_forget()
     mise_texte.grid_forget()
 
@@ -791,7 +793,7 @@ assurance_valeur = tkinter.Label(text='')
 
 
 mise_totale = 0
-mise_valeur = {'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_blanc': 50,
+mise_valeur = {'jeton_vert':1,'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_blanc': 50,
                'jeton_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
@@ -811,9 +813,9 @@ jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_blanc.create_oval(1, 1, 25, 25, width=3,
-                        outline='light grey', fill='mint cream')
+                        outline='chartreuse4', fill='green4')
 
-jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8))
+jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8), fill='white')
 
 jeton_bleu = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
@@ -825,7 +827,7 @@ jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
-jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8))
+jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8), fill='white')
 
 jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
@@ -833,6 +835,14 @@ jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
 jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
 jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 
+jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
+jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey', fill='mint cream')
+jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='black')
+
+
+jeton_vert.bind('<Button-1>', lambda e: mise(1))
 
 jeton_rouge.bind('<Button-1>', lambda e: mise(10))
 
