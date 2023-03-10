@@ -793,8 +793,8 @@ assurance_valeur = tkinter.Label(text='')
 
 
 mise_totale = 0
-mise_valeur = {'jeton_vert':1,'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_blanc': 50,
-               'jeton_noir': 100}
+mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
+               'jeton_blanc': 50, 'jeton_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
@@ -838,7 +838,8 @@ jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey', fill='mint cream')
+jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
+                       fill='mint cream')
 jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='black')
 
 
