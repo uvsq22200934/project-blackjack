@@ -117,11 +117,14 @@ def debut(event):
     if event.widget == bouton_rdj:
         accueil.destroy()
 
+
 def fenêtre():
     F1 = tkinter.Toplevel(accueil)
 
+
 def fenêtre_bis():
     F2 = tkinter.Toplevel(accueil)
+
 
 def donne_initiale():
     # fonction qui distribue les cartes en début de partie
@@ -633,6 +636,7 @@ def mise(montant_mise):
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
         argent['text'] = f'Crédits: {str(money)}'
 
+
 """Fenêtres"""
 
 accueil = tkinter.Tk()
@@ -649,14 +653,15 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
 
-play= tkinter.Button(accueil, text='Play',
-                    width=15, height=5, font=('helvetica', 20), command=fenêtre)
+play = tkinter.Button(accueil, text='Play',
+                      width=15, height=5, font=('helvetica', 20),
+                      command=fenêtre)
 
 play.pack()
 
 play.bind('<Button-1>', debut)
 
-bouton_rdj = tkinter.Button(accueil, text= 'Comment jouer ?',
+bouton_rdj = tkinter.Button(accueil, text='Comment jouer ?',
                             width=13, height=2, fg='navy', command=fenêtre_bis)
 bouton_rdj.pack()
 bouton_rdj.bind('<Button-1>', debut)
@@ -688,28 +693,28 @@ cartes3.pack(side='right', anchor='n')
 cartes4.pack(side='right', anchor='n')
 
 jetonnoir = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                            relief='raised', borderwidth=0,
-                            highlightthickness=0)
+                           relief='raised', borderwidth=0,
+                           highlightthickness=0)
 jetonnoir.create_oval(1, 1, 55, 55, width=3, outline='gray19', fill='gray14')
 jetonnoir.pack(side='left', anchor='center')
 jetonnoir.place(bordermode='outside', relx=0.05, rely=0.1, anchor='nw')
 
 jetonbleu = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                            relief='raised', borderwidth=0,
-                            highlightthickness=0)
+                           relief='raised', borderwidth=0,
+                           highlightthickness=0)
 jetonbleu.create_oval(1, 1, 55, 55, width=3, outline='blue4', fill='navy')
-jetonbleu.pack(side='left',anchor='center')
+jetonbleu.pack(side='left', anchor='center')
 jetonbleu.place(bordermode='outside', relx=0, rely=0, anchor='nw')
 
 jetonblanc = tkinter.Canvas(accueil, bg='red', width=60, height=60,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jetonblanc.create_oval(1, 1, 55, 55, width=3,  outline='light grey', fill='mint cream')
-jetonblanc.pack(side='left',anchor='n')
+jetonblanc.create_oval(1, 1, 55, 55, width=3,
+                       outline='light grey', fill='mint cream')
+jetonblanc.pack(side='left', anchor='n')
 jetonblanc.place(bordermode='outside', relx=0.1, rely=0, anchor='nw')
 
 accueil.mainloop()
-
 
 
 """2ème fenètre"""
@@ -803,10 +808,10 @@ mise_texte = tkinter.Label(
 miser = tkinter.Label(root, text="Cliquez pour miser:",
                       bg='dark green', fg='white')
 jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                            relief='raised', borderwidth=0,
-                            highlightthickness=0)
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
 jeton_blanc.create_oval(1, 1, 25, 25, width=3,
-                       outline='light grey', fill='mint cream')
+                        outline='light grey', fill='mint cream')
 
 jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8))
 
@@ -910,10 +915,11 @@ règle.geometry = accueil.geometry
 règle.configure(bg='white')
 
 titre = tkinter.Label(règle, text='REGLE DU BLACKJACK 21\n', bg='white',
-                     fg='black', font=('helvetica', 23))
+                      fg='black', font=('helvetica', 23))
 titre.pack(side='top')
 
-jeu = tkinter.Label(règle, text='Le BlackJack se joue avec 312 cartes. 6 jeux de 52 cartes.\n',
+jeu = tkinter.Label(règle, text='Le BlackJack se joue avec 312 cartes.' +
+                    ' 6 jeux de 52 cartes.\n',
                     bg='white', fg='gray13', font=('helvetica', 15))
 jeu.pack(side='top')
 
@@ -921,37 +927,66 @@ valeurs_cartes = tkinter.Label(règle, text='Valeur des cartes',
                                bg='white', fg='black', font=('helvetica', 17))
 valeurs_cartes.pack(side='top')
 
-points_cartes= tkinter.Label(règle, text='de 2 à 9 : valeur nominale de la carte\n de 10 au roi (surnommées « bûche ») : 10 points\n as : 1 ou 11 points (au choix du joueur)\n Le but du joueur est d’obtenir exactement 21 points.\n',
-                             bg='white', fg='gray13',font=('helvetica', 15))
+points_cartes = tkinter.Label(règle, text='de 2 à 9 : valeur nominale' +
+                              ' de la carte\n de 10 au roi' +
+                              '(surnommées « bûche ») : 10 points\n as : 1' +
+                              ' ou 11 points (au choix du joueur)\n Le but' +
+                              ' du joueur est d’obtenir exactement 21 ' +
+                              'points.\n',
+                              bg='white', fg='gray13', font=('helvetica', 15))
 points_cartes.pack(side='top')
 
 deroulement_partie = tkinter.Label(règle, text='Déroulement d’une partie',
-                               bg='white', fg='black', font=('helvetica', 17))
+                                   bg='white', fg='black',
+                                   font=('helvetica', 17))
 deroulement_partie.pack(side='top')
 
-deroulement_partie_texte= tkinter.Label(règle, text='Au début du jeu, 2 cartes sont distribuées au joueur.\n A chaque tour, le joueur peut prendre des actions.\n Le croupier pioche jusqu’à atteindre 17 points minimum.\n',
-                                        bg='white', fg='grey13',font=('helvetica', 15))
+deroulement_partie_texte = tkinter.Label(règle, text='Au début du jeu, ' +
+                                         '2 cartes sont distribuées au ' +
+                                         'joueur.\n A chaque tour, le ' +
+                                         'joueur peut prendre des actions.' +
+                                         '\n Le croupier pioche jusqu’à ' +
+                                         'atteindre 17 points minimum.\n',
+                                         bg='white', fg='grey13',
+                                         font=('helvetica', 15))
 deroulement_partie_texte.pack(side='top')
 
-gagnant_texte= tkinter.Label(règle, text='Comment gagner ?',
-                               bg='white', fg='black', font=('helvetica', 17))
+gagnant_texte = tkinter.Label(règle, text='Comment gagner ?',
+                              bg='white', fg='black', font=('helvetica', 17))
 gagnant_texte.pack(side='top')
 
-gagnanttexte= tkinter.Label(règle, text='Si le croupier possède une main supérieure à 21, vous gagnez la partie en cours. Vous gagnez 150% de votre mise.\n Si le croupier a une main comprise entre 17 et 21 points, et que vous avez un score supérieur alors vous gagnez.\n Si vous avez une main supérieure à 21 points, vous perdez votre mise.\n En cas d’égalité, vous serez remboursé.\n',
-                            bg='white', fg='gray13', font=('helvetica',15))
-                        
+gagnanttexte = tkinter.Label(règle, text='Si le croupier possède une ' +
+                             'main supérieure à 21, vous gagnez la partie' +
+                             ' en cours. Vous gagnez 150% de votre mise.\n ' +
+                             'Si le croupier a une main comprise entre 17 ' +
+                             'et 21 points, et que vous avez un score ' +
+                             'supérieur alors vous gagnez.\n Si vous avez ' +
+                             'une main supérieure à 21 points, vous ' +
+                             'perdez votre mise.\n En cas d’égalité, vous ' +
+                             ' serez remboursé.\n',
+                             bg='white', fg='gray13', font=('helvetica', 15))
+
 gagnanttexte.pack(side='top')
 
-action= tkinter.Label(règle, text='Actions', bg='white',
-                      fg='black',font=('helvetica',17))
+action = tkinter.Label(règle, text='Actions', bg='white',
+                       fg='black', font=('helvetica', 17))
 action.pack(side='top')
-action_texte=tkinter.Label(règle, text='Hit : vous piochez autant de cartes souhaitées pour se rapprocher de 21\n Stand : le joueur conserve ses cartes, il annonce s’il reste ou s’il s’arrête\n Double Down : le joueur double sa mise, mais ne peut recevoir qu’une seule carte\nSurrender : le joueur abandonne et perd la moitié de sa mise',
-                           bg='white', fg='gray13', font=('helvetica', 15))
+action_texte = tkinter.Label(règle, text='Hit : vous piochez autant de ' +
+                             'cartes souhaitées pour se rapprocher de ' +
+                             '21\n Stand : le joueur conserve ses cartes, ' +
+                             'il annonce s’il reste ou s’il s’arrête\n ' +
+                             'Double Down : le joueur double sa mise, mais ' +
+                             'ne peut recevoir qu’une seule carte\n' +
+                             'Surrender : le joueur abandonne et perd ' +
+                             'la moitié de sa mise',
+                             bg='white', fg='gray13', font=('helvetica', 15))
 action_texte.pack(side='top')
+
 
 def revenir(event):
     if event.widget == bouton_revenir:
         règle.destroy()
+
 
 bouton_revenir = tkinter.Button(règle, text='Revenir au jeu', fg='red')
 bouton_revenir.pack()
