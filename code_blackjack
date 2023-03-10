@@ -811,7 +811,7 @@ jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_blanc.create_oval(1, 1, 25, 25, width=3,
-                        outline='light grey', fill='mint cream')
+                        outline='chartreuse4', fill='green4')
 
 jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8))
 
@@ -836,7 +836,7 @@ jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='chartreuse4', fill='green4')
+jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey', fill='mint cream')
 jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='white')
 
 
