@@ -512,11 +512,11 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
         if consequence == 'Blackjack':
             argent['text'] = 'Crédits:' +\
                 f'{str(int(money-gain//1.5-gain_assurance//2))} ' +\
-                '+ {str(int(gain//1.5))}'
+                f'+ {str(int(gain//1.5))}'
         else:
             argent['text'] = 'Crédits:' +\
                 f'{str(int(money-gain//2-gain_assurance//2))} ' +\
-                ' + {str(int(gain//2))}'
+                f' + {str(int(gain//2))}'
     if gain == 0:
         argent['text'] = f'Crédits: {str(int(money))}'
     if gain_assurance != 0:
