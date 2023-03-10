@@ -14,7 +14,6 @@ import random
 import tkinter
 from PIL import Image, ImageTk
 import time
-import os
 
 
 """listes et variables"""
@@ -94,8 +93,7 @@ def creer_image(carte, position_carte, texte):
 
 
 def dos_carte(position, texte):
-    dir = os.path.dirname(__file__)
-    image_carte = Image.open(dir+"\\Images\\dos_cartes3.jpg")
+    image_carte = Image.open("./Images/dos_cartes3.jpg")
     image_fin = image_carte.resize((66, 100))
     images[texte] = ImageTk.PhotoImage(image_fin)
     position.create_image(2, 2, anchor='nw', image=images[texte])
