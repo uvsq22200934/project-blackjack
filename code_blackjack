@@ -148,13 +148,13 @@ def donne_initiale():
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.update()
-    time.sleep(1)
+    time.sleep(0.5)
     creer_image(main_croupier[0], cc1, 'cc1')
     root.update()
-    time.sleep(1)
+    time.sleep(0.5)
     creer_image(main_joueur[1], cj2, 'cj2')
     root.update()
-    time.sleep(1)
+    time.sleep(0.5)
     dos_carte(cc2, 'cc2')
     bj21 = 0
     assurance_prise = 0
