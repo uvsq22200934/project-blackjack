@@ -813,7 +813,7 @@ jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
 jeton_blanc.create_oval(1, 1, 25, 25, width=3,
                         outline='chartreuse4', fill='green4')
 
-jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8))
+jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8), fill='white')
 
 jeton_bleu = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
@@ -825,7 +825,7 @@ jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
-jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8))
+jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8), fill='white')
 
 jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
@@ -837,7 +837,7 @@ jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey', fill='mint cream')
-jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='white')
+jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='black')
 
 
 jeton_vert.bind('<Button-1>', lambda e: mise(1))
