@@ -511,14 +511,16 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     if gain != 0:
         if consequence == 'Blackjack':
             argent['text'] = 'Crédits:' +\
-                f'{str(money-gain//1.5-gain_assurance//2)} + {str(gain//1.5)}'
+                f'{str(int(money-gain//1.5-gain_assurance//2))} ' +\
+                f'+ {str(int(gain//1.5))}'
         else:
             argent['text'] = 'Crédits:' +\
-                f'{str(money-gain//2-gain_assurance//2)} + {str(gain//2)}'
+                f'{str(int(money-gain//2-gain_assurance//2))} ' +\
+                f' + {str(int(gain//2))}'
     if gain == 0:
-        argent['text'] = f'Crédits: {str(money)}'
+        argent['text'] = f'Crédits: {str(int(money))}'
     if gain_assurance != 0:
-        argent['text'] += f' + {str(gain_assurance)}'
+        argent['text'] += f' + {str(int(gain_assurance))}'
 
 
 def rejouer():
@@ -796,8 +798,8 @@ assurance_valeur = tkinter.Label(text='')
 
 
 mise_totale = 0
-mise_valeur = {'jeton_vert':1,'jeton_rouge': 10, 'jeton_bleu': 25, 'jeton_blanc': 50,
-               'jeton_noir': 100}
+mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
+               'jeton_blanc': 50, 'jeton_noir': 100}
 
 """le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
@@ -841,7 +843,8 @@ jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey', fill='mint cream')
+jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
+                       fill='mint cream')
 jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='black')
 
 
