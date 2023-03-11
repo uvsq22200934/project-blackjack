@@ -161,7 +161,7 @@ def donne_initiale():
     if 'A' in main_croupier[0]:
         prix_assurance = mise_totale // 2
         if money >= prix_assurance:
-            texte_assurance['text'] = 'Le·a croupier·ère viens de tirer un ' + \
+            texte_assurance['text'] = 'Le·a croupier·ère viens de tirer un ' +\
                 f'As. Voulez vous payer une assurance ({prix_assurance})?'
             texte_assurance.grid(column=2, row=3)
             bouton_oui_assurance.grid(column=2, row=4)
@@ -443,7 +443,8 @@ def resultat(action=0):
             if (score(main_croupier) == 21) and (len(main_croupier) == 2):
                 if debug == 1:
                     print('ok')
-                resultat_label['text'] = 'Le·a croupier·ère a fait un Blacjack !\n'
+                resultat_label['text'] = 'Le·a croupier·ère a fait un ' +\
+                    ' Blacjack !\n'
                 resultat_label.grid(column=10, row=2)
                 annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
                     f' du·de la croupier·ère: {str(score(main_croupier))}'
@@ -638,10 +639,10 @@ def mise(montant_mise):
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
         argent['text'] = f'Crédits: {str(money)}'
     if money == 0:
-        banque= tkinter.Label(root, text='Vous êtes à cours de crédit', 
-                              font=('helvetica',15), bg='dark green', fg='red')
+        banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
+                               font=('helvetica', 15), bg='dark green',
+                               fg='red')
         banque.grid(column=6, columnspan=5, row=3)
-    
 
 
 """Fenêtres"""
@@ -974,12 +975,12 @@ gagnant_texte.pack(side='top')
 gagnanttexte = tkinter.Label(règle, text='Si le·a croupier·ère possède une ' +
                              'main supérieure à 21, vous gagnez la partie' +
                              ' en cours. Vous gagnez 150% de votre mise.\n ' +
-                             'Si le·a croupier·ère a une main comprise entre 17 ' +
-                             'et 21 points, et que vous avez un score ' +
-                             'supérieur alors vous gagnez.\n Si vous avez ' +
-                             'une main supérieure à 21 points, vous ' +
-                             'perdez votre mise.\n En cas d’égalité, vous ' +
-                             ' serez remboursé.\n',
+                             'Si le·a croupier·ère a une main comprise ' +
+                             'entre 17 et 21 points, et que vous avez un ' +
+                             'score supérieur alors vous gagnez.\n Si ' +
+                             'vous avez une main supérieure à 21 points, ' +
+                             'vous perdez votre mise.\n En cas d’égalité, ' +
+                             'vous serez remboursé.\n',
                              bg='white', fg='gray13', font=('helvetica', 15))
 
 gagnanttexte.pack(side='top')
@@ -989,12 +990,13 @@ action = tkinter.Label(règle, text='Actions', bg='white',
 action.pack(side='top')
 action_texte = tkinter.Label(règle, text='Hit : vous piochez autant de ' +
                              'cartes souhaitées pour se rapprocher de ' +
-                             '21\n Stand : le·a joueur·se conserve ses cartes, ' +
-                             'iel annonce s’iel reste ou s’iel s’arrête\n ' +
-                             'Double Down : le·a joueur·se double sa mise, mais ' +
-                             'ne peut recevoir qu’une seule carte\n' +
-                             'Surrender : le·a joueur·se abandonne et perd ' +
-                             'la moitié de sa mise',
+                             '21\n Stand : le·a joueur·se conserve ses ' +
+                             'cartes, iel annonce s’iel reste ou s’iel ' +
+                             ' s’arrête\n Double Down : le·a joueur·se ' +
+                             'double sa mise, mais ne peut recevoir ' +
+                             ' qu’une seule carte\n Surrender : le·a ' +
+                             'joueur·se abandonne et perd la moitié ' +
+                             'de sa mise',
                              bg='white', fg='gray13', font=('helvetica', 15))
 action_texte.pack(side='top')
 
