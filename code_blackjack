@@ -325,13 +325,13 @@ def score(main):
         points += valeurs.get(element)
         if debug == 1:
             print(points, valeurs.get(element), element)
-    for element in main:
-        while points > 21:
-            for i in range(len(main)):
-                if 'A' in main[i]:
-                    points -= 10
-                else:
-                    break
+    boucle = 0
+    while points > 21:
+        if boucle > len(main)-1:
+            break
+        if 'A' in main[boucle]:
+            points -= 10
+        boucle += 1
     if debug == 1:
         print('point final', points)
     return points
@@ -487,33 +487,32 @@ def resultat(action=0):
 def calcul_gain(consequence=0, assurance_gagnante=0):
     global mise_totale
     global money
+    if debug == 1:
+        print('débur calcul gain')
     gain = 0
     gain_assurance = 0
     if consequence == 'Blackjack':
-        gain += mise_totale * 2.5
+        money += mise_totale
+        gain += mise_totale * 1.5
     if consequence == 'ff':
         gain += mise_totale // 2
     if consequence == 'win':
-        gain += 2*mise_totale
-    if consequence == 'egalite':
+        money += mise_totale
         gain += mise_totale
+    if consequence == 'egalite':
+        money += mise_totale
     if assurance_gagnante == 1:
         gain_assurance += mise_totale
     gain = int(gain)
-    money += gain + gain_assurance
     if gain != 0:
-        if consequence == 'Blackjack':
-            argent['text'] = 'Crédits:' +\
-                f'{str(int(money-gain//1.5-gain_assurance//2))} ' +\
-                f'+ {str(int(gain//1.5))}'
-        else:
-            argent['text'] = 'Crédits:' +\
-                f'{str(int(money-gain//2-gain_assurance//2))} ' +\
-                f' + {str(int(gain//2))}'
+        argent['text'] = f'Crédits: {int(money)} + {int(gain)}'
     if gain == 0:
-        argent['text'] = f'Crédits: {str(int(money))}'
+        argent['text'] = f'Crédits: {int(money)}'
     if gain_assurance != 0:
-        argent['text'] += f' + {str(int(gain_assurance))}'
+        argent['text'] += f' + {int(gain_assurance)}'
+    money += gain + gain_assurance
+    if debug == 1:
+        print('fin calcul gain')
 
 
 def rejouer():
