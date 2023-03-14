@@ -321,30 +321,17 @@ def fin_manche():
 def score(main):
     # fonction qui permet de calculer la valeur d'une main
     points = 0
-    Aca = 0
-    Ap = 0
-    Aco = 0
-    At = 0
     for element in main:
         points += valeurs.get(element)
         if debug == 1:
             print(points, valeurs.get(element), element)
     for element in main:
         while points > 21:
-            if 'Aca' in element and Aca == 0:
-                Aca = 1
-                points -= 10
-            if 'Ap' in element and Ap == 0:
-                Ap = 1
-                points -= 10
-            if 'At' in element and At == 0:
-                At = 1
-                points -= 10
-            if 'Aco' in element and Aco == 0:
-                Aco = 1
-                points -= 10
-            else:
-                break
+            for i in range(len(main)):
+                if 'A' in main[i]:
+                    points -= 10
+                else:
+                    break
     if debug == 1:
         print('point final', points)
     return points
@@ -503,14 +490,17 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     gain = 0
     gain_assurance = 0
     if consequence == 'Blackjack':
-        gain += mise_totale * 3 // 2
+        gain += mise_totale * 2.5
     if consequence == 'ff':
         gain += mise_totale // 2
     if consequence == 'win':
-        gain += 2 * mise_totale
+        gain += 2*mise_totale
+    if consequence == 'egalite':
+        gain += mise_totale
     if assurance_gagnante == 1:
         gain_assurance += mise_totale
-    money += gain
+    gain = int(gain)
+    money += gain + gain_assurance
     if gain != 0:
         if consequence == 'Blackjack':
             argent['text'] = 'Crédits:' +\
