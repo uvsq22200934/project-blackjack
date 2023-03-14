@@ -218,33 +218,10 @@ def hit(main, pointeur):
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
             f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
             f'défausse: {str(len(defausse))}'
-        if len(main) == 3:
-            creer_image(main_joueur[2], cj3, 'cj3')
-            cj3.grid(column=4, row=7)
-        if len(main) == 4:
-            creer_image(main_joueur[3], cj4, 'cj4')
-            cj4.grid(column=5, row=7)
-        if len(main) == 5:
-            creer_image(main_joueur[4], cj5, 'cj5')
-            cj5.grid(column=6, row=7)
-        if len(main) == 6:
-            creer_image(main_joueur[5], cj6, 'cj6')
-            cj6.grid(column=7, row=7)
-        if len(main) == 7:
-            creer_image(main_joueur[6], cj7, 'cj7')
-            cj7.grid(column=8, row=7)
-        if len(main) == 8:
-            creer_image(main_joueur[7], cj8, 'cj8')
-            cj8.grid(column=9, row=7)
-        if len(main) == 9:
-            creer_image(main_joueur[8], cj9, 'cj9')
-            cj9.grid(column=10, row=7)
-        if len(main) == 10:
-            creer_image(main_joueur[9], cj10, 'cj10')
-            cj10.grid(column=11, row=7)
-        if len(main) == 11:
-            creer_image(main_joueur[10], cj11, 'cj11')
-            cj11.grid(column=12, row=7)
+        for i in range(3, 14):
+            if len(main) == i:
+                creer_image(main[i-1], cj[i-1], f'cj{i}')
+                cj[i-1].grid(column=4+i, row=7)
         test_score(main)
     if pointeur == 'main_croupier':
         if debug == 1:
@@ -254,33 +231,10 @@ def hit(main, pointeur):
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
             f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
             f'défausse: {str(len(defausse))}'
-        if len(main_croupier) == 3:
-            creer_image(main_croupier[2], cc3, 'cc3')
-            cc3.grid(column=4, row=1)
-        if len(main_croupier) == 4:
-            creer_image(main_croupier[3], cc4, 'cc4')
-            cc4.grid(column=5, row=1)
-        if len(main_croupier) == 5:
-            creer_image(main_croupier[4], cc5, 'cc5')
-            cc5.grid(column=6, row=1)
-        if len(main_croupier) == 6:
-            creer_image(main_croupier[5], cc6, 'cc6')
-            cc6.grid(column=7, row=1)
-        if len(main_croupier) == 7:
-            creer_image(main_croupier[6], cc7, 'cc7')
-            cc7.grid(column=8, row=1)
-        if len(main_croupier) == 8:
-            creer_image(main_croupier[7], cc8, 'cc8')
-            cc8.grid(column=9, row=1)
-        if len(main_croupier) == 9:
-            creer_image(main_croupier[8], cc9, 'cc9')
-            cc9.grid(column=10, row=1)
-        if len(main_croupier) == 10:
-            creer_image(main_croupier[9], cc10, 'cc10')
-            cc10.grid(column=11, row=1)
-        if len(main_croupier) == 11:
-            creer_image(main_croupier[10], cc11, 'cc11')
-            cc11.grid(column=12, row=1)
+        for i in range(3, 14):
+            if len(main) == i:
+                creer_image(main[i-1], cc[i-1], f'cc{i}')
+                cc[i-1].grid(column=4+i, row=1)
     root.update()
 
 
@@ -518,6 +472,8 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
 def rejouer():
     global mise_totale
     global coupe
+    global cc
+    global cj
     nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f'défausse: {str(len(defausse))}'
@@ -539,24 +495,10 @@ def rejouer():
     cc2.delete('all')
     cj1.delete('all')
     cj2.delete('all')
-    cc3.grid_forget()
-    cc4.grid_forget()
-    cc5.grid_forget()
-    cc6.grid_forget()
-    cc7.grid_forget()
-    cc8.grid_forget()
-    cc9.grid_forget()
-    cc10.grid_forget()
-    cc11.grid_forget()
-    cj3.grid_forget()
-    cj4.grid_forget()
-    cj5.grid_forget()
-    cj6.grid_forget()
-    cj7.grid_forget()
-    cj8.grid_forget()
-    cj9.grid_forget()
-    cj10.grid_forget()
-    cj11.grid_forget()
+    for i in range(2, 14):
+        cc[i].grid_forget()
+        cj[i].grid_forget()
+        root.update()
     resultat_label.grid_forget()
     resultat_final.grid_forget()
     score__joueur.grid_forget()
@@ -918,6 +860,9 @@ cj8 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cj9 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cj10 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cj11 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj12 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj13 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj14 = tkinter.Canvas(root, width=66, height=100, bg='white')
 
 cc3 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cc4 = tkinter.Canvas(root, width=66, height=100, bg='white')
@@ -928,6 +873,14 @@ cc8 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cc9 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cc10 = tkinter.Canvas(root, width=66, height=100, bg='white')
 cc11 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc12 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc13 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cc14 = tkinter.Canvas(root, width=66, height=100, bg='white')
+
+cj = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13,
+      cj14]
+cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
+      cc14]
 
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
