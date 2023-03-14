@@ -105,6 +105,8 @@ def debut(event):
     if event.widget == play:
         name = my_entry.get()
         money = my_entry2.get()
+        if not money.isnumeric():
+            money = ''
         if name == '':
             name = 'Player'
         if money == '':
@@ -133,6 +135,7 @@ def donne_initiale():
     global assurance_prise
     global mise_totale
     disparition_mise()
+    bouton_donne_initiale.grid_forget()
     nb_carte = 0
     while nb_carte < 2:
         main_joueur.append(paquet[0])
@@ -570,11 +573,14 @@ def rejouer():
     score__joueur.grid_forget()
     stand_label.grid_forget()
     assurance_valeur.grid_forget()
+    if money == 0:
+        emprunt.grid(column=6, row=5)
+        term.grid(column=10, row=5)
+        banque.grid(column=9, columnspan=5, row=3)
 
 
 def quitter(event):
-    if event.widget == bouton_quitter:
-        root.destroy()
+    root.destroy()
 
 
 def ordre_boutons2(event):
@@ -591,7 +597,6 @@ def ordre_boutons3(event):
             if debug == 1:
                 print('ok')
             donne_initiale()
-            bouton_donne_initiale.grid_forget()
         else:
             bouton_donne_initiale.grid_forget()
             erreur.grid(column=2, row=3)
@@ -637,40 +642,26 @@ def mise(montant_mise):
         money -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
         argent['text'] = f'Crédits: {str(money)}'
-    if money == 0:
-        def emprunter(event):
-            global money
-            if event.widget == emprunt:
-                emprunt.grid_forget()
-                banque.grid_forget()
-                term.grid_forget()
-                eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
-                                      'emprunter ?', fg='black',
-                                      bg='dark green')
-                eprnt.grid(column=5, row=3)
-                my_entry3 = tkinter.Entry(root)
-                my_entry3.grid(column=5, columnspan=5, row=5)
-                money = my_entry3.get()
-                eprnt.grid_forget()
 
-                def validd(event):
-                    if event.widget == valid:
-                        my_entry3.grid_forget()
-                        valid.grid_forget()
-                valid = tkinter.Button(root, text='valider la mise',
-                                       bg='dark green', fg='black')
-                valid.grid(column=6, row=6)
-                valid.bind('<Button-1>', validd)
-        banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
-                               font=('helvetica', 15), bg='dark green',
-                               fg='red')
-        banque.grid(column=9, columnspan=5, row=3)
-        emprunt = tkinter.Button(root, text='Emprunt')
-        emprunt.grid(column=6, row=5)
-        emprunt.bind('<Button-1>', emprunter)
-        term = tkinter.Button(root, text='Terminer')
-        term.grid(column=10, row=5)
-        term.bind('<Button-1>', quitter)
+
+def emprunter(event):
+    global money
+    if event.widget == emprunt:
+        term.grid_forget()
+        emprunt.grid_forget()
+        valid.grid(column=6, row=6)
+        my_entry3.grid(column=5, columnspan=5, row=5)
+
+
+def validd(event):
+    global money
+    if event.widget == valid:
+        money += int(my_entry3.get())
+        argent['text'] = f'Crédits: {str(money)}'
+        my_entry3.grid_forget()
+        valid.grid_forget()
+        banque.grid_forget()
+        eprnt.grid_forget()
 
 
 """Fenêtres"""
@@ -822,6 +813,22 @@ bouton_non_assurance.bind(
 
 assurance_valeur = tkinter.Label(text='')
 
+
+valid = tkinter.Button(root, text='valider l\'emprunt',
+                       bg='dark green', fg='black')
+valid.bind('<Button-1>', validd)
+banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
+                       font=('helvetica', 15), bg='dark green',
+                       fg='red')
+emprunt = tkinter.Button(root, text='Emprunt')
+emprunt.bind('<Button-1>', emprunter)
+term = tkinter.Button(root, text='Terminer')
+term.bind('<Button-1>', quitter)
+
+eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
+                      'emprunter ?', fg='black',
+                      bg='dark green')
+my_entry3 = tkinter.Entry(root)
 
 """ mise du jeu """
 
