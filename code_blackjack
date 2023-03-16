@@ -374,8 +374,8 @@ def resultat(action=0):
                         'votre assurance \n'
                     assurance_gagnante = 1
                 if score(main_joueur) != 21 or len(main_joueur) != 2:
-                    resultat_label['text'] += ' La main du croupier ' +\
-                        'est meilleure, vous avez perdu.e'
+                    resultat_label['text'] += ' La main du Dealer ' +\
+                        'est meilleure, vous avez perdu'
             elif score(main_joueur) < score(main_croupier):
                 resultat_label['text'] = 'Le Dealer a un meilleur ' + \
                     'score, vous avez perdu.'
