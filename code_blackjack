@@ -42,12 +42,14 @@ money = 0
 assurance_prise = 0
 assurance_gagnante = 0
 prix_assurance = 0
+dette = 0
 
 images = dict()
 image_dos = dict()
 
 debug = 1
 name = ''
+
 
 
 """Fonctions"""
@@ -470,7 +472,7 @@ def rejouer():
     stand_label.grid_forget()
     assurance_valeur.grid_forget()
     if money == 0:
-        emprunt.grid(column=6, row=5)
+        emprunt.grid(column=9, row=5)
         term.grid(column=10, row=5)
         banque.grid(column=9, columnspan=5, row=3)
 
@@ -514,6 +516,7 @@ def apparition_mise():
     jeton_rouge.grid(column=2, row=10)
     jeton_noir.grid(column=6, row=10)
     jeton_vert.grid(column=1, row=10)
+    jeton_tapis.grid(column=7, row=10)
     miser.grid(column=0, row=10)
     mise_texte.grid(column=0, row=9)
 
@@ -540,8 +543,8 @@ def emprunter(event):
     if event.widget == emprunt:
         term.grid_forget()
         emprunt.grid_forget()
-        valid.grid(column=6, row=6)
-        my_entry3.grid(column=5, columnspan=5, row=5)
+        valid.grid(column=9, columnspan=5, row=6)
+        my_entry3.grid(column=9, columnspan=5, row=5)
 
 
 def validd(event):
@@ -549,6 +552,17 @@ def validd(event):
     if event.widget == valid:
         money += int(my_entry3.get())
         argent['text'] = f'Crédits: {str(money)}'
+        dette = int(my_entry3.get())
+        dette_label = tkinter.Label(root, text='vous avez'+\
+            f' {str(dette)} € de dettes envers la banque',
+                        bg ='dark green', fg='black', 
+                        font=('helvetica', 10))
+        dette_label.grid(column=9, columnspan=5, row=2)
+        if money == 2*int(my_entry3.get()):
+            money = money-int(my_entry3.get())
+            dette = dette-int(my_entry3.get())
+            if dette == 0 :
+                dette_label['text']='vos dettes sont remboursées'
         for i in range(len(canvas_emprunt)):
             canvas_emprunt[i].grid_forget()
 
@@ -728,7 +742,7 @@ canvas_emprunt = [my_entry3, valid, banque, eprnt]
 
 mise_totale = 0
 mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
-               'jeton_blanc': 50, 'jeton_noir': 100}
+               'jeton_blanc': 50, 'jeton_noir': 100, 'tapis': 'money'}
 
 """le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
@@ -743,6 +757,13 @@ mise_texte = tkinter.Label(
 
 miser = tkinter.Label(root, text="Cliquez pour miser:",
                       bg='dark green', fg='white')
+
+jeton_tapis = tkinter.Canvas(root,bg ='dark green', width=30, height=30, 
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
+jeton_tapis.create_polygon(1,1,25,25, width=3, 
+                           fill='tan4')
+jeton_tapis.create_text(13, 13, text='tapis', font=('helvetica', 8), fill='white')
 jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
@@ -787,7 +808,9 @@ jeton_blanc.bind('<Button-1>', lambda e: mise(50))
 
 jeton_noir.bind('<Button-1>', lambda e: mise(100))
 
-jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge, jeton_noir,
+jeton_tapis.bind('<Button-1>', lambda e: mise(money))
+
+jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge, jeton_noir, jeton_tapis,
                  miser]
 
 '''interface graphique'''
@@ -916,7 +939,7 @@ gagnant_texte.pack(side='top')
 gagnanttexte = tkinter.Label(règle, text='Si le Dealer possède une ' +
                              'main supérieure à 21, vous gagnez la partie' +
                              ' en cours. Vous gagnez 150% de votre mise.\n ' +
-                             'Si le·a croupier·ère a une main comprise ' +
+                             'Si le Dealer a une main comprise ' +
                              'entre 17 et 21 points, et que vous avez un ' +
                              'score supérieur alors vous gagnez.\n Si vous ' +
                              'avez une main supérieure à 21 points, vous ' +
