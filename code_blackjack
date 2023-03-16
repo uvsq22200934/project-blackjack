@@ -345,8 +345,6 @@ def resultat(action=0):
             print('taille main croupier', len(main_croupier), main_croupier,
                   score(main_croupier))
         if (score(main_croupier) == 21) and (len(main_croupier) == 2):
-            annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
-                f' du Dealer: {str(score(main_croupier))}'
             resultat_label['text'] = 'Vous avez le même score que le ' + \
                 'Dealer: ex aequo'
             consequence = 'egalite'
@@ -361,13 +359,10 @@ def resultat(action=0):
         resultat_label['text'] = 'Vous avez abandonné'
         consequence = 'ff'
     elif score(main_joueur) > 21:
-        annonce = f'Votre score: {str(score(main_joueur))}'
         resultat_label['text'] = 'Votre main vaut plus que 21, vous' + \
             ' avez perdu.'
     elif score(main_joueur) <= 21:
         if score(main_croupier) > 21:
-            annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
-                f' du Dealer: {str(score(main_croupier))}'
             resultat_label['text'] = 'Le Dealer a dépassé 21: vous ' +\
                 'avez gagné !'
             consequence = 'win'
@@ -376,9 +371,6 @@ def resultat(action=0):
                 if debug == 1:
                     print('ok')
                 resultat_label['text'] = 'Le Dealer a fait un BlackJack !\n'
-                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f' du Dealer: {str(score(main_croupier))}'
-                resultat_final['text'] = annonce
                 if score(main_joueur) == 21 and len(main_joueur) == 2:
                     resultat_label['text'] += 'Vous avez également un ' +\
                         'BlackJack, votre mise est remboursée \n'
@@ -392,22 +384,18 @@ def resultat(action=0):
                     resultat_label['text'] += ' La main du croupier ' +\
                         'est meilleure, vous avez perdu.e'
             elif score(main_joueur) < score(main_croupier):
-                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f' du Dealer: {str(score(main_croupier))}'
                 resultat_label['text'] = 'Le Dealer a un meilleur ' + \
                     'score, vous avez perdu.'
             elif score(main_joueur) == score(main_croupier):
-                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f' du Dealer: {str(score(main_croupier))}'
                 resultat_label['text'] = 'Vous avez le même score ' + \
                     'que le Dealer: ex aequo'
                 consequence = 'egalite'
             elif score(main_joueur) > score(main_croupier):
-                annonce = f'Votre score: {str(score(main_joueur))} \n Score' +\
-                    f' du Dealer: {str(score(main_croupier))}'
                 resultat_label['text'] = 'Vous avez un meilleur score que ' + \
                     'le Dealer: vous avez gagné !'
                 consequence = 'win'
+    annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
+        f' du Dealer: {str(score(main_croupier))}'
     resultat_final['text'] = annonce
     resultat_final.grid(column=5+len(main_croupier), row=1)
     resultat_label.grid(column=5+len(main_croupier), row=2)
