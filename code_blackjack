@@ -13,7 +13,6 @@ __status__ = "Developement"
 import random
 import tkinter
 from PIL import Image, ImageTk
-import time
 
 
 """listes et variables"""
@@ -150,14 +149,11 @@ def donne_initiale():
             f'défausse: {str(len(defausse))}'
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
-    root.update()
-    time.sleep(0.5)
+    root.after(500, root.update())
     creer_image(main_croupier[0], cc1, 'cc1')
-    root.update()
-    time.sleep(0.5)
+    root.after(500, root.update())
     creer_image(main_joueur[1], cj2, 'cj2')
-    root.update()
-    time.sleep(0.5)
+    root.after(500, root.update())
     dos_carte(cc2, 'cc2')
     bj21 = 0
     assurance_prise = 0
@@ -426,7 +422,7 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     gain = int(gain)
     if gain != 0:
         argent['text'] = f'Crédits: {int(money)} + {int(gain)}'
-    if gain == 0:
+    else:
         argent['text'] = f'Crédits: {int(money)}'
     if gain_assurance != 0:
         argent['text'] += f' + {int(gain_assurance)}'
