@@ -558,8 +558,8 @@ def validd(event):
                         bg ='dark green', fg='black', 
                         font=('helvetica', 10))
         dette_label.grid(column=9, columnspan=5, row=2)
-        if money == 2*int(my_entry3.get()):
-            money = money-int(my_entry3.get())
+        if money == 2*dette:
+            money = money-dette
             dette = dette-int(my_entry3.get())
             if dette == 0 :
                 dette_label['text']='vos dettes sont remboursées'
