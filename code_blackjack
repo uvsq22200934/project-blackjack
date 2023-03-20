@@ -13,7 +13,7 @@ __status__ = "Developement"
 import random
 import tkinter
 from PIL import Image, ImageTk
-
+import numpy as np
 
 """listes et variables"""
 
@@ -302,7 +302,7 @@ def croupier():
 
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
-    stand_label.grid(column=0, row=5)
+    stand_label.grid(column=10, row=5)
     if debug == 1:
         print("je m'arrête")
     croupier()
@@ -586,13 +586,20 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
 
-play = tkinter.Button(accueil, text='Play',
-                      width=15, height=5, font=('helvetica', 20),
-                      command=fenêtre)
+play = tkinter.Canvas(accueil,width=150, height=150, bg='red',
+                       highlightthickness=0)
+play.create_oval(1, 1, 145, 145, width=3, outline='mint cream',
+                       fill='mint cream')
+play.create_text(70, 75, text='Play', font=('elephant', 35), fill='black')
 
 play.pack()
 
 play.bind('<Button-1>', debut)
+
+#image_debut= Image.open("./Images/image0.png")
+#image_debut = image_debut.resize(np.array())
+#image_debut.TK= ImageTk.PhotoImage(image_debut)
+
 
 username = tkinter.Label(accueil, text="Username:",
                          font=('helvetica', 10), fg='black')
