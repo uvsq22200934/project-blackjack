@@ -662,72 +662,82 @@ def dir_regles(event):
         règle.title('Règle du jeu')
         règle.geometry = accueil.geometry
         règle.configure(bg='white')
-        titre = tkinter.Label(règle, text='REGLE DU BLACKJACK 21\n', bg='white',
-                      fg='black', font=('helvetica', 23))
+        titre = tkinter.Label(règle, text='REGLE DU BLACKJACK 21\n',
+                              bg='white', fg='black', font=('helvetica', 23))
         titre.pack(side='top')
-        jeu = tkinter.Label(règle, text='Le BlackJack se joue avec 312 cartes.' +
-                    ' 6 jeux de 52 cartes.\n',
-                    bg='white', fg='gray13', font=('helvetica', 15))
+        jeu = tkinter.Label(règle, text='Le BlackJack se joue avec 312 ' +
+                            'cartes. 6 jeux de 52 cartes.\n',
+                            bg='white', fg='gray13', font=('helvetica', 15))
         jeu.pack(side='top')
 
         valeurs_cartes = tkinter.Label(règle, text='Valeur des cartes',
-                               bg='white', fg='black', font=('helvetica', 17))
+                                       bg='white', fg='black',
+                                       font=('helvetica', 17))
         valeurs_cartes.pack(side='top')
 
-        points_cartes = tkinter.Label(règle, text='de 2 à 9 : valeur nominale' +
-                              ' de la carte\n de 10 au roi' +
-                              '(surnommées « bûche ») : 10 points\n as : 1' +
-                              ' ou 11 points (au choix du joueur)\n Le but' +
-                              ' du joueur est d’obtenir exactement 21 ' +
-                              'points.\n',
-                              bg='white', fg='gray13', font=('helvetica', 15))
+        points_cartes = tkinter.Label(règle, text='de 2 à 9 : valeur '
+                                      'nominale de la carte\n de 10 au roi' +
+                                      '(surnommées « bûche ») : 10 points' +
+                                      '\n as : 1 ou 11 points (au choix ' +
+                                      'du joueur)\n Le but du joueur ' +
+                                      'est d’obtenir exactement 21 points.\n',
+                                      bg='white', fg='gray13',
+                                      font=('helvetica', 15))
         points_cartes.pack(side='top')
 
-        deroulement_partie = tkinter.Label(règle, text='Déroulement d’une partie',
-                                   bg='white', fg='black',
-                                   font=('helvetica', 17))
+        deroulement_partie = tkinter.Label(règle, text='Déroulement d’une ' +
+                                           'partie', bg='white', fg='black',
+                                           font=('helvetica', 17))
         deroulement_partie.pack(side='top')
 
-        deroulement_partie_texte = tkinter.Label(règle, text='Au début du jeu, ' +
-                                         '2 cartes sont distribuées au ' +
-                                         'Player.\n A chaque tour, le ' +
-                                         'Player peut prendre des actions.' +
-                                         '\n Le Dealer pioche jusqu’à ' +
-                                         'atteindre 17 points minimum.\n',
-                                         bg='white', fg='grey13',
-                                         font=('helvetica', 15))
+        deroulement_partie_texte = tkinter.Label(règle, text='Au début du ' +
+                                                 'jeu, 2 cartes sont ' +
+                                                 'distribuées au Player.\n' +
+                                                 'A chaque tour, le Player ' +
+                                                 'peut prendre des actions.' +
+                                                 '\n Le Dealer pioche ' +
+                                                 'jusqu’à atteindre 17 '
+                                                 'points minimum.\n',
+                                                 bg='white', fg='grey13',
+                                                 font=('helvetica', 15))
         deroulement_partie_texte.pack(side='top')
 
         gagnant_texte = tkinter.Label(règle, text='Comment gagner ?',
-                              bg='white', fg='black', font=('helvetica', 17))
+                                      bg='white', fg='black',
+                                      font=('helvetica', 17))
         gagnant_texte.pack(side='top')
 
         gagnanttexte = tkinter.Label(règle, text='Si le Dealer possède une ' +
-                             'main supérieure à 21, vous gagnez la partie' +
-                             ' en cours. Vous gagnez 150% de votre mise.\n ' +
-                             'Si le Dealer a une main comprise ' +
-                             'entre 17 et 21 points, et que vous avez un ' +
-                             'score supérieur alors vous gagnez.\n Si vous ' +
-                             'avez une main supérieure à 21 points, vous ' +
-                             'perdez votre mise.\n En cas d’égalité, vous ' +
-                             ' serez remboursé.\n',
-                             bg='white', fg='gray13', font=('helvetica', 15))
+                                     'main supérieure à 21, vous gagnez la ' +
+                                     ' partie en cours. Vous gagnez 150% ' +
+                                     'de votre mise.\n Si le Dealer a une ' +
+                                     'main comprise entre 17 et 21 points, ' +
+                                     'et que vous avez un score supérieur ' +
+                                     'alors vous gagnez.\n Si vous avez ' +
+                                     'une main supérieure à 21 points, ' +
+                                     'vous perdez votre mise.\n En cas ' +
+                                     'd’égalité, vous serez remboursé.\n',
+                                     bg='white', fg='gray13',
+                                     font=('helvetica', 15))
 
         gagnanttexte.pack(side='top')
 
         action = tkinter.Label(règle, text='Actions', bg='white',
-                       fg='black', font=('helvetica', 17))
+                               fg='black', font=('helvetica', 17))
         action.pack(side='top')
-        action_texte = tkinter.Label(règle, text='Hit : vous piochez autant de ' +
-                             'cartes souhaitées pour se rapprocher de ' +
-                             '21\n Stand : le Player conserve ses cartes, ' +
-                             'il annonce s’il reste ou s’il s’arrête\n ' +
-                             'Double Down : le Player double sa mise, mais ' +
-                             'ne peut recevoir qu’une seule carte\n' +
-                             'Surrender : le Player abandonne et perd ' +
-                             'la moitié de sa mise',
-                             bg='white', fg='gray13', font=('helvetica', 15))
+        action_texte = tkinter.Label(règle, text='Hit : vous piochez autant ' +
+                                     'de cartes souhaitées pour se ' +
+                                     'rapprocher de 21\n Stand : le Player ' +
+                                     'conserve ses cartes, il annonce s’il ' +
+                                     'reste ou s’il s’arrête\n Double Down ' +
+                                     ': le Player double sa mise, mais ' +
+                                     'ne peut recevoir qu’une seule carte\n' +
+                                     'Surrender : le Player abandonne et ' +
+                                     'perd la moitié de sa mise',
+                                     bg='white', fg='gray13',
+                                     font=('helvetica', 15))
         action_texte.pack(side='top')
+
         def revenir(event):
             if event.widget == bouton_revenir:
                 règle.destroy()
@@ -735,6 +745,7 @@ def dir_regles(event):
         bouton_revenir.pack()
         bouton_revenir.bind('<Button-1>', revenir)
     règle.mainloop()
+
 
 erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
@@ -748,7 +759,7 @@ cartes.grid(column=2, row=3)
 
 bouton_rdj = tkinter.Button(root, text='Comment jouer ?',
                             width=13, height=2, fg='navy')
-bouton_rdj.grid(column=0,row=0)
+bouton_rdj.grid(column=0, row=0)
 bouton_rdj.bind('<Button-1>', dir_regles)
 
 bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
@@ -969,10 +980,3 @@ nb_paquet = tkinter.Label(
 nb_paquet.grid(column=10, row=0)
 
 root.mainloop()
-
-
-
-
-
-
-
