@@ -33,9 +33,11 @@ valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
 paquet = list(valeurs.keys())*6
 defausse = []
 main_joueur = []
+main_joueur_split = []
 main_croupier = []
 coupe = random.randint(52, len(paquet)-52)
 
+split = 0
 bj21 = 0
 money = 0
 assurance_prise = 0
@@ -48,6 +50,9 @@ image_dos = dict()
 
 debug = 1
 name = ''
+
+if debug == 1:
+    print(coupe)
 
 
 """Fonctions"""
@@ -140,12 +145,12 @@ def donne_initiale():
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
             f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f'défausse: {str(len(defausse))}'
+            f' défausse: {str(len(defausse))}'
         main_croupier.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
             f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f'défausse: {str(len(defausse))}'
+            f' défausse: {str(len(defausse))}'
         nb_carte += 1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.after(500, root.update())
@@ -206,17 +211,26 @@ def hit(main, pointeur):
     global main_joueur
     global main_croupier
     global paquet
+    if split == 2 and main != main_croupier:
+        carte = cja
+        main = main_joueur_split
+        a = 1
+    else:
+        carte = cj
+        a = 0
     if pointeur == 'main_joueur':
         bouton_double_down.grid_forget()
+        bouton_split.grid_forget()
+        bouton_surrender.grid_forget()
         main.append(paquet[0])
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
             f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f'défausse: {str(len(defausse))}'
+            f' défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
-                creer_image(main[i-1], cj[i-1], f'cj{i}')
-                cj[i-1].grid(column=4+i, row=7)
+                creer_image(main[i-1], carte[i-1], f'{carte[i]}')
+                carte[i-1].grid(column=4+i, row=7+a)
         test_score(main)
     if pointeur == 'main_croupier':
         if debug == 1:
@@ -225,17 +239,25 @@ def hit(main, pointeur):
         del paquet[0]
         nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
             f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f'défausse: {str(len(defausse))}'
+            f' défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
                 creer_image(main[i-1], cc[i-1], f'cc{i}')
+                root.after(500, root.update())
                 cc[i-1].grid(column=4+i, row=1)
     root.update()
 
 
 def test_score(main):
+    global split
     if score(main) >= 21:
-        croupier()
+        if split == 1:
+            if debug == 1:
+                print('apparition main 2 dans test score')
+            numero_main['text'] = 'Main 2'
+            split = 2
+        else:
+            croupier()
 
 
 def disparition_bouton_joueur():
@@ -244,6 +266,7 @@ def disparition_bouton_joueur():
         print("bouton test", bouton_hit.grid_info())
     for i in range(len(bouton_joueur)):
         bouton_joueur[i].grid_forget()
+    bouton_split.grid_forget()
 
 
 def fin_manche():
@@ -302,16 +325,25 @@ def croupier():
 
 def stand(main, bouton=0):
     # fonction qui permet au joueur de "stand"
-    stand_label.grid(column=10, row=5)
+    global split
+    stand_label.grid(column=0, row=5)
+    bouton_split.grid_forget()
     if debug == 1:
-        print("je m'arrête")
-    croupier()
+        print("je m'arrête", split)
+    if split == 0 or split == 2:
+        croupier()
+        disparition_bouton_joueur()
+    if split == 1:
+        split = 2
+        numero_main['text'] = 'Main 2'
 
 
 def doubble_down(main):
     # fonction qui permet au joueur de "double down"
     global mise_totale
     global money
+    global split
+    bouton_split.grid_forget()
     money -= mise_totale
     mise_totale *= 2
     mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
@@ -319,82 +351,117 @@ def doubble_down(main):
     hit(main, 'main_joueur')
     if debug == 1:
         print(main)
-    croupier()
+    if split == 1:
+        split = 2
+        numero_main['text'] = 'Main 2'
+    else:
+        croupier()
 
 
 def surrender():
     # fonction qui permet au joueur de "surrender"
-    resultat(action='surrender')
+    global split
+    bouton_split.grid_forget()
+    if split == 1:
+        split = 2
+        numero_main['text'] = 'Main 2'
+    else:
+        resultat(action='surrender')
 
 
 def resultat(action=0):
     # fonction qui donne le résulat du jeu
-    global main_joueur
     global main_croupier
     global assurance_prise
     global assurance_gagnante
     global bj21
+    global split
+    resultat_label['text'] = ''
+    taille_main_croupier = len(main_croupier)
+    score_croupier = score(main_croupier)
+    score_joueur = score(main_joueur)
     consequence = 0
-    if bj21 == 1:
-        if debug == 1:
-            print('taille main croupier', len(main_croupier), main_croupier,
-                  score(main_croupier))
-        if (score(main_croupier) == 21) and (len(main_croupier) == 2):
-            resultat_label['text'] = 'Vous avez le même score que le ' + \
-                'Dealer: ex aequo'
-            consequence = 'egalite'
-        else:
-            resultat_label['text'] = 'BLACKJACK: vous êtes le vainqueur'
-            consequence = 'Blackjack'
-    elif action == 'surrender':
-        resultat_label['text'] = 'Vous avez abandonné'
-        consequence = 'ff'
-    elif score(main_joueur) > 21:
-        resultat_label['text'] = 'Votre main vaut plus que 21, vous' + \
-            ' avez perdu.'
-    elif score(main_joueur) <= 21:
-        if score(main_croupier) > 21:
-            resultat_label['text'] = 'Le Dealer a dépassé 21: vous ' +\
-                'avez gagné !'
-            consequence = 'win'
-        elif score(main_croupier) <= 21:
-            if (score(main_croupier) == 21) and (len(main_croupier) == 2):
-                if debug == 1:
-                    print('ok')
-                resultat_label['text'] = 'Le Dealer a fait un BlackJack !\n'
-                if score(main_joueur) == 21 and len(main_joueur) == 2:
-                    resultat_label['text'] += 'Vous avez également un ' +\
-                        'BlackJack, votre mise est remboursée \n'
-                    consequence = 'egalite'
-                if assurance_prise == 1:
-                    resultat_label['text'] += 'Vous avez payé l\'' +\
-                        'assurance, vous gagnez deux fois le montant de ' +\
-                        'votre assurance \n'
-                    assurance_gagnante = 1
-                if score(main_joueur) != 21 or len(main_joueur) != 2:
-                    resultat_label['text'] += ' La main du Dealer ' +\
-                        'est meilleure, vous avez perdu'
-            elif score(main_joueur) < score(main_croupier):
-                resultat_label['text'] = 'Le Dealer a un meilleur ' + \
-                    'score, vous avez perdu.'
-            elif score(main_joueur) == score(main_croupier):
-                resultat_label['text'] = 'Vous avez le même score ' + \
-                    'que le Dealer: ex aequo'
-                consequence = 'egalite'
-            elif score(main_joueur) > score(main_croupier):
-                resultat_label['text'] = 'Vous avez un meilleur score que ' + \
-                    'le Dealer: vous avez gagné !'
-                consequence = 'win'
-    annonce = f'Votre score: {str(score(main_joueur))} \n Score' + \
-        f' du Dealer: {str(score(main_croupier))}'
-    resultat_final['text'] = annonce
-    resultat_final.grid(column=5+len(main_croupier), row=1)
-    resultat_label.grid(column=5+len(main_croupier), row=2)
+    boucle = 1
     if debug == 1:
-        print(score(main_joueur), score(main_croupier))
-        print('fin manche dans resultat')
-    fin_manche()
-    calcul_gain(consequence, assurance_gagnante)
+        print('Entrée résultat')
+    if split != 0:
+        resultat_label['text'] = 'Main 1 \n'
+        boucle = 2
+    while boucle != 0:
+        if debug == 1:
+            print('boucle')
+        if split == 1:
+            score_joueur = score(main_joueur_split)
+        if bj21 == 1:
+            if debug == 1:
+                print('taille main croupier', taille_main_croupier,
+                      main_croupier, score_croupier)
+            if (score_croupier == 21) and (taille_main_croupier == 2):
+                resultat_label['text'] += 'Vous avez le même score que le ' + \
+                    'Dealer: ex aequo'
+                consequence = 'egalite'
+            else:
+                resultat_label['text'] += 'BLACKJACK: vous êtes le vainqueur'
+                consequence = 'Blackjack'
+        elif action == 'surrender':
+            resultat_label['text'] += 'Vous avez abandonné'
+            consequence = 'ff'
+        elif score_joueur > 21:
+            resultat_label['text'] += 'Votre main vaut plus que 21, vous' + \
+                ' avez perdu.'
+        elif score_joueur <= 21:
+            if score_croupier > 21:
+                resultat_label['text'] += 'Le Dealer a dépassé 21: vous ' +\
+                    'avez gagné !'
+                consequence = 'win'
+            elif score_croupier <= 21:
+                if (score_croupier == 21) and (taille_main_croupier == 2):
+                    if debug == 1:
+                        print('ok')
+                    resultat_label['text'] += 'Le Dealer a fait un ' +\
+                        ' BlackJack !\n'
+                    if score_joueur == 21 and len(main_joueur) == 2:
+                        resultat_label['text'] += 'Vous avez également un ' +\
+                            'BlackJack, votre mise est remboursée \n'
+                        consequence = 'egalite'
+                    if assurance_prise == 1:
+                        resultat_label['text'] += 'Vous avez payé l\'' +\
+                            'assurance, vous gagnez deux fois le montant ' +\
+                            'de votre assurance \n'
+                        assurance_gagnante = 1
+                    if score_joueur != 21 or len(main_joueur) != 2:
+                        resultat_label['text'] += ' La main du Dealer ' +\
+                            'est meilleure, vous avez perdu.e'
+                elif score_joueur < score_croupier:
+                    resultat_label['text'] += 'Le Dealer a un meilleur ' + \
+                        'score, vous avez perdu.'
+                elif score_joueur == score_croupier:
+                    resultat_label['text'] += 'Vous avez le même score ' + \
+                        'que le Dealer: ex aequo'
+                    consequence = 'egalite'
+                elif score_joueur > score_croupier:
+                    resultat_label['text'] += 'Vous avez un meilleur ' +\
+                        'score que le Dealer: vous avez gagné !'
+                    consequence = 'win'
+        if split == 0:
+            annonce = f'Votre score: {str(score_joueur)} \n Score' + \
+                f' du Dealer: {str(score_croupier)} \n'
+        if split == 2:
+            annonce = f'Score main 1: {str(score_joueur)}\n'
+            resultat_label['text'] += '\n Main 2 \n'
+        if split == 1:
+            annonce += f'Score main 2: {str(score_joueur)}\n' + \
+                f'Score du Dealer: {str(score_croupier)} \n'
+        resultat_final['text'] = annonce
+        resultat_final.grid(column=6+len(main_croupier), row=3)
+        resultat_label.grid(column=6+len(main_croupier), row=2)
+        if debug == 1:
+            print(score_joueur, score_croupier)
+            print('fin manche dans resultat')
+        calcul_gain(consequence, assurance_gagnante)
+        boucle -= 1
+        if split != 0:
+            split -= 1
 
 
 def calcul_gain(consequence=0, assurance_gagnante=0):
@@ -428,6 +495,36 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     test_dette()
     if debug == 1:
         print('fin calcul gain')
+    fin_manche()
+
+
+def splitter():
+    global split
+    split = 1
+    bouton_split.grid_forget()
+    cj1a.grid(column=1, row=8)
+    cj2a.grid(column=3, row=8)
+    cj2.delete('all')
+    main_joueur_split.append(main_joueur[1])
+    del main_joueur[1]
+    main_joueur.append(paquet[0])
+    del paquet[0]
+    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
+        f' défausse: {str(len(defausse))}'
+    main_joueur_split.append(paquet[0])
+    del paquet[0]
+    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
+        f' défausse: {str(len(defausse))}'
+    creer_image(main_joueur_split[0], cj1a, 'cj1a')
+    root.after(500, root.update())
+    creer_image(main_joueur[1], cj2, 'cj2')
+    root.after(500, root.update())
+    creer_image(main_joueur_split[1], cj2a, 'cj2a')
+    root.after(500, root.update())
+    numero_main.grid(column=2, row=1)
+    numero_main['text'] = 'Main 1'
 
 
 def rejouer():
@@ -437,15 +534,16 @@ def rejouer():
     global cj
     nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-        f'défausse: {str(len(defausse))}'
+        f' défausse: {str(len(defausse))}'
     if len(defausse) >= coupe:
-        for element in defausse:
+        for i in range(len(defausse)):
             paquet.append(defausse[0])
             del defausse[0]
             nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
                 f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-                f'défausse: {str(len(defausse))}'
+                f' défausse: {str(len(defausse))}'
         random.shuffle(paquet)
+        coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
     apparition_mise()
     bouton_donne_initiale.grid(column=2, row=3)
@@ -459,6 +557,7 @@ def rejouer():
     for i in range(2, 14):
         cc[i].grid_forget()
         cj[i].grid_forget()
+        cja[i].grid_forget()
     resultat_label.grid_forget()
     resultat_final.grid_forget()
     stand_label.grid_forget()
@@ -495,11 +594,17 @@ def ordre_boutons3(event):
 
 
 def apparition_bouton_joueur():
+    global money
     bouton_hit.grid(column=2, row=3)
     stand_bouton.grid(column=2, row=5)
     bouton_surrender.grid(column=2, row=6)
     if money >= mise_totale:
         bouton_double_down.grid(column=2, row=4)
+    if main_joueur[0][0] == main_joueur[1][0] and money >= mise_totale:
+        bouton_split.grid(column=2, row=7)
+        money -= mise_totale
+        mise_texte['text'] == f'Mise main 1: {mise_totale} \n' +\
+            f'Mise main 2: {mise_totale}'
 
 
 def apparition_mise():
@@ -558,9 +663,9 @@ def test_dette():
     global dette
     if debug == 1:
         print('dette remboursable')
-    if money == 2*dette:
+    if money == 2*dette and dette != 0:
         money = money-dette
-        dette = dette-int(my_entry3.get())
+        dette = 0
         argent['text'] = f'Crédits: {str(money)}'
         if debug == 1:
             print('dette remboursée')
@@ -586,19 +691,19 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
 
-play = tkinter.Canvas(accueil,width=150, height=150, bg='red',
-                       highlightthickness=0)
+play = tkinter.Canvas(accueil, width=150, height=150, bg='red',
+                      highlightthickness=0)
 play.create_oval(1, 1, 145, 145, width=3, outline='mint cream',
-                       fill='mint cream')
+                 fill='mint cream')
 play.create_text(70, 75, text='Play', font=('elephant', 35), fill='black')
 
 play.pack()
 
 play.bind('<Button-1>', debut)
 
-#image_debut= Image.open("./Images/image0.png")
-#image_debut = image_debut.resize(np.array())
-#image_debut.TK= ImageTk.PhotoImage(image_debut)
+# image_debut= Image.open("./Images/image0.png")
+# image_debut = image_debut.resize(np.array())
+# image_debut.TK= ImageTk.PhotoImage(image_debut)
 
 
 username = tkinter.Label(accueil, text="Username:",
@@ -799,6 +904,8 @@ stand_bouton.bind(
 bouton_surrender = tkinter.Button(bg='red', text='Surrender')
 bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
+bouton_split = tkinter.Button(text='Split', command=splitter)
+
 bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
                  bouton_double_down]
 
@@ -940,36 +1047,55 @@ labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
                        bg="dark green", fg="black")
 labelj.grid(column=0, row=7)
 
-cj3 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj4 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj5 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj6 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj7 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj8 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj9 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj10 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj11 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj12 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj13 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cj14 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj5 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj6 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj7 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj8 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj9 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj10 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj11 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj12 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj13 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj14 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 
-cc3 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc4 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc5 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc6 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc7 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc8 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc9 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc10 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc11 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc12 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc13 = tkinter.Canvas(root, width=66, height=100, bg='white')
-cc14 = tkinter.Canvas(root, width=66, height=100, bg='white')
+cj1a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj2a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj3a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj4a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj5a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj6a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj7a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj8a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj9a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj10a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj11a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj12a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj13a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj14a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+
+cc3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc5 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc6 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc7 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc8 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc9 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc10 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc11 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc12 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc13 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc14 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 
 cj = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13,
       cj14]
+cja = [cj1a, cj2a, cj3a, cj4a, cj5a, cj6a, cj7a, cj8a, cj9a, cj10a, cj11a,
+       cj12a, cj13a, cj14a]
 cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
       cc14]
+
+numero_main = tkinter.Label(root, text='')
 
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
