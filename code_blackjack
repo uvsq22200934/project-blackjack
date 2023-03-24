@@ -128,6 +128,9 @@ def fenêtre():
 def fenêtre_bis():
     F2 = tkinter.Toplevel(accueil)
 
+"""def fenêtre_triple():
+    F3= tkinter.Toplevel(accueil)"""
+
 
 def donne_initiale():
     # fonction qui distribue les cartes en début de partie
@@ -674,7 +677,59 @@ def test_dette():
             dette_label['fg'] = 'red'
             dette_label.after(5000, lambda: dette_label.grid_forget())
 
+"""interface pour permettre au joueur de comprendre les boutons et graphismes"""
+"""
+def skip(event):
+    if event.widget == bouton_skip :
+        interface.destroy() 
+        bouton_skip['command']= fenêtre
 
+
+def tutoriel():
+    carte_croupier = tkinter.Label(interface, text='Ici sont les cartes\n du Dealer',
+                                   bg='green4', fg='white', font=('comic sans ms', 10))
+    carte_croupier.grid(side='right', anchor='top')
+    accueil.after(500, accueil.update())
+    carte_joueur = tkinter.Label(interface, text='et, là, ce sont vos cartes',
+                                 bg='green4', fg='white', font=('comic sans ms', 10))
+    carte_joueur.grid(side='right', anchor='top')
+    accueil.after(500, accueil.update())
+    carte_croupier.grid_forget
+    dessin_mise = tkinter.Label(interface, text='ce sont les jetons;\n,' 
+                                'miser avant de distribuer les cartes',
+                                bg='green4', fg='white', font=('comic sans ms', 10))
+    dessin_mise.grid()
+    accueil.after(500, accueil.update())
+    carte_joueur.grid_forget
+
+
+
+def mode_jeu(event):
+    if event.widget == play :
+        accueil.configure(bg='white')
+        #for i in accueil.winfo_children() :
+                i.destroy()
+        bouton_passer = tkinter.Canvas(accueil, text='passer le tutoriel ?',
+                                bg='white', fg ='black')
+        bouton_passer.pack(side='top', anchor='center')
+        bouton_passer.bind('<Button-1>', fenêtre)
+        bouton_tuto = tkinter.Canvas(accueil, text='poursuivre vers le tutoriel ?',
+                                    bg='white', fg ='black')
+        bouton_tuto.pack(side='bottom', anchor='center')
+        bouton_tuto.bind('<Button-1>',fenêtre_triple)
+        label_ou = tkinter.Canvas(accueil, text='OU', width='60',
+                                 height='60',fg='red', bg='black')
+        label_ou.grid(anchor='center')
+        label_ou.create_oval(1, 1, 55, 55, width=3, outline='black', fill='mint cream')
+        if event.widget == bouton_passer:
+            accueil.destroy()
+            interface.destroy()
+        if event.widget == bouton_tuto : 
+            accueil.destroy()
+            bouton_tuto['command']=tutoriel
+
+
+"""
 """Fenêtres"""
 
 accueil = tkinter.Tk()
@@ -700,6 +755,7 @@ play.create_text(70, 75, text='Play', font=('elephant', 35), fill='black')
 play.pack()
 
 play.bind('<Button-1>', debut)
+"""play.bind('<Button-1>', mode_jeu)"""
 
 # image_debut= Image.open("./Images/image0.png")
 # image_debut = image_debut.resize(np.array())
@@ -758,8 +814,15 @@ accueil.mainloop()
 
 
 """2ème fenètre"""
+"""interface = tkinter.Tk()
+interface.title('Tutoriel')
+interface.geometry == accueil.geometry
 
+bouton_skip = tkinter.Button(interface, text='skip', bg='blue2')
+bouton_skip.grid(column=10, row=10)
+bouton_skip.bind('<Button-1>', skip)"""
 
+"""3ème fenêtre"""
 root = tkinter.Tk()
 root.title('Blackjack 21')
 """root.state('zoomed')"""
