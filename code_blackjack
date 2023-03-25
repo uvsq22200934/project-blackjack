@@ -18,37 +18,48 @@ from PIL import Image, ImageTk
 
 
 """p = pique, co = coeur, t = trèfle, ca = carreau"""
-valeurs = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7, '8p': 8,
-           '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10, 'Rp': 10, 'Ap': 11,
-           '2co': 2, '3co': 3, '4co': 4, '5co': 5, '6co': 6, '7co': 7,
-           '8co': 8, '9co': 9, '10co': 10, 'Vco': 10, 'Dco': 10, 'Rco': 10,
-           'Aco': 11,
-           '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7, '8t': 8,
-           '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10, 'Rt': 10, 'At': 11,
-           '2ca': 2, '3ca': 3, '4ca': 4, '5ca': 5, '6ca': 6, ' 7ca': 7,
-           '8ca': 8, '9ca': 9, '10ca': 10, 'Vca': 10, 'Dca': 10, 'Rca': 10,
-           'Aca': 11}
+dic_valeur_cartes = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7,
+                     '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10,
+                     'Rp': 10, 'Ap': 11,
+                     '2co': 2, '3co': 3, '4co': 4, '5co': 5, '6co': 6,
+                     '7co': 7, '8co': 8, '9co': 9, '10co': 10, 'Vco': 10,
+                     'Dco': 10, 'Rco': 10, 'Aco': 11,
+                     '2t': 2, '3t': 3, '4t': 4, '5t': 5, '6t': 6, '7t': 7,
+                     '8t': 8, '9t': 9, '10t': 10, 'Vt': 10, 'Dt': 10,
+                     'Rt': 10, 'At': 11,
+                     '2ca': 2, '3ca': 3, '4ca': 4, '5ca': 5, '6ca': 6,
+                     ' 7ca': 7, '8ca': 8, '9ca': 9, '10ca': 10, 'Vca': 10,
+                     'Dca': 10, 'Rca': 10, 'Aca': 11}
 
-paquet = list(valeurs.keys())*6
+
+paquet = list(dic_valeur_cartes.keys())*6
 defausse = []
+# La coupe correspond au nombre de carte qui vont être jouées avant que le
+# croupier ne remélange le jeu
+coupe = random.randint(52, len(paquet)-52)
+
 main_joueur = []
 main_joueur_split = []
 main_croupier = []
-coupe = random.randint(52, len(paquet)-52)
 
+# Variables
 split = 0
-bj21 = 0
-money = 0
+blackjack = 0
+argent_joueur = 0
 assurance_prise = 0
 assurance_gagnante = 0
 prix_assurance = 0
 dette = 0
+nom_joueur = ''
 
+# Dictionnaires permettant de contourner le garbage collector
 images = dict()
 image_dos = dict()
 
+# Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
+# n'apparait
 debug = 1
-name = ''
+
 
 if debug == 1:
     print(coupe)
@@ -58,38 +69,52 @@ if debug == 1:
 
 
 def creer_image(carte, position_carte, texte):
+    """Créer l'image d'une carte.
+
+    Cette fonction sert à créer l'image de la carte sur l'interface graphique.
+
+    Parametres
+    ----------
+    carte : str
+        Le nom de la carte.
+    position_carte : canvas
+        Le canvas sur lequel l'image de la carte va s'afficher.
+    texte : str
+        Texte qui va créer une clé dans le dictionnaire dic_valeur_cartes pour
+        eviter le garbage collector
+    """
     image_carte = Image.open("./Images/cartes.png")
     if debug == 1:
         print('ok', carte)
-    a = 30
-    b = 30
-    c = 390
-    d = 570
+    A = 30
+    B = 30
+    C = 390
+    D = 570
     if 'co' in carte:
-        b += 570
-        d += 570
+        B += 570
+        D += 570
     if 'ca' in carte:
-        b += 570*2
-        d += 570*2
+        B += 570*2
+        D += 570*2
     if 't' in carte:
-        b += 570*3
-        d += 570*3
+        B += 570*3
+        D += 570*3
     for i in range(2, 11):
         if str(i) in carte:
-            a += 390 * (i-1)
-            c += 390 * (i-1)
+            A += 390 * (i-1)
+            C += 390 * (i-1)
     if 'V' in carte:
-        a += 390*10
-        c += 390*10
+        A += 390*10
+        C += 390*10
     if 'D' in carte:
-        a += 390*11
-        c += 390*11
+        A += 390*11
+        C += 390*11
     if 'R' in carte:
-        a += 390*12
-        c += 390*12
+        A += 390*12
+        C += 390*12
     if debug == 1:
-        print(a, b, c, d)
-    crop_rectangle = (a, b, c, d)
+        print(A, B, C, D)
+    crop_rectangle = (A, B, C, D)
     cropped_im = image_carte.crop(crop_rectangle)
     image_fin = cropped_im.resize((66, 100))
     images[texte] = ImageTk.PhotoImage(image_fin)
@@ -97,6 +122,19 @@ def creer_image(carte, position_carte, texte):
 
 
 def dos_carte(position, texte):
+    """Créer l'image du dos des cartes.
+
+    Cette fonction sert à créer l'image de du dos des carte sur l'interface
+    graphique.
+
+    Parametres
+    ----------.
+    position : canvas
+        Le canvas sur lequel l'image de la carte va s'afficher.
+    texte : str
+        Texte qui va créer une clé dans le dictionnaire dic_valeur_cartes pour
+        eviter le garbage collector
+    """
     image_carte = Image.open("./Images/dos_cartes3.jpg")
     image_fin = image_carte.resize((66, 100))
     images[texte] = ImageTk.PhotoImage(image_fin)
@@ -104,19 +142,28 @@ def dos_carte(position, texte):
 
 
 def debut(event):
-    global name
-    global money
+    """Débuter la partie.
+
+    Cette fonction sert à afficher la fenêtre correspondant au jeu lorsque
+    l'on appuie sur le bouton play.
+
+    Parametres
+    ----------.
+    event
+    """
+    global nom_joueur
+    global argent_joueur
     if event.widget == play:
-        name = my_entry.get()
-        money = my_entry2.get()
-        if not money.isnumeric():
-            money = ''
-        if name == '':
-            name = 'Player'
-        if money == '':
-            money = 1000
-        elif money != '':
-            money = int(money)
+        nom_joueur = my_entry.get()
+        argent_joueur = my_entry2.get()
+        if not argent_joueur.isnumeric():
+            argent_joueur = ''
+        if nom_joueur == '':
+            nom_joueur = 'Player'
+        if argent_joueur == '':
+            argent_joueur = 1000
+        elif argent_joueur != '':
+            argent_joueur = int(argent_joueur)
         accueil.destroy()
 
 
@@ -127,33 +174,39 @@ def fenêtre():
 def fenêtre_bis():
     F2 = tkinter.Toplevel(accueil)
 
+
 """def fenêtre_triple():
     F3= tkinter.Toplevel(accueil)"""
 
 
 def donne_initiale():
+    """Donne initiale des cartes aux joueurs et au croupier.
+
+    Cette fonction sert à distribuer deux cartes à tous les joueurs et au
+    croupier lorsque la manche débute
+    """
     # fonction qui distribue les cartes en début de partie
     global paquet
     global main_joueur
     global main_croupier
-    global bj21
+    global blackjack
     global assurance_prise
     global mise_totale
     disparition_mise()
     bouton_donne_initiale.grid_forget()
-    nb_carte = 0
-    while nb_carte < 2:
+    nb_carte_piochee = 0
+    while nb_carte_piochee < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f' défausse: {str(len(defausse))}'
+        nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
+            f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
+            f'dans la défausse: {str(len(defausse))}'
         main_croupier.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f' défausse: {str(len(defausse))}'
-        nb_carte += 1
+        nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
+            f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
+            f'dans la défausse: {str(len(defausse))}'
+        nb_carte_piochee += 1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.after(500, root.update())
     creer_image(main_croupier[0], cc1, 'cc1')
@@ -161,11 +214,11 @@ def donne_initiale():
     creer_image(main_joueur[1], cj2, 'cj2')
     root.after(500, root.update())
     dos_carte(cc2, 'cc2')
-    bj21 = 0
+    blackjack = 0
     assurance_prise = 0
     if 'A' in main_croupier[0]:
         prix_assurance = mise_totale // 2
-        if money >= prix_assurance:
+        if argent_joueur >= prix_assurance:
             texte_assurance['text'] = 'Le Dealer vient de tirer un ' + \
                 f'As. Voulez vous payer une assurance ({prix_assurance})?'
             texte_assurance.grid(column=2, row=3)
@@ -174,7 +227,7 @@ def donne_initiale():
             root.update()
     else:
         if score(main_joueur) == 21:
-            bj21 = 1
+            blackjack = 1
             croupier()
         else:
             bouton_melanger.grid_forget()
@@ -184,31 +237,52 @@ def donne_initiale():
 
 
 def reponse_assurance(reponse=0):
-    global money
+    """Réaction suite à la réponse du joueur concernant l'assurance.
+
+    Cette fonction sert à déterminer si le joueur prend ou non l'assurance
+
+    Parametres
+    ----------.
+    reponse : str
+        Permet de déterminer si le joueur prend l'assurance ou non
+    """
+    global argent_joueur
     global assurance_prise
     global bouton_non_assurance
     global bouton_oui_assurance
-    global bj21
+    global blackjack
     global mise_totale
     prix_assurance = mise_totale // 2
     if reponse == 'oui':
-        money -= prix_assurance
+        argent_joueur -= prix_assurance
         assurance_prise = 1
         assurance_valeur['text'] = f'Assurance: {str(prix_assurance)}'
         assurance_valeur.grid(column=0, row=10)
     bouton_non_assurance.grid_forget()
     bouton_oui_assurance.grid_forget()
     texte_assurance.grid_forget()
-    argent['text'] = f'Crédits: {str(money)}'
+    argent['text'] = f'Crédits: {str(argent_joueur)}'
     if score(main_joueur) == 21:
-        bj21 = 1
+        blackjack = 1
         croupier()
-    if bj21 == 0:
+    if blackjack == 0:
         bouton_melanger.grid_forget()
         apparition_bouton_joueur()
 
 
 def hit(main, pointeur):
+    """Hit.
+
+    Cette fonction sert à faire piocher une carte lorsque le joueur ou le
+    croupier "hit".
+
+    Parametres
+    ----------.
+    main : list
+        Correspond à la main qui va piocher la carte
+    pointeur : str
+        Permet de savoir si c'est le croupier qui pioche ou un joueur
+    """
     # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global main_croupier
@@ -226,9 +300,9 @@ def hit(main, pointeur):
         bouton_surrender.grid_forget()
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f' défausse: {str(len(defausse))}'
+        nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
+            f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
+            f'dans la défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
                 creer_image(main[i-1], carte[i-1], f'{carte[i]}')
@@ -239,9 +313,9 @@ def hit(main, pointeur):
             print(len(main))
         main.append(paquet[0])
         del paquet[0]
-        nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-            f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-            f' défausse: {str(len(defausse))}'
+        nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
+            f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
+            f'dans la défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
                 creer_image(main[i-1], cc[i-1], f'cc{i}')
@@ -251,6 +325,17 @@ def hit(main, pointeur):
 
 
 def test_score(main):
+    """Tester le score d'une main.
+
+    Cette fonction sert à vérifier qu'une main d'un joueur ne vale pas ou ne
+    dépasse pas 21 points. Si c'est le cas, aucune action supplémentaire du
+    joueur ne peut avoir lieu sur la main en question
+
+    Parametres
+    ----------.
+    main : list
+        Correspond à la main dont le socre est testé
+    """
     global split
     if score(main) >= 21:
         if split == 1:
@@ -263,6 +348,12 @@ def test_score(main):
 
 
 def disparition_bouton_joueur():
+    """Réaction suite à la réponse du joueur concernant l'assurance.
+
+    Cette fonction sert à faire disparaitre de l'interface graphique les
+    boutons qu'utilise le joueur pour déterminer quelle action il effectue vis
+    à vis de sa main
+    """
     global bouton_hit
     if debug == 1:
         print("bouton test", bouton_hit.grid_info())
@@ -272,8 +363,11 @@ def disparition_bouton_joueur():
 
 
 def fin_manche():
-    # fonction qui enlève les cartes des mains des joueurs et les place dans
-    # la défausse
+    """Ramassage des cartes en fin de manche.
+
+    Cette fonction sert à enlever les cartes des différentes main et les
+    placer dans la défausse
+    """
     global main_croupier
     global main_joueur
     global defausse
@@ -291,12 +385,20 @@ def fin_manche():
 
 
 def score(main):
-    # fonction qui permet de calculer la valeur d'une main
+    """Score d'une main.
+
+    Cette fonction sert à déterminer quel est le score d'une main
+
+    Parametres
+    ----------.
+    main : list
+        Correspond à la main dont le score est évalué
+    """
     points = 0
     for element in main:
-        points += valeurs.get(element)
+        points += dic_valeur_cartes.get(element)
         if debug == 1:
-            print(points, valeurs.get(element), element)
+            print(points, dic_valeur_cartes.get(element), element)
     boucle = 0
     while points > 21:
         if boucle > len(main)-1:
@@ -310,7 +412,11 @@ def score(main):
 
 
 def croupier():
-    # fonction qui définit les action du croupier en fonction de sa main
+    """Action du croupier
+
+    Cette fonction sert à faire jouer le croupier: il pioche des carte
+      jusqu'à avoir 17 points ou plus
+    """
     global main_croupier
     creer_image(main_croupier[1], cc2, 'cc2')
     cc2.grid(column=3, row=1)
@@ -325,7 +431,11 @@ def croupier():
     resultat()
 
 
-def stand(main, bouton=0):
+def stand():
+    """Stand.
+
+    Cette fonction sert à réagir à l'acion du joueur "stand".
+    """
     # fonction qui permet au joueur de "stand"
     global split
     stand_label.grid(column=0, row=5)
@@ -341,15 +451,24 @@ def stand(main, bouton=0):
 
 
 def doubble_down(main):
-    # fonction qui permet au joueur de "double down"
+    """Doubble down
+
+    Cette fonction sert à réagir lorsque le joueur doubble down: il double sa
+    mise, reçois une carte, puis sont tour s'arrête
+
+    Parametres
+    ----------.
+    main : list
+        Correspond à la main qui double down
+    """
     global mise_totale
-    global money
+    global argent_joueur
     global split
     bouton_split.grid_forget()
-    money -= mise_totale
+    argent_joueur -= mise_totale
     mise_totale *= 2
     mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
-    argent['text'] = f'Crédits: {str(money)}'
+    argent['text'] = f'Crédits: {str(argent_joueur)}'
     hit(main, 'main_joueur')
     if debug == 1:
         print(main)
@@ -361,6 +480,11 @@ def doubble_down(main):
 
 
 def surrender():
+    """Surrender.
+
+    Cette fonction permet au joueur de "surrender", il abandonne la partie et
+    récupère la moitié de sa mise.
+    """
     # fonction qui permet au joueur de "surrender"
     global split
     bouton_split.grid_forget()
@@ -372,11 +496,20 @@ def surrender():
 
 
 def resultat(action=0):
+    """Résultat de la manche.
+
+    Cette fonction sert à donner le résulat de la manche
+
+    Parametres
+    ----------.
+    action : str
+        Permet de savoir si le joueur a surrender ou pas
+    """
     # fonction qui donne le résulat du jeu
     global main_croupier
     global assurance_prise
     global assurance_gagnante
-    global bj21
+    global blackjack
     global split
     resultat_label['text'] = ''
     taille_main_croupier = len(main_croupier)
@@ -394,7 +527,7 @@ def resultat(action=0):
             print('boucle')
         if split == 1:
             score_joueur = score(main_joueur_split)
-        if bj21 == 1:
+        if blackjack == 1:
             if debug == 1:
                 print('taille main croupier', taille_main_croupier,
                       main_croupier, score_croupier)
@@ -422,7 +555,8 @@ def resultat(action=0):
                         print('ok')
                     resultat_label['text'] += 'Le Dealer a fait un ' +\
                         ' BlackJack !\n'
-                    if score_joueur == 21 and len(main_joueur) == 2:
+                    if score_joueur == 21 and len(main_joueur) == 2 \
+                            and split == 0:
                         resultat_label['text'] += 'Vous avez également un ' +\
                             'BlackJack, votre mise est remboursée \n'
                         consequence = 'egalite'
@@ -467,8 +601,22 @@ def resultat(action=0):
 
 
 def calcul_gain(consequence=0, assurance_gagnante=0):
+    """Calcul des gains
+
+    Cette fonction sert à calculer les gains en fonction du résultat
+
+    Parametres
+    ----------.
+    consequence : str
+        Permet de déterminer combien le joueur a remporté en fonction du
+        résultat
+    assurance_gagnante : int
+        Si le paramètre vaut 1, alors le joueur a pris l'assurance lorsqu'il a
+        été dévoilé que la première carte du croupier était un As et le
+        croupier a effectivement eu un blackjack
+    """
     global mise_totale
-    global money
+    global argent_joueur
     if debug == 1:
         print('début calcul gain')
     gain = 0
@@ -476,8 +624,8 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     if consequence != 0 and consequence != 'ff':
         if debug == 1:
             print('mise remboursée')
-        money += mise_totale
-        argent['text'] = f'Crédits: {int(money)}'
+        argent_joueur += mise_totale
+        argent['text'] = f'Crédits: {int(argent_joueur)}'
     if consequence == 'Blackjack':
         gain += mise_totale * 1.5
     if consequence == 'ff':
@@ -488,12 +636,12 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
         gain_assurance += mise_totale
     gain = int(gain)
     if gain != 0:
-        argent['text'] = f'Crédits: {int(money)} + {int(gain)}'
+        argent['text'] = f'Crédits: {int(argent_joueur)} + {int(gain)}'
     else:
-        argent['text'] = f'Crédits: {int(money)}'
+        argent['text'] = f'Crédits: {int(argent_joueur)}'
     if gain_assurance != 0:
         argent['text'] += f' + {int(gain_assurance)}'
-    money += gain + gain_assurance
+    argent_joueur += gain + gain_assurance
     test_dette()
     if debug == 1:
         print('fin calcul gain')
@@ -501,6 +649,13 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
 
 
 def splitter():
+    """Splitter.
+
+    Cette fonction permet au joueur de jouer deux main au lieu d'une seule si
+    les deux premieres cartes reçues forment une paire. Si la paire en
+    question est une paire d'As, le joueur ne reçois qu'une carte dans chacune
+    des deux main et ne peut pas avoir de Blackjack
+    """
     global split
     split = 1
     bouton_split.grid_forget()
@@ -511,12 +666,12 @@ def splitter():
     del main_joueur[1]
     main_joueur.append(paquet[0])
     del paquet[0]
-    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+    nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     main_joueur_split.append(paquet[0])
     del paquet[0]
-    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+    nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     creer_image(main_joueur_split[0], cj1a, 'cj1a')
@@ -533,20 +688,28 @@ def splitter():
 
 
 def rejouer():
+    """Rejouer.
+
+    Cette fonction permet au joueur de jouer une nouvelle manche et fait
+    disparaître les cartes ainsi que les différents textes qui apparaissent à
+    la fin d'une manche. Si le nombre de cartes jouées est supérieur à la
+    valeur de la coupe, alors le paquet et la défausse sont mis en commun et
+    le nouveau paquet obtenu remélangé
+    """
     global mise_totale
     global coupe
     global cc
     global cj
-    nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
+    nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     if len(defausse) >= coupe:
         for i in range(len(defausse)):
             paquet.append(defausse[0])
             del defausse[0]
-            nb_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-                f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
-                f' défausse: {str(len(defausse))}'
+            nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
+                f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
+                f'dans la défausse: {str(len(defausse))}'
         random.shuffle(paquet)
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
@@ -554,7 +717,7 @@ def rejouer():
     bouton_donne_initiale.grid(column=2, row=3)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
-    argent['text'] = f'Crédits: {str(money)}'
+    argent['text'] = f'Crédits: {str(argent_joueur)}'
     cc1.delete('all')
     cc2.delete('all')
     cj1.delete('all')
@@ -567,13 +730,18 @@ def rejouer():
     resultat_final.grid_forget()
     stand_label.grid_forget()
     assurance_valeur.grid_forget()
-    if money == 0:
+    if argent_joueur == 0:
         emprunt.grid(column=9, row=5)
         term.grid(column=10, row=5)
         banque.grid(column=9, columnspan=5, row=3)
 
 
 def quitter(event):
+    """Quitter le jeu.
+
+    Cette fonction permet au joueur de quitter le jeu et ferme la fenêtre du
+    jeu
+    """
     root.destroy()
 
 
@@ -599,15 +767,15 @@ def ordre_boutons3(event):
 
 
 def apparition_bouton_joueur():
-    global money
+    global argent_joueur
     bouton_hit.grid(column=2, row=3)
     stand_bouton.grid(column=2, row=5)
     bouton_surrender.grid(column=2, row=6)
-    if money >= mise_totale:
+    if argent_joueur >= mise_totale:
         bouton_double_down.grid(column=2, row=4)
-    if main_joueur[0][0] == main_joueur[1][0] and money >= mise_totale:
+    if main_joueur[0][0] == main_joueur[1][0] and argent_joueur >= mise_totale:
         bouton_split.grid(column=2, row=7)
-        money -= mise_totale
+        argent_joueur -= mise_totale
         mise_texte['text'] == f'Mise main 1: {mise_totale} \n' +\
             f'Mise main 2: {mise_totale}'
 
@@ -630,18 +798,18 @@ def disparition_mise():
 
 def mise(montant_mise):
     global mise_totale
-    global money
-    if (money - montant_mise) >= 0:
+    global argent_joueur
+    if (argent_joueur - montant_mise) >= 0:
         erreur.grid_forget()
         bouton_donne_initiale.grid(column=2, row=3)
         mise_totale += montant_mise
-        money -= montant_mise
+        argent_joueur -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
-        argent['text'] = f'Crédits: {str(money)}'
+        argent['text'] = f'Crédits: {str(argent_joueur)}'
 
 
 def emprunter(event):
-    global money
+    global argent_joueur
     if event.widget == emprunt:
         term.grid_forget()
         emprunt.grid_forget()
@@ -650,11 +818,11 @@ def emprunter(event):
 
 
 def validd(event):
-    global money
+    global argent_joueur
     global dette
     if event.widget == valid:
-        money += int(my_entry3.get())
-        argent['text'] = f'Crédits: {str(money)}'
+        argent_joueur += int(my_entry3.get())
+        argent['text'] = f'Crédits: {str(argent_joueur)}'
         dette += int(my_entry3.get())
         dette_label['text'] = f'Vous avez {str(dette)} € de dettes envers ' +\
             'la banque'
@@ -664,14 +832,14 @@ def validd(event):
 
 
 def test_dette():
-    global money
+    global argent_joueur
     global dette
     if debug == 1:
         print('dette remboursable')
-    if money == 2*dette and dette != 0:
-        money = money-dette
+    if argent_joueur == 2*dette and dette != 0:
+        argent_joueur = argent_joueur-dette
         dette = 0
-        argent['text'] = f'Crédits: {str(money)}'
+        argent['text'] = f'Crédits: {str(argent_joueur)}'
         if debug == 1:
             print('dette remboursée')
         if dette == 0:
@@ -972,7 +1140,7 @@ bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
 
 stand_bouton = tkinter.Button(bg='salmon', text='Stand')
 stand_bouton.bind(
-    "<Button-1>", lambda e: stand(main_joueur))
+    "<Button-1>", lambda e: stand())
 
 bouton_surrender = tkinter.Button(bg='red', text='Surrender')
 bouton_surrender.bind('<Button-1>', lambda e: surrender())
@@ -1023,14 +1191,14 @@ dette_label = tkinter.Label(root, text='', bg='dark green', fg='black',
 
 mise_totale = 0
 mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
-               'jeton_blanc': 50, 'jeton_noir': 100, 'tapis': 'money'}
+               'jeton_blanc': 50, 'jeton_noir': 100, 'tapis': 'argent_joueur'}
 
 """le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
     apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
         totale."""
 
-argent = tkinter.Label(root, text='Crédits: '+str(money), bg='dark green',
-                       fg='white')
+argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
+                       bg='dark green', fg='white')
 argent.grid(column=0, row=8)
 
 mise_texte = tkinter.Label(
@@ -1090,7 +1258,7 @@ jeton_blanc.bind('<Button-1>', lambda e: mise(50))
 
 jeton_noir.bind('<Button-1>', lambda e: mise(100))
 
-jeton_tapis.bind('<Button-1>', lambda e: mise(money))
+jeton_tapis.bind('<Button-1>', lambda e: mise(argent_joueur))
 
 jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge, jeton_noir,
                  jeton_tapis, miser]
@@ -1116,7 +1284,7 @@ labelc = tkinter.Label(root, text="Dealer ", font=(
 labelc.grid(column=0, row=1)
 
 # texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text=name, font=("helvetica", "15"),
+labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
                        bg="dark green", fg="black")
 labelj.grid(column=0, row=7)
 
@@ -1179,10 +1347,10 @@ resultat_final = tkinter.Label(
 resultat_label = tkinter.Label(
     root, text='', bg='dark green', fg='yellow')
 
-nb_paquet = tkinter.Label(
+nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f'défausse: {str(len(defausse))}', bg='dark green')
-nb_paquet.grid(column=10, row=0)
+nb_carte_paquet.grid(column=10, row=0)
 
 root.mainloop()
