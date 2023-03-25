@@ -849,15 +849,14 @@ def validd(event):
             entry_label.grid(column=9,columnspan=5, row=7)
             entry_label.after(900, lambda: entry_label.grid_forget())
         if my_entry3.get() == int :
-            pass
-        argent_joueur += int(my_entry3.get())
-        argent['text'] = f'Crédits: {str(argent_joueur)}'
-        dette += int(my_entry3.get())
-        dette_label['text'] = f'Vous avez {str(dette)} € de dettes envers ' +\
-            'la banque'
-        dette_label.grid(column=9, columnspan=5, row=3)
-        for i in range(len(canvas_emprunt)):
-            canvas_emprunt[i].grid_forget()
+            argent_joueur += int(my_entry3.get())
+            argent['text'] = f'Crédits: {str(argent_joueur)}'
+            dette += int(my_entry3.get())
+            dette_label['text'] = f'Vous avez {str(dette)} € de dettes envers ' +\
+                'la banque'
+            dette_label.grid(column=9, columnspan=5, row=3)
+            for i in range(len(canvas_emprunt)):
+                canvas_emprunt[i].grid_forget()
 
 
 def test_dette():
@@ -1230,11 +1229,13 @@ miser = tkinter.Label(root, text="Cliquez pour miser:",
                       bg='dark green', fg='white')
 
 """ position des widgets jetons pour la mise"""
-jeton_tapis = tkinter.Canvas(root, bg='dark green', width=40, height=25,
+jeton_tapis = tkinter.Canvas(root, bg='dark green', width=60, height=45,
                              relief='raised', borderwidth=0,
-                             highlightthickness=1 )
-jeton_tapis.create_text(20, 13, text='tapis',
+                             highlightthickness=0 )
+jeton_tapis.create_text(26, 21, text='All in',
                         font=('helvetica', 12), fill='white')
+jeton_tapis.create_oval(4,4,50,40, width=3,
+                        outline='white')
 
 jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
