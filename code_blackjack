@@ -154,6 +154,10 @@ def debut(event):
     global nom_joueur
     global argent_joueur
     if event.widget == play:
+        if my_entry2.get() != int or int(my_entry2)<=0:
+            entry1_label = tkinter.Label(accueil, text='erreur\n Veuillez entrer un nombre positif')
+            entry1_label.pack()
+            entry1_label.after(700, lambda: entry1_label.grid_forget())
         nom_joueur = my_entry.get()
         argent_joueur = my_entry2.get()
         if not argent_joueur.isnumeric():
@@ -826,15 +830,26 @@ def emprunter(event):
         valid.grid(column=9, columnspan=5, row=6)
         my_entry3.grid(column=9, columnspan=5, row=5)
 
+   
+    
 
 def validd(event):
     """ dette : 
     la fonction comptabilise automatiquement
     le nombre de dette en fonction de l'emprunt
     """
+    """fonction qui a pour but d'afficher une 
+    erreur si la saisie est hors du cadre requis"""
     global argent_joueur
     global dette
     if event.widget == valid:
+        if my_entry3.get() != int or int(my_entry3)<=0:
+            entry_label = tkinter.Label(root, text='erreur\n Veuillez entrer un nombre positif',
+                                        bg='dark green', fg='red')
+            entry_label.grid(column=9,columnspan=5, row=7)
+            entry_label.after(900, lambda: entry_label.grid_forget())
+        if my_entry3.get() == int :
+            pass
         argent_joueur += int(my_entry3.get())
         argent['text'] = f'Crédits: {str(argent_joueur)}'
         dette += int(my_entry3.get())
