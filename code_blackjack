@@ -14,10 +14,9 @@ import random
 import tkinter
 from PIL import Image, ImageTk
 
-"""listes et variables"""
+# listes et variables
 
-
-"""p = pique, co = coeur, t = trèfle, ca = carreau"""
+# p = pique, co = coeur, t = trèfle, ca = carreau
 dic_valeur_cartes = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7,
                      '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10,
                      'Rp': 10, 'Ap': 11,
@@ -35,29 +34,51 @@ dic_valeur_cartes = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7,
 paquet = list(dic_valeur_cartes.keys())*6
 defausse = []
 # La coupe correspond au nombre de carte qui vont être jouées avant que le
-# croupier ne remélange le jeu
+# croupier ne remélange le jeu. Dans la réalité, le croupier place une carte
+# rouge dans le paquet de carte à un endroit aléatoire (il doit cependnat y
+# avoir au moin sun jeu soit 52 cartes avant et apès la carte rouge). Dans le
+# reste des commentaires du code, on parlera donc de carte rouge
 coupe = random.randint(52, len(paquet)-52)
 
+# Différentes main pour acceuillir les cartes piochées
 main_joueur = []
-main_joueur_split = []
 main_croupier = []
+# Main utilisée lorsque le joueur fait un split
+main_joueur_split = []
 
-# Variables
+# Variables permettant au programme de savoir si le joueur a effectué
+# certaines actions. Lorsque la variable vaut 0, l'action n'a pas été effectuée
+
+# Split peut valoir 0, 1 ou 2. Si plit == 0, alors le joueur n'a pas fait de
+# split. Si split == 1, alors le joueur a fait un split et joue sa première
+# main. Si split == 2, le joueur joue sa deuxième main.
 split = 0
+# Blacjack peut valoir 0 ou 1 et permet de savoir si le joueur a fait un
+# blackjack
 blackjack = 0
-argent_joueur = 0
+# Assurance prise peut valoir 0 ou 1 et permet de savoir si le joueur a payé
+# une assurance lorsque le croupier a révélé que sa première carte était un As
 assurance_prise = 0
+# Assurance gagnante peut valoir 0 ou 1 permet de savoir si l'assurance prise
+# par le joueur est gagnate ou non, c'est à dire si le croupier avait
+# effectivement un blackjack ou pas
 assurance_gagnante = 0
+
+# Variables qui dépendent du joueur et/ou peuvent évoluer au cours de la partie
+
+argent_joueur = 0
 prix_assurance = 0
 dette = 0
 nom_joueur = ''
 
 # Dictionnaires permettant de contourner le garbage collector
+
 images = dict()
 image_dos = dict()
 
 # Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
 # n'apparait
+
 debug = 1
 
 
@@ -86,6 +107,8 @@ def creer_image(carte, position_carte, texte):
     image_carte = Image.open("./Images/cartes.png")
     if debug == 1:
         print('ok', carte)
+    # A, B, C, D ont été mesurées au préalable et correspond à l'écart entre
+    # chaque carte sur l'image cartes.png
     A = 30
     B = 30
     C = 390
@@ -117,6 +140,8 @@ def creer_image(carte, position_carte, texte):
     crop_rectangle = (A, B, C, D)
     cropped_im = image_carte.crop(crop_rectangle)
     image_fin = cropped_im.resize((66, 100))
+    # L'ajout de "texte" au doctionnaire image permet d'éviter le garbage
+    # collector
     images[texte] = ImageTk.PhotoImage(image_fin)
     position_carte.create_image(2, 2, anchor='nw', image=images[texte])
 
@@ -214,8 +239,6 @@ def donne_initiale():
     creer_image(main_joueur[1], cj2, 'cj2')
     root.after(500, root.update())
     dos_carte(cc2, 'cc2')
-    blackjack = 0
-    assurance_prise = 0
     if 'A' in main_croupier[0]:
         prix_assurance = mise_totale // 2
         if argent_joueur >= prix_assurance:
@@ -283,13 +306,16 @@ def hit(main, pointeur):
     pointeur : str
         Permet de savoir si c'est le croupier qui pioche ou un joueur
     """
-    # fonction qui permet à un joueur de piocher un certain nombre de carte
     global main_joueur
     global main_croupier
     global paquet
     if split == 2 and main != main_croupier:
+        # cja correspond à la liste de canvas utilisée pour afficher les
+        # cartes de la deucime main du joueur en cas de split
         carte = cja
         main = main_joueur_split
+        # a est une variable permettant d'ajuster la position de les cartes de
+        # la deucième main du joueur sur l'interface graphique en cas de split
         a = 1
     else:
         carte = cj
@@ -415,7 +441,7 @@ def croupier():
     """Action du croupier
 
     Cette fonction sert à faire jouer le croupier: il pioche des carte
-      jusqu'à avoir 17 points ou plus
+    jusqu'à avoir 17 points ou plus
     """
     global main_croupier
     creer_image(main_croupier[1], cc2, 'cc2')
@@ -434,7 +460,8 @@ def croupier():
 def stand():
     """Stand.
 
-    Cette fonction sert à réagir à l'acion du joueur "stand".
+    Cette fonction permet au joueur de stand, c'est à dire d'arreter de
+    piocher des cartes et garder sa main en l'état actuel
     """
     # fonction qui permet au joueur de "stand"
     global split
@@ -482,8 +509,8 @@ def doubble_down(main):
 def surrender():
     """Surrender.
 
-    Cette fonction permet au joueur de "surrender", il abandonne la partie et
-    récupère la moitié de sa mise.
+    Cette fonction permet au joueur de "surrender", il abandonne la manche
+    avant de piocher une carte et récupère la moitié de sa mise.
     """
     # fonction qui permet au joueur de "surrender"
     global split
@@ -496,7 +523,7 @@ def surrender():
 
 
 def resultat(action=0):
-    """Résultat de la manche.
+    """Résultat de la manche
 
     Cette fonction sert à donner le résulat de la manche
 
@@ -513,8 +540,12 @@ def resultat(action=0):
     global split
     resultat_label['text'] = ''
     taille_main_croupier = len(main_croupier)
+    # Les scores du croupier et du joueur sont assignés à des variables afin
+    # de n'avoir à passer une seule fois par main dans la fonction score
     score_croupier = score(main_croupier)
     score_joueur = score(main_joueur)
+    # Consequence est une variable permettant de savoir quel gain donner dans
+    # la fonction calcul_gain
     consequence = 0
     boucle = 1
     if debug == 1:
@@ -522,59 +553,80 @@ def resultat(action=0):
     if split != 0:
         resultat_label['text'] = 'Main 1 \n'
         boucle = 2
+    # La boucle permet de prendre en compte le résultat des deux main si le
+    # joueur a split
     while boucle != 0:
         if debug == 1:
             print('boucle')
+        # Split peut effectivement être égal à 1 dans cette fonction car il
+        # est décrémenter à la fin de la boucle while afin de bien calculer le
+        # résultat des deux mains du joueur
         if split == 1:
             score_joueur = score(main_joueur_split)
+        # Si le joueur a un blackjack
         if blackjack == 1:
             if debug == 1:
                 print('taille main croupier', taille_main_croupier,
                       main_croupier, score_croupier)
+            # Si le croupier a également un blackjack
             if (score_croupier == 21) and (taille_main_croupier == 2):
-                resultat_label['text'] += 'Vous avez le même score que le ' + \
-                    'Dealer: ex aequo'
+                resultat_label['text'] += 'Vous et le Dealer avez un ' + \
+                    'Blacjack: ex aequo'
                 consequence = 'egalite'
+            # Si le croupier n'a pas de Blacjack
             else:
                 resultat_label['text'] += 'BLACKJACK: vous êtes le vainqueur'
                 consequence = 'Blackjack'
+        # Si le joueur a surrender
         elif action == 'surrender':
             resultat_label['text'] += 'Vous avez abandonné'
             consequence = 'ff'
+        # Si le joueur a dépassé 21 points
         elif score_joueur > 21:
             resultat_label['text'] += 'Votre main vaut plus que 21, vous' + \
                 ' avez perdu.'
+        # Si le joueur a 21 points ou moins
         elif score_joueur <= 21:
+            # Si le croupier a dépassé 21 points
             if score_croupier > 21:
                 resultat_label['text'] += 'Le Dealer a dépassé 21: vous ' +\
                     'avez gagné !'
                 consequence = 'win'
+            # Si le croupier a 21 points ou moins
             elif score_croupier <= 21:
+                # Si le croupier a fait un blackjack
                 if (score_croupier == 21) and (taille_main_croupier == 2):
                     if debug == 1:
                         print('ok')
                     resultat_label['text'] += 'Le Dealer a fait un ' +\
                         ' BlackJack !\n'
+                    # Si le joueur a lui aussi fait un blackjack, à noter
+                    # qu'on ne peut pas faire de blackjack après un split
                     if score_joueur == 21 and len(main_joueur) == 2 \
                             and split == 0:
                         resultat_label['text'] += 'Vous avez également un ' +\
                             'BlackJack, votre mise est remboursée \n'
                         consequence = 'egalite'
+                    # Si le joueur a pris l'assurance
                     if assurance_prise == 1:
                         resultat_label['text'] += 'Vous avez payé l\'' +\
                             'assurance, vous gagnez deux fois le montant ' +\
                             'de votre assurance \n'
                         assurance_gagnante = 1
+                    # Si le joueur n'a pas de Blackjack
                     if score_joueur != 21 or len(main_joueur) != 2:
                         resultat_label['text'] += ' La main du Dealer ' +\
                             'est meilleure, vous avez perdu.e'
+                # Si le joueur a un moins bon score que le croupier
                 elif score_joueur < score_croupier:
                     resultat_label['text'] += 'Le Dealer a un meilleur ' + \
                         'score, vous avez perdu.'
+                # Si le joueur a le même score que le croupier
                 elif score_joueur == score_croupier:
                     resultat_label['text'] += 'Vous avez le même score ' + \
                         'que le Dealer: ex aequo'
                     consequence = 'egalite'
+                # Si le joueur a un meilleur score que le croupier
                 elif score_joueur > score_croupier:
                     resultat_label['text'] += 'Vous avez un meilleur ' +\
                         'score que le Dealer: vous avez gagné !'
@@ -597,6 +649,8 @@ def resultat(action=0):
         calcul_gain(consequence, assurance_gagnante)
         boucle -= 1
         if split != 0:
+            # La désincrémetation de split permet de calculer la deucième main
+            # du joueur
             split -= 1
 
 
@@ -619,19 +673,27 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     global argent_joueur
     if debug == 1:
         print('début calcul gain')
+    # gain correspond à l'argent gagné grâce à la main
     gain = 0
+    # gain assurance correspond à l'argent gagnée si le joueur a pris
+    # l'assurance et que le croupier avait effectivement un blackjack
     gain_assurance = 0
+    # Si le joueur n'a ni perdu ni abandonnée, il regagne sa mise de départ
     if consequence != 0 and consequence != 'ff':
         if debug == 1:
             print('mise remboursée')
         argent_joueur += mise_totale
         argent['text'] = f'Crédits: {int(argent_joueur)}'
+    # Gain en cas de blackjack
     if consequence == 'Blackjack':
         gain += mise_totale * 1.5
+    # Remboursement de la moitié de la mise en cas d'abandon
     if consequence == 'ff':
         gain += mise_totale // 2
+    # Gain en cas de main meilleure que celle du croupier
     if consequence == 'win':
         gain += mise_totale
+    # Gain relatif à l'assurance
     if assurance_gagnante == 1:
         gain_assurance += mise_totale
     gain = int(gain)
@@ -642,6 +704,8 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     if gain_assurance != 0:
         argent['text'] += f' + {int(gain_assurance)}'
     argent_joueur += gain + gain_assurance
+    # on vérifie si le joueur est en capacité de rembourser sa dette, c'est à
+    # dire est qu'il possède le double du montant de sa dette
     test_dette()
     if debug == 1:
         print('fin calcul gain')
@@ -659,8 +723,14 @@ def splitter():
     global split
     split = 1
     bouton_split.grid_forget()
+    # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
+    # l'interface graphique des deux premières carte de la deuxième main du
+    # joueur
     cj1a.grid(column=1, row=8)
     cj2a.grid(column=3, row=8)
+    # La deuxième carte de la deuxième main disparait sur l'interface
+    # graphique puisque correspondant désoirmais à la première carte de la
+    # deuxième main
     cj2.delete('all')
     main_joueur_split.append(main_joueur[1])
     del main_joueur[1]
@@ -675,6 +745,9 @@ def splitter():
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     creer_image(main_joueur_split[0], cj1a, 'cj1a')
+    # Les différents root.after servent à ne faire apparaitre les cartes
+    # qu'après 0,5 seconde pour rendre le jeu plus naturel. Ils n'ont donc un
+    # but que purement décoratif
     root.after(500, root.update())
     creer_image(main_joueur[1], cj2, 'cj2')
     root.after(500, root.update())
@@ -698,18 +771,25 @@ def rejouer():
     """
     global mise_totale
     global coupe
+    # cc correspond à la liste de canvas permettant l'affichage des cartes du
+    # croupier sur l'interface graphique
     global cc
+    # cc correspond à la liste de canvas permettant l'affichage des cartes du
+    # joueur sur l'interface graphique
     global cj
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
+    # Si la carte rouge a été tirée
     if len(defausse) >= coupe:
+        # Le reste du paquet et la défausse sont mis en commun
         for i in range(len(defausse)):
             paquet.append(defausse[0])
             del defausse[0]
             nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
                 f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
                 f'dans la défausse: {str(len(defausse))}'
+        # Le paquet est remélangé et la carte rouge replacée dans ce dernier
         random.shuffle(paquet)
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
@@ -718,6 +798,7 @@ def rejouer():
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
+    # Les images des cartes disparaissent des l'interface graphqiue
     cc1.delete('all')
     cc2.delete('all')
     cj1.delete('all')
@@ -730,6 +811,7 @@ def rejouer():
     resultat_final.grid_forget()
     stand_label.grid_forget()
     assurance_valeur.grid_forget()
+    # Si le joueur n'a plus d'argent il lui est proposé de prendre un emprunt
     if argent_joueur == 0:
         emprunt.grid(column=9, row=5)
         term.grid(column=10, row=5)
@@ -744,12 +826,10 @@ def quitter(event):
     """
     root.destroy()
 
-"""
-les fonctions qui suivent servent
-à déterminer l'ordre d'appartion
-des widgets dans la fenêtre de jeu
 
-"""
+# Les deux fonctions qui suivent servent à déterminer l'ordre d'appartion des
+# widgets dans la fenêtre de jeu
+
 
 def ordre_boutons2(event):
     if event.widget == bouton_melanger:
@@ -773,12 +853,24 @@ def ordre_boutons3(event):
 
 
 def apparition_bouton_joueur():
+    """Apparition des boutons du joueur
+
+    Cette fonction permet de faire apparaître sur l'interface graphique les
+    boutons du joueur reltaifs aux actions qu'il peut effectuer vis à vis de
+    sa main
+    """
     global argent_joueur
     bouton_hit.grid(column=2, row=3)
     stand_bouton.grid(column=2, row=5)
     bouton_surrender.grid(column=2, row=6)
+    # L'option double down n'est proposée au joueur que s'il possède encore
+    # assez d'argent pour miser une seconde fois la même mise que la mise
+    # qu'il vient de faire
     if argent_joueur >= mise_totale:
         bouton_double_down.grid(column=2, row=4)
+    # Si les deux premières cartes du joueur forment une paire et qu'il
+    # possède assez d'argent pour miser une seconde fois la même mise que la
+    # mise qu'il vient de faire, il lui est proposé de splitter sa main
     if main_joueur[0][0] == main_joueur[1][0] and argent_joueur >= mise_totale:
         bouton_split.grid(column=2, row=7)
         argent_joueur -= mise_totale
@@ -787,6 +879,11 @@ def apparition_bouton_joueur():
 
 
 def apparition_mise():
+    """Apparition des mises
+
+    Cette fonction permet de faire apparaitre les différents jetons relatifs
+    aux mises sur l'interface graphique
+    """
     jeton_blanc.grid(column=4, row=10)
     jeton_bleu.grid(column=3, row=10)
     jeton_rouge.grid(column=2, row=10)
@@ -798,14 +895,19 @@ def apparition_mise():
 
 
 def disparition_mise():
+    """Disparition des mises
+
+    Cette fonction permet de faire disparître les jetons relatifs aux mises
+    sur l'interface graphique une fois que la manche a commencée
+    """
     for i in range(len(jeton_et_mise)):
         jeton_et_mise[i].grid_forget()
 
 
 def mise(montant_mise):
-    """ mise : 
-    cette fonction sert à comptabiliser la 
-    mise du joueur 
+    """ Mise
+
+    Cette fonction permet de comptabiliser la mise du joueur
     """
     global mise_totale
     global argent_joueur
@@ -819,10 +921,10 @@ def mise(montant_mise):
 
 
 def emprunter(event):
-    """ emprunt : 
-    cette fonction permet au joueur
-    de faire un emprunt de crédit
-    à la banque pour continuer de jouer
+    """ Emprunt
+
+    Cette fonction permet au joueur de faire un emprunt de crédit à la banque
+    pour continuer de jouer
     """
     global argent_joueur
     if event.widget == emprunt:
@@ -833,9 +935,10 @@ def emprunter(event):
 
 
 def validd(event):
-    """ dette : 
-    la fonction comptabilise automatiquement
-    le nombre de dette en fonction de l'emprunt
+    """ Valider le montant de l'emprunt
+
+    Cette fonction permet de valider le montant de l'emprunt effectué par le
+    joueur
     """
     global argent_joueur
     global dette
@@ -851,15 +954,18 @@ def validd(event):
 
 
 def test_dette():
-    """ 
-    cette fonction permet de verifier et 
-    de rembourser la banque lorsque le compte 
-    est atteint
-    """ 
+    """ Vérifier combien le joueur a d'argent
+
+    Cette fonction permet de vérifier si le joueur possède une somme au moins
+    égale au double du montant de sa dette et la rembourse automatiquement si
+    tel est le cas
+    """
     global argent_joueur
     global dette
     if debug == 1:
         print('dette remboursable')
+    # Vérifie que le joueur possède au moins le double du montant de la dette
+    # et que le joueur est effectiement endettée
     if argent_joueur == 2*dette and dette != 0:
         argent_joueur = argent_joueur-dette
         dette = 0
@@ -933,17 +1039,18 @@ def mode_jeu(event):
 
 
 """
-"""Fenêtres"""
+
+# Fenêtre du jeu
 
 accueil = tkinter.Tk()
 accueil.title('Menu BlackJack 21')
 accueil.geometry('700x600')
 accueil.configure(bg='red')
 
-"""Graphismes"""
+# Variables relatives aux graphismes du jeu
 
 """1ère fenètre"""
-""" configuration de l'écran d'acceuil """ 
+""" configuration de l'écran d'acceuil """
 
 
 bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
@@ -1122,8 +1229,8 @@ def dir_regles(event):
         action_texte.pack(side='top')
 
         def revenir(event):
-            """fonction pour revenir au jeu et de 
-            quitter la fenêtre lorsque 
+            """fonction pour revenir au jeu et de
+            quitter la fenêtre lorsque
             le bouton est appuyée"""
             if event.widget == bouton_revenir:
                 règle.destroy()
@@ -1237,7 +1344,7 @@ mise_totale = 0
 mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
                'jeton_blanc': 50, 'jeton_noir': 100, 'tapis': 'argent_joueur'}
 
-""" widgets associés à la mise du joueur""" 
+""" widgets associés à la mise du joueur"""
 
 argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
                        bg='dark green', fg='white')
@@ -1252,7 +1359,7 @@ miser = tkinter.Label(root, text="Cliquez pour miser:",
 """ position des widgets jetons pour la mise"""
 jeton_tapis = tkinter.Canvas(root, bg='dark green', width=40, height=25,
                              relief='raised', borderwidth=0,
-                             highlightthickness=1 )
+                             highlightthickness=1)
 jeton_tapis.create_text(20, 13, text='tapis',
                         font=('helvetica', 12), fill='white')
 
