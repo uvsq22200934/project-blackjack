@@ -84,7 +84,8 @@ debug = 1
 
 if debug == 1:
     print(coupe)
-
+#variable pour compter le nombre de partie
+nombre_partie=1
 
 """Fonctions"""
 
@@ -782,6 +783,7 @@ def rejouer():
     global mise_totale
     global coupe
     global blackjack
+    global nombre_partie
     # cc correspond à la liste de canvas permettant l'affichage des cartes du
     # croupier sur l'interface graphique
     global cc
@@ -804,6 +806,7 @@ def rejouer():
         # Le paquet est remélangé et la carte rouge replacée dans ce dernier
         random.shuffle(paquet)
         coupe = random.randint(52, len(paquet)-52)
+        nombre_partie +=1
     bouton_rejouer.grid_forget()
     apparition_mise()
     bouton_donne_initiale.grid(column=2, row=3)
@@ -1040,13 +1043,28 @@ def confirm(event):
 """interface pour permettre au joueur de comprendre les boutons et
 graphismes"""
 
-
+"""fonction pour afficher un tuto sur comment joueur"""
 def tutoriel(event):
     if event.widget == bouton_tutoriel:
         interface = tkinter.Tk()
         interface.title('Tutoriel')
         interface.geometry == accueil.geometry
         interface.configure == root.configure
+
+"""fenêtre pour afficher le recap du joeur en fin de partie"""
+def recap_fin(event):
+        if event.widget==bouton_quitter:
+            fen_recap=tkinter.Tk()
+            fen_recap.title('Fin de jeu')
+            fen_recap.geometry == accueil.geometry
+            fen_recap.configure == root.configure
+        recap1=tkinter.Label(fen_recap, text='Voici votre récapitulatif de fin de partie')
+        recap1.pack()
+        recap=tkinter.Label(fen_recap,text=nom_joueur + ', vous venez de quitter le jeu')
+        recap.pack()
+        recap2=tkinter.Label(fen_recap,text='Vous avec commencé avec'+ argent_joueur +'crédits\n'+ 
+                             'vous avez réaliser'+ nombre_partie +'parties')
+        recap2.pack()
 
 
 """Fenêtre accueil"""
