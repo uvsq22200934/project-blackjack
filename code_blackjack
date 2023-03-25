@@ -744,6 +744,12 @@ def quitter(event):
     """
     root.destroy()
 
+"""
+les fonctions qui suivent servent
+à déterminer l'ordre d'appartion
+des widgets dans la fenêtre de jeu
+
+"""
 
 def ordre_boutons2(event):
     if event.widget == bouton_melanger:
@@ -797,6 +803,10 @@ def disparition_mise():
 
 
 def mise(montant_mise):
+    """ mise : 
+    cette fonction sert à comptabiliser la 
+    mise du joueur 
+    """
     global mise_totale
     global argent_joueur
     if (argent_joueur - montant_mise) >= 0:
@@ -809,6 +819,11 @@ def mise(montant_mise):
 
 
 def emprunter(event):
+    """ emprunt : 
+    cette fonction permet au joueur
+    de faire un emprunt de crédit
+    à la banque pour continuer de jouer
+    """
     global argent_joueur
     if event.widget == emprunt:
         term.grid_forget()
@@ -818,6 +833,10 @@ def emprunter(event):
 
 
 def validd(event):
+    """ dette : 
+    la fonction comptabilise automatiquement
+    le nombre de dette en fonction de l'emprunt
+    """
     global argent_joueur
     global dette
     if event.widget == valid:
@@ -832,6 +851,11 @@ def validd(event):
 
 
 def test_dette():
+    """ 
+    cette fonction permet de verifier et 
+    de rembourser la banque lorsque le compte 
+    est atteint
+    """ 
     global argent_joueur
     global dette
     if debug == 1:
@@ -850,6 +874,7 @@ def test_dette():
 
 """interface pour permettre au joueur de comprendre les boutons et
 graphismes"""
+
 """
 def skip(event):
     if event.widget == bouton_skip :
@@ -913,13 +938,14 @@ def mode_jeu(event):
 accueil = tkinter.Tk()
 accueil.title('Menu BlackJack 21')
 accueil.geometry('700x600')
-
+accueil.configure(bg='red')
 
 """Graphismes"""
 
 """1ère fenètre"""
+""" configuration de l'écran d'acceuil """ 
 
-accueil.configure(bg='red')
+
 bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
@@ -939,6 +965,8 @@ play.bind('<Button-1>', debut)
 # image_debut = image_debut.resize(np.array())
 # image_debut.TK= ImageTk.PhotoImage(image_debut)
 
+""" entrée permettant au joueur de choisir son pseudo
+ainsi que le nombre de crédit souhaité """
 
 username = tkinter.Label(accueil, text="Username:",
                          font=('helvetica', 10), fg='black')
@@ -954,7 +982,7 @@ credit.pack()
 my_entry2 = tkinter.Entry(accueil)
 my_entry2.pack()
 
-"""graphisme fenêtre"""
+"""graphisme fenêtre acceuil"""
 
 cartes1 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
 cartes2 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
@@ -1010,6 +1038,8 @@ root.configure(bg="dark green")
 
 
 def dir_regles(event):
+    """ fonction associée au bouton comment joueur
+    permettant au joueur de connaître les règle du jeu"""
     if event.widget == bouton_rdj:
         règle = tkinter.Tk()
         règle.title('Règle du jeu')
@@ -1092,6 +1122,9 @@ def dir_regles(event):
         action_texte.pack(side='top')
 
         def revenir(event):
+            """fonction pour revenir au jeu et de 
+            quitter la fenêtre lorsque 
+            le bouton est appuyée"""
             if event.widget == bouton_revenir:
                 règle.destroy()
         bouton_revenir = tkinter.Button(règle, text='Revenir au jeu', fg='red')
@@ -1109,51 +1142,62 @@ cartes.grid(column=2, row=3)
 
 
 """Boutons"""
+"""Ensemble des widgets utilisés dans la fenêtre root"""
 
+"""bouton pour accéder aux règles du jeu"""
 bouton_rdj = tkinter.Button(root, text='Comment jouer ?',
                             width=13, height=2, fg='navy')
 bouton_rdj.grid(column=0, row=0)
 bouton_rdj.bind('<Button-1>', dir_regles)
 
+"""bouton pour quitter la partie"""
 bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
 bouton_quitter.grid(column=2, row=11)
 bouton_quitter.bind('<Button-1>', quitter)
 
+"""mélanger le jeu de carte"""
 bouton_melanger = tkinter.Button(
     text='Mélanger', fg='blue', command=random.shuffle(paquet))
 bouton_melanger.grid(column=2, row=3)
+bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
+"""bouton pour distribuer le jeu de carte"""
 bouton_donne_initiale = tkinter.Button(
     text='Donne initiale', fg="blue")
+bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
+"""bouton qui relance la partie sans quitter le jeu"""
 bouton_rejouer = tkinter.Button(
     text='Rejouer', fg="blue", command=rejouer)
 
-bouton_melanger.bind('<Button-1>', ordre_boutons2)
-
+"""bouton qui permet de piocher"""
 bouton_hit = tkinter.Button(bg='white', text='Hit')
 bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
 
+"""bouton qui permet de 'double down'"""
 bouton_double_down = tkinter.Button(bg='white', text='Double Down')
 bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
     main_joueur))
 
+"""bouton qui permet de 'stand'"""
 stand_bouton = tkinter.Button(bg='salmon', text='Stand')
 stand_bouton.bind(
     "<Button-1>", lambda e: stand())
 
+"""bouton qui permet de 'surrender'"""
 bouton_surrender = tkinter.Button(bg='red', text='Surrender')
 bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
+"""bouton qui 'split'"""
 bouton_split = tkinter.Button(text='Split', command=splitter)
 
 bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
                  bouton_double_down]
 
-bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
 texte_assurance = tkinter.Label(text='')
 
+"""widgets pour l'assurance"""
 bouton_oui_assurance = tkinter.Button(text='Oui')
 bouton_non_assurance = tkinter.Button(text='Non')
 
@@ -1164,7 +1208,7 @@ bouton_non_assurance.bind(
 
 assurance_valeur = tkinter.Label(text='')
 
-
+"""widgets associés à l'emprunt + dettes"""
 valid = tkinter.Button(root, text='valider l\'emprunt',
                        bg='dark green', fg='black')
 valid.bind('<Button-1>', validd)
@@ -1186,16 +1230,14 @@ canvas_emprunt = [my_entry3, valid, banque, eprnt]
 dette_label = tkinter.Label(root, text='', bg='dark green', fg='black',
                             font=('helvetica', 10))
 
-""" mise du jeu """
 
+""" mise du jeu """
 
 mise_totale = 0
 mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
                'jeton_blanc': 50, 'jeton_noir': 100, 'tapis': 'argent_joueur'}
 
-"""le but de ma fonction serait d'appuyer sur le bouton mise, pour faire \
-    apparaitre des boutons sur les jetons, qui incrémente la valeur de la mise\
-        totale."""
+""" widgets associés à la mise du joueur""" 
 
 argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
                        bg='dark green', fg='white')
@@ -1207,13 +1249,13 @@ mise_texte = tkinter.Label(
 miser = tkinter.Label(root, text="Cliquez pour miser:",
                       bg='dark green', fg='white')
 
-jeton_tapis = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+""" position des widgets jetons pour la mise"""
+jeton_tapis = tkinter.Canvas(root, bg='dark green', width=40, height=25,
                              relief='raised', borderwidth=0,
-                             highlightthickness=0)
-jeton_tapis.create_polygon(1, 1, 25, 25, width=3,
-                           fill='tan4')
-jeton_tapis.create_text(13, 13, text='tapis',
-                        font=('helvetica', 8), fill='white')
+                             highlightthickness=1 )
+jeton_tapis.create_text(20, 13, text='tapis',
+                        font=('helvetica', 12), fill='white')
+
 jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
@@ -1247,6 +1289,7 @@ jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
                        fill='mint cream')
 jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='black')
 
+"""commande d'incrémentation de mise"""
 
 jeton_vert.bind('<Button-1>', lambda e: mise(1))
 
@@ -1263,7 +1306,7 @@ jeton_tapis.bind('<Button-1>', lambda e: mise(argent_joueur))
 jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge, jeton_noir,
                  jeton_tapis, miser]
 
-'''interface graphique'''
+"""interface graphique"""
 
 
 # interface emplacement des cartes 1 et 2 du joueur
@@ -1288,6 +1331,7 @@ labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
                        bg="dark green", fg="black")
 labelj.grid(column=0, row=7)
 
+"""cartes cachées dans la pioche"""
 cj3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj5 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
@@ -1338,6 +1382,7 @@ cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
 
 numero_main = tkinter.Label(root, text='')
 
+"""label pour afficher l'action du joueur"""
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "15"))
@@ -1347,6 +1392,7 @@ resultat_final = tkinter.Label(
 resultat_label = tkinter.Label(
     root, text='', bg='dark green', fg='yellow')
 
+"""label qui affiche le nombre de cartes restantes"""
 nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
