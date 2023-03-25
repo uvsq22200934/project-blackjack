@@ -179,8 +179,9 @@ def debut(event):
     global nom_joueur
     global argent_joueur
     if event.widget == play:
-        if my_entry2.get() != int or int(my_entry2)<=0:
-            entry1_label = tkinter.Label(accueil, text='erreur\n Veuillez entrer un nombre positif')
+        if my_entry2.get() != int or int(my_entry2) <= 0:
+            entry1_label = tkinter.Label(
+                accueil, text='erreur\n Veuillez entrer un nombre positif')
             entry1_label.pack()
             entry1_label.after(700, lambda: entry1_label.grid_forget())
         nom_joueur = my_entry.get()
@@ -202,6 +203,7 @@ def fenêtre():
 
 def fenêtre_bis():
     F2 = tkinter.Toplevel(accueil)
+
 
 def donne_initiale():
     """Donne initiale des cartes aux joueurs et au croupier.
@@ -239,6 +241,8 @@ def donne_initiale():
     root.after(500, root.update())
     dos_carte(cc2, 'cc2')
     if 'A' in main_croupier[0]:
+        if debug == 1:
+            print('As détecté')
         prix_assurance = mise_totale // 2
         if argent_joueur >= prix_assurance:
             texte_assurance['text'] = 'Le Dealer vient de tirer un ' + \
@@ -247,6 +251,13 @@ def donne_initiale():
             bouton_oui_assurance.grid(column=2, row=4)
             bouton_non_assurance.grid(column=2, row=5)
             root.update()
+        else:
+            if score(main_joueur) == 21:
+                blackjack = 1
+                croupier()
+            else:
+                bouton_melanger.grid_forget()
+                apparition_bouton_joueur()
     else:
         if score(main_joueur) == 21:
             blackjack = 1
@@ -770,12 +781,14 @@ def rejouer():
     """
     global mise_totale
     global coupe
+    global blackjack
     # cc correspond à la liste de canvas permettant l'affichage des cartes du
     # croupier sur l'interface graphique
     global cc
     # cc correspond à la liste de canvas permettant l'affichage des cartes du
     # joueur sur l'interface graphique
     global cj
+    blackjack = 0
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
@@ -932,31 +945,27 @@ def emprunter(event):
         valid.grid(column=9, columnspan=5, row=6)
         my_entry3.grid(column=9, columnspan=5, row=5)
 
-   
-    
 
 def validd(event):
     """ Valider le montant de l'emprunt
 
     Cette fonction permet de valider le montant de l'emprunt effectué par le
-    joueur
-    """
-    """fonction qui a pour but d'afficher une 
-    erreur si la saisie est hors du cadre requis"""
+    joueur et d'afficher une erreur si la saisie est hors du cadre requis"""
     global argent_joueur
     global dette
     if event.widget == valid:
-        if my_entry3.get() != int or int(my_entry3)<=0:
-            entry_label = tkinter.Label(root, text='erreur\n Veuillez entrer un nombre positif',
-                                        bg='dark green', fg='red')
-            entry_label.grid(column=9,columnspan=5, row=7)
-            entry_label.after(900, lambda: entry_label.grid_forget())
-        if my_entry3.get() == int :
+        if my_entry3.get() != int or int(my_entry3) <= 0:
+            entry_label['text'] = 'Erreur\n Veuillez entrer' +\
+                                        ' un nombre positif'
+            entry_label.grid(column=9, columnspan=5, row=7)
+        if my_entry3.get().isdigit():
+            if debug == 1:
+                print(entry_label.grid_info())
             argent_joueur += int(my_entry3.get())
             argent['text'] = f'Crédits: {str(argent_joueur)}'
             dette += int(my_entry3.get())
-            dette_label['text'] = f'Vous avez {str(dette)} € de dettes envers ' +\
-                'la banque'
+            dette_label['text'] = f'Vous avez {str(dette)} € de dettes ' +\
+                'envers la banque'
             dette_label.grid(column=9, columnspan=5, row=3)
             for i in range(len(canvas_emprunt)):
                 canvas_emprunt[i].grid_forget()
@@ -986,40 +995,43 @@ def test_dette():
             dette_label['fg'] = 'red'
             dette_label.after(5000, lambda: dette_label.grid_forget())
 
+
 def confirm(event):
-    """fonction pour valider le choix du joueur après 'stand'"""
+    """fonction pour valider le choix du joueur après stand'"""
     def NON(event):
-        if event.widget==label_non:
+        if event.widget == label_non:
             stand_label.grid_forget()
             label_confirmer.grid_forget()
             label_non.grid_forget()
             label_oui.grid_forget()
-    if event.widget==stand_label:
+    if event.widget == stand_label:
         stand_label.grid_forget()
-        label_confirmer=tkinter.Label(root, text='Êtes-vous sûr de vouloir quitter le jeu ?',
+        label_confirmer = tkinter.Label(root, text='Êtes-vous sûr de ' +
+                                        'vouloir quitter le jeu ?',
                                         bg='dark green',
-                                        font=('helvetica',10))
+                                        font=('helvetica', 10))
         label_confirmer.grid(column=10, row=4)
-        label_oui=tkinter.Label(root, text='OUI',bg='dark green',
-                                font=('helvetica',10))
+        label_oui = tkinter.Label(root, text='OUI', bg='dark green',
+                                  font=('helvetica', 10))
         label_oui.grid(column=9, row=5)
-        label_oui.bind('<Button-1>',quitter)
-        label_non=tkinter.Label(root, text='NON',bg='dark green',
-                                font=('helvetica',10))
-        label_non.grid(column=11,row=5)
+        label_oui.bind('<Button-1>', quitter)
+        label_non = tkinter.Label(root, text='NON', bg='dark green',
+                                  font=('helvetica', 10))
+        label_non.grid(column=11, row=5)
         label_non.bind('<Button-1>', NON)
+
 
 """interface pour permettre au joueur de comprendre les boutons et
 graphismes"""
 
 
 def tutoriel(event):
-    if event.widget == bouton_tutoriel :
+    if event.widget == bouton_tutoriel:
         interface = tkinter.Tk()
         interface.title('Tutoriel')
-        interface.geometry==accueil.geometry
-        interface.configure==root.configure
-        
+        interface.geometry == accueil.geometry
+        interface.configure == root.configure
+
 
 """Fenêtre accueil"""
 
@@ -1030,7 +1042,7 @@ accueil.configure(bg='red')
 
 # Variables relatives aux graphismes du jeu
 """Graphismes"""
-"""configuration de l'écran d'acceuil""" 
+"""configuration de l'écran d'acceuil"""
 
 
 bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
@@ -1225,7 +1237,7 @@ cartes.grid(column=2, row=3)
 """bouton pour accéder aux règles du jeu"""
 bouton_rdj = tkinter.Button(root, text='règle du jeu',
                             width=13, height=2, fg='navy',
-                            font=('helvetica',10))
+                            font=('helvetica', 10))
 bouton_rdj.grid(column=0, row=0)
 bouton_rdj.bind('<Button-1>', dir_regles)
 
@@ -1304,16 +1316,18 @@ eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       bg='dark green')
 my_entry3 = tkinter.Entry(root)
 
-canvas_emprunt = [my_entry3, valid, banque, eprnt]
+entry_label = tkinter.Label(root, text='', bg='dark green', fg='red')
+
+canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
 
 dette_label = tkinter.Label(root, text='', bg='dark green', fg='black',
                             font=('helvetica', 10))
 
 """bouton qui permet l'accès au tutoriel"""
-bouton_tutoriel= tkinter.Button(root, text='Comment jouer ?', 
-                                bg='green', fg='white',
-                                width=13, height=2, 
-                                font=('helvetica',10))
+bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
+                                 bg='green', fg='white',
+                                 width=13, height=2,
+                                 font=('helvetica', 10))
 bouton_tutoriel.grid(column=1, row=0)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
 
@@ -1338,10 +1352,10 @@ miser = tkinter.Label(root, text="Cliquez pour miser:",
 """ position des widgets jetons pour la mise"""
 jeton_tapis = tkinter.Canvas(root, bg='dark green', width=60, height=45,
                              relief='raised', borderwidth=0,
-                             highlightthickness=0 )
+                             highlightthickness=0)
 jeton_tapis.create_text(26, 21, text='All in',
                         font=('helvetica', 12), fill='white')
-jeton_tapis.create_oval(4,4,50,40, width=3,
+jeton_tapis.create_oval(4, 4, 50, 40, width=3,
                         outline='white')
 
 jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
@@ -1474,7 +1488,7 @@ numero_main = tkinter.Label(root, text='')
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "15"))
-stand_label.bind('<Button-1>',confirm)
+stand_label.bind('<Button-1>', confirm)
 
 resultat_final = tkinter.Label(
     root, text='annonce', bg='dark green', fg='red')
