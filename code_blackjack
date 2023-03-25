@@ -969,13 +969,9 @@ def validd(event):
     global argent_joueur
     global dette
     if event.widget == valid:
-        if my_entry3.get() != int:
+        if my_entry3.get() != int or int(my_entry3) <= 0:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
                                     ' un nombre entier'
-            entry_label.grid(column=9, columnspan=5, row=7)
-        if int(my_entry3) <= 0:
-            entry_label['text'] = 'Erreur\n Veuillez entrer' +\
-                                        ' un nombre positif'
             entry_label.grid(column=9, columnspan=5, row=7)
         if my_entry3.get().isdigit():
             if debug == 1:
@@ -985,7 +981,7 @@ def validd(event):
             dette += int(my_entry3.get())
             dette_label['text'] = f'Vous avez {str(dette)} € de dettes ' +\
                 'envers la banque'
-            dette_label.grid(column=9, columnspan=5, row=3)
+            dette_label.grid(column=9, columnspan=5, row=7)
             for i in range(len(canvas_emprunt)):
                 canvas_emprunt[i].grid_forget()
 
@@ -1050,6 +1046,7 @@ def tutoriel(event):
         interface.title('Tutoriel')
         interface.geometry == accueil.geometry
         interface.configure == root.configure
+        interface.mainloop()
 
 """fenêtre pour afficher le recap du joeur en fin de partie"""
 def recap_fin(event):
@@ -1058,13 +1055,15 @@ def recap_fin(event):
             fen_recap.title('Fin de jeu')
             fen_recap.geometry == accueil.geometry
             fen_recap.configure == root.configure
-        recap1=tkinter.Label(fen_recap, text='Voici votre récapitulatif de fin de partie')
-        recap1.pack()
-        recap=tkinter.Label(fen_recap,text=nom_joueur + ', vous venez de quitter le jeu')
-        recap.pack()
-        recap2=tkinter.Label(fen_recap,text='Vous avec commencé avec'+ argent_joueur +'crédits\n'+ 
+            recap1=tkinter.Label(fen_recap, text='Voici votre récapitulatif de fin de partie')
+            recap1.pack()
+            recap=tkinter.Label(fen_recap,text=nom_joueur + ', vous venez de quitter le jeu')
+            recap.pack()
+            recap2=tkinter.Label(fen_recap,text='Vous avec commencé avec'+ argent_joueur +'crédits\n'+ 
                              'vous avez réaliser'+ nombre_partie +'parties')
-        recap2.pack()
+            recap2.pack()
+            fen_recap.mainloop()
+
 
 
 """Fenêtre accueil"""
