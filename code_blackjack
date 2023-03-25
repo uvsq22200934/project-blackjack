@@ -174,11 +174,6 @@ def fenêtre():
 def fenêtre_bis():
     F2 = tkinter.Toplevel(accueil)
 
-
-"""def fenêtre_triple():
-    F3= tkinter.Toplevel(accueil)"""
-
-
 def donne_initiale():
     """Donne initiale des cartes aux joueurs et au croupier.
 
@@ -438,7 +433,7 @@ def stand():
     """
     # fonction qui permet au joueur de "stand"
     global split
-    stand_label.grid(column=0, row=5)
+    stand_label.grid(column=10, row=5)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
@@ -871,69 +866,42 @@ def test_dette():
             dette_label['fg'] = 'red'
             dette_label.after(5000, lambda: dette_label.grid_forget())
 
+def confirm(event):
+    """fonction pour valider le choix du joueur après 'stand'"""
+    def NON(event):
+        if event.widget==label_non:
+            stand_label.grid_forget()
+            label_confirmer.grid_forget()
+            label_non.grid_forget()
+            label_oui.grid_forget()
+    if event.widget==stand_label:
+        stand_label.grid_forget()
+        label_confirmer=tkinter.Label(root, text='Êtes-vous sûr de vouloir quitter le jeu ?',
+                                        bg='dark green',
+                                        font=('helvetica',10))
+        label_confirmer.grid(column=10, row=4)
+        label_oui=tkinter.Label(root, text='OUI',bg='dark green',
+                                font=('helvetica',10))
+        label_oui.grid(column=9, row=5)
+        label_oui.bind('<Button-1>',quitter)
+        label_non=tkinter.Label(root, text='NON',bg='dark green',
+                                font=('helvetica',10))
+        label_non.grid(column=11,row=5)
+        label_non.bind('<Button-1>', NON)
 
 """interface pour permettre au joueur de comprendre les boutons et
 graphismes"""
 
-"""
-def skip(event):
-    if event.widget == bouton_skip :
-        interface.destroy()
-        bouton_skip['command']= fenêtre
 
+def tutoriel(event):
+    if event.widget == bouton_tutoriel :
+        interface = tkinter.Tk()
+        interface.title('Tutoriel')
+        interface.geometry==accueil.geometry
+        interface.configure==root.configure
+        
 
-def tutoriel():
-    carte_croupier = tkinter.Label(interface, text='Ici sont les cartes\n ' +\
-                                    'du Dealer',
-                                   bg='green4', fg='white',
-                                   font=('comic sans ms', 10))
-    carte_croupier.grid(side='right', anchor='top')
-    accueil.after(500, accueil.update())
-    carte_joueur = tkinter.Label(interface, text='et, là, ce sont vos cartes',
-                                 bg='green4', fg='white',
-                                 font=('comic sans ms', 10))
-    carte_joueur.grid(side='right', anchor='top')
-    accueil.after(500, accueil.update())
-    carte_croupier.grid_forget
-    dessin_mise = tkinter.Label(interface, text='ce sont les jetons;\n,'
-                                'miser avant de distribuer les cartes',
-                                bg='green4', fg='white',
-                                font=('comic sans ms', 10))
-    dessin_mise.grid()
-    accueil.after(500, accueil.update())
-    carte_joueur.grid_forget
-
-
-
-def mode_jeu(event):
-    if event.widget == play :
-        accueil.configure(bg='white')
-        #for i in accueil.winfo_children() :
-                i.destroy()
-        bouton_passer = tkinter.Canvas(accueil, text='passer le tutoriel ?',
-                                bg='white', fg ='black')
-        bouton_passer.pack(side='top', anchor='center')
-        bouton_passer.bind('<Button-1>', fenêtre)
-        bouton_tuto = tkinter.Canvas(accueil, text='poursuivre vers ' +\
-                                    'le tutoriel ?',
-                                    bg='white', fg ='black')
-        bouton_tuto.pack(side='bottom', anchor='center')
-        bouton_tuto.bind('<Button-1>',fenêtre_triple)
-        label_ou = tkinter.Canvas(accueil, text='OU', width='60',
-                                 height='60',fg='red', bg='black')
-        label_ou.grid(anchor='center')
-        label_ou.create_oval(1, 1, 55, 55, width=3, outline='black',
-                            fill='mint cream')
-        if event.widget == bouton_passer:
-            accueil.destroy()
-            interface.destroy()
-        if event.widget == bouton_tuto :
-            accueil.destroy()
-            bouton_tuto['command']=tutoriel
-
-
-"""
-"""Fenêtres"""
+"""Fenêtre accueil"""
 
 accueil = tkinter.Tk()
 accueil.title('Menu BlackJack 21')
@@ -941,9 +909,7 @@ accueil.geometry('700x600')
 accueil.configure(bg='red')
 
 """Graphismes"""
-
-"""1ère fenètre"""
-""" configuration de l'écran d'acceuil """ 
+"""configuration de l'écran d'acceuil""" 
 
 
 bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
@@ -1019,16 +985,7 @@ jetonblanc.place(bordermode='outside', relx=0.1, rely=0, anchor='nw')
 accueil.mainloop()
 
 
-"""2ème fenètre"""
-"""interface = tkinter.Tk()
-interface.title('Tutoriel')
-interface.geometry == accueil.geometry
-
-bouton_skip = tkinter.Button(interface, text='skip', bg='blue2')
-bouton_skip.grid(column=10, row=10)
-bouton_skip.bind('<Button-1>', skip)"""
-
-"""3ème fenêtre"""
+"""fenêtre root"""
 root = tkinter.Tk()
 root.title('Blackjack 21')
 """root.state('zoomed')"""
@@ -1145,8 +1102,9 @@ cartes.grid(column=2, row=3)
 """Ensemble des widgets utilisés dans la fenêtre root"""
 
 """bouton pour accéder aux règles du jeu"""
-bouton_rdj = tkinter.Button(root, text='Comment jouer ?',
-                            width=13, height=2, fg='navy')
+bouton_rdj = tkinter.Button(root, text='règle du jeu',
+                            width=13, height=2, fg='navy',
+                            font=('helvetica',10))
 bouton_rdj.grid(column=0, row=0)
 bouton_rdj.bind('<Button-1>', dir_regles)
 
@@ -1230,6 +1188,13 @@ canvas_emprunt = [my_entry3, valid, banque, eprnt]
 dette_label = tkinter.Label(root, text='', bg='dark green', fg='black',
                             font=('helvetica', 10))
 
+"""bouton qui permet l'accès au tutoriel"""
+bouton_tutoriel= tkinter.Button(root, text='Comment jouer ?', 
+                                bg='green', fg='white',
+                                width=13, height=2, 
+                                font=('helvetica',10))
+bouton_tutoriel.grid(column=1, row=0)
+bouton_tutoriel.bind('<Button-1>', tutoriel)
 
 """ mise du jeu """
 
@@ -1386,6 +1351,7 @@ numero_main = tkinter.Label(root, text='')
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "15"))
+stand_label.bind('<Button-1>',confirm)
 
 resultat_final = tkinter.Label(
     root, text='annonce', bg='dark green', fg='red')
