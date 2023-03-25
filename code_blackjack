@@ -839,6 +839,18 @@ def quitter(event):
     root.destroy()
 
 
+def affichage(event):
+    if event.widget==quitter :
+        fin=tkinter.Tk()
+        fin.title('fin de jeu')
+        fin.geometry==accueil.geometry
+        fin.configure==accueil.configure
+        recap1=tkinter.Label(fin, text='Voici votre récapitulatif de fin de partie',
+                             )
+        recap1.pack(side='top')
+        
+
+
 # Les deux fonctions qui suivent servent à déterminer l'ordre d'appartion des
 # widgets dans la fenêtre de jeu
 
@@ -954,7 +966,11 @@ def validd(event):
     global argent_joueur
     global dette
     if event.widget == valid:
-        if my_entry3.get() != int or int(my_entry3) <= 0:
+        if my_entry3.get() != int:
+            entry_label['text'] = 'Erreur\n Veuillez entrer' +\
+                                    ' un nombre entier'
+            entry_label.grid(column=9, columnspan=5, row=7)
+        if int(my_entry3) <= 0:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
                                         ' un nombre positif'
             entry_label.grid(column=9, columnspan=5, row=7)
