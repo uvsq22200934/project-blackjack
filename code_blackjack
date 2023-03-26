@@ -842,18 +842,7 @@ def quitter(event):
     """
     root.destroy()
 
-
-def affichage(event):
-    if event.widget==quitter :
-        fin=tkinter.Tk()
-        fin.title('fin de jeu')
-        fin.geometry==accueil.geometry
-        fin.configure==accueil.configure
-        recap1=tkinter.Label(fin, text='Voici votre récapitulatif de fin de partie',
-                             )
-        recap1.pack(side='top')
         
-
 
 # Les deux fonctions qui suivent servent à déterminer l'ordre d'appartion des
 # widgets dans la fenêtre de jeu
@@ -1058,6 +1047,7 @@ def recap_fin(event):
         global nom_joueur
         global nombre_emprunt
         if event.widget==bouton_quitter or event.widget==term:
+            root.destroy()
             fen_recap=tkinter.Tk()
             fen_recap.title('Fin de jeu')
             fen_recap.geometry == accueil.geometry
@@ -1086,7 +1076,6 @@ def recap_fin(event):
             fermer=tkinter.Button(fen_recap, text='X', bg='red', fg='white',
                                   command=quitter)
             fermer.pack(side='right', anchor='ne')
-            root.destroy()
             fen_recap.mainloop()
 
 
