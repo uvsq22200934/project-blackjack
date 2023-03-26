@@ -70,6 +70,8 @@ argent_joueur = 0
 prix_assurance = 0
 dette = 0
 nom_joueur = ''
+nombre_partie=0
+nombre_emprunt=0
 
 # Dictionnaires permettant de contourner le garbage collector
 
@@ -84,9 +86,7 @@ debug = 1
 
 if debug == 1:
     print(coupe)
-#variable pour compter le nombre de partie
-nombre_partie=0
-nombre_emprunt=0
+
 """Fonctions"""
 
 
@@ -212,7 +212,6 @@ def donne_initiale():
     Cette fonction sert à distribuer deux cartes à tous les joueurs et au
     croupier lorsque la manche débute
     """
-    # fonction qui distribue les cartes en début de partie
     global paquet
     global main_joueur
     global main_croupier
@@ -235,8 +234,11 @@ def donne_initiale():
             f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
             f'dans la défausse: {str(len(defausse))}'
         nb_carte_piochee += 1
-        nombre_partie +=1
+        nombre_partie += 1
     creer_image(main_joueur[0], cj1, 'cj1')
+    # Les différents root.after du programme servent à ne faire apparaitre les
+    # cartes qu'après 0,5 seconde pour rendre le jeu plus naturel. Ils n'ont
+    # donc qu'un but purement décoratif
     root.after(500, root.update())
     creer_image(main_croupier[0], cc1, 'cc1')
     root.after(500, root.update())
@@ -346,6 +348,7 @@ def hit(main, pointeur):
             if len(main) == i:
                 creer_image(main[i-1], carte[i-1], f'{carte[i]}')
                 carte[i-1].grid(column=4+i, row=7+a)
+        # on vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
         if debug == 1:
@@ -434,14 +437,22 @@ def score(main):
         Correspond à la main dont le score est évalué
     """
     points = 0
+    # Pour chauque carte dans la main, on évalue combien de point elle vaut en
+    # se référant au dictionnaire de valeur des cartes
     for element in main:
         points += dic_valeur_cartes.get(element)
         if debug == 1:
             print(points, dic_valeur_cartes.get(element), element)
     boucle = 0
     while points > 21:
+        # condition pour éviter que la boucle ne tourne à l'infini
         if boucle > len(main)-1:
             break
+        # Si la main vaut plus que 21 points et que la main contient un As,
+        # alors l'As vaut 1 au lieu de 11 ce qui équivaut à enlever 11 points
+        # à la main puique l'As a déjà était comptabilisé et évalué à 11 points
+        # plus haut dans la fonction. Pour être sûr que chaque As ne soit
+        # compté qu'une seule fois, on vérifie si chaque carte est un As ou pas
         if 'A' in main[boucle]:
             points -= 10
         boucle += 1
@@ -476,9 +487,7 @@ def stand():
     Cette fonction permet au joueur de stand, c'est à dire d'arreter de
     piocher des cartes et garder sa main en l'état actuel
     """
-    # fonction qui permet au joueur de "stand"
     global split
-    stand_label.grid(column=10, row=5)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
@@ -525,7 +534,6 @@ def surrender():
     Cette fonction permet au joueur de "surrender", il abandonne la manche
     avant de piocher une carte et récupère la moitié de sa mise.
     """
-    # fonction qui permet au joueur de "surrender"
     global split
     bouton_split.grid_forget()
     if split == 1:
@@ -545,7 +553,6 @@ def resultat(action=0):
     action : str
         Permet de savoir si le joueur a surrender ou pas
     """
-    # fonction qui donne le résulat du jeu
     global main_croupier
     global assurance_prise
     global assurance_gagnante
@@ -662,7 +669,7 @@ def resultat(action=0):
         calcul_gain(consequence, assurance_gagnante)
         boucle -= 1
         if split != 0:
-            # La désincrémetation de split permet de calculer la deucième main
+            # La désincrémetation de split permet de calculer la deuxième main
             # du joueur
             split -= 1
 
@@ -758,15 +765,15 @@ def splitter():
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     creer_image(main_joueur_split[0], cj1a, 'cj1a')
-    # Les différents root.after servent à ne faire apparaitre les cartes
-    # qu'après 0,5 seconde pour rendre le jeu plus naturel. Ils n'ont donc un
-    # but que purement décoratif
     root.after(500, root.update())
     creer_image(main_joueur[1], cj2, 'cj2')
     root.after(500, root.update())
     creer_image(main_joueur_split[1], cj2a, 'cj2a')
     root.after(500, root.update())
     numero_main.grid(column=2, row=1)
+    # Si le joueur a une paire d'as et qu'il split, il ne peut avoir que 2
+    # cartes par main, as inclu. Son tour se finit donc automatiqument après
+    # avoir reçu une carte supplémentaire par main
     if 'A' in main_joueur[0] and 'A' in main_joueur_split[0]:
         croupier()
     else:
@@ -825,7 +832,6 @@ def rejouer():
         cja[i].grid_forget()
     resultat_label.grid_forget()
     resultat_final.grid_forget()
-    stand_label.grid_forget()
     assurance_valeur.grid_forget()
     # Si le joueur n'a plus d'argent il lui est proposé de prendre un emprunt
     if argent_joueur == 0:
@@ -841,18 +847,6 @@ def quitter(event):
     jeu
     """
     root.destroy()
-
-
-def affichage(event):
-    if event.widget==quitter :
-        fin=tkinter.Tk()
-        fin.title('fin de jeu')
-        fin.geometry==accueil.geometry
-        fin.configure==accueil.configure
-        recap1=tkinter.Label(fin, text='Voici votre récapitulatif de fin de partie',
-                             )
-        recap1.pack(side='top')
-        
 
 
 # Les deux fonctions qui suivent servent à déterminer l'ordre d'appartion des
@@ -957,7 +951,7 @@ def emprunter(event):
     global argent_joueur
     global nombre_emprunt
     if event.widget == emprunt:
-        nombre_emprunt=+1
+        nombre_emprunt += 1
         term.grid_forget()
         emprunt.grid_forget()
         valid.grid(column=9, columnspan=5, row=6)
@@ -968,13 +962,14 @@ def validd(event):
     """ Valider le montant de l'emprunt
 
     Cette fonction permet de valider le montant de l'emprunt effectué par le
-    joueur et d'afficher une erreur si la saisie est hors du cadre requis"""
+    joueur et d'afficher une erreur si la saisie est hors du cadre requis
+    """
     global argent_joueur
     global dette
     if event.widget == valid:
         if my_entry3.get() != int or int(my_entry3) <= 0:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
-                                    ' un nombre entier'
+                ' un nombre entier positif'
             entry_label.grid(column=9, columnspan=5, row=7)
         if my_entry3.get().isdigit():
             if debug == 1:
@@ -1014,35 +1009,12 @@ def test_dette():
             dette_label.after(5000, lambda: dette_label.grid_forget())
 
 
-def confirm(event):
-    """fonction pour valider le choix du joueur après stand'"""
-    def NON(event):
-        if event.widget == label_non:
-            stand_label.grid_forget()
-            label_confirmer.grid_forget()
-            label_non.grid_forget()
-            label_oui.grid_forget()
-    if event.widget == stand_label:
-        stand_label.grid_forget()
-        label_confirmer = tkinter.Label(root, text='Êtes-vous sûr de ' +
-                                        'vouloir quitter le jeu ?',
-                                        bg='dark green',
-                                        font=('helvetica', 10))
-        label_confirmer.grid(column=10, row=4)
-        label_oui = tkinter.Label(root, text='OUI', bg='dark green',
-                                  font=('helvetica', 10))
-        label_oui.grid(column=9, row=5)
-        label_oui.bind('<Button-1>', quitter)
-        label_non = tkinter.Label(root, text='NON', bg='dark green',
-                                  font=('helvetica', 10))
-        label_non.grid(column=11, row=5)
-        label_non.bind('<Button-1>', NON)
-
-
 """interface pour permettre au joueur de comprendre les boutons et
 graphismes"""
 
 """fonction pour afficher un tuto sur comment joueur"""
+
+
 def tutoriel(event):
     if event.widget == bouton_tutoriel:
         interface = tkinter.Tk()
@@ -1051,44 +1023,56 @@ def tutoriel(event):
         interface.configure == root.configure
         interface.mainloop()
 
-"""fenêtre pour afficher le recap du joeur en fin de partie"""
-def recap_fin(event):
-        global argent_joueur
-        global nombre_partie
-        global nom_joueur
-        global nombre_emprunt
-        if event.widget==bouton_quitter or event.widget==term:
-            fen_recap=tkinter.Tk()
-            fen_recap.title('Fin de jeu')
-            fen_recap.geometry == accueil.geometry
-            fen_recap.configure == root.configure
-            recap1=tkinter.Label(fen_recap, text='Voici votre récapitulatif de fin de partie')
-            recap1.pack()
-            recap=tkinter.Label(fen_recap,text=nom_joueur + ', vous venez de quitter le jeu')
-            recap.pack()
-            recap5=tkinter.Label(fen_recap, text=f'Vous avez commencé le jeu avec {str(int(my_entry2))} crédits')
-            recap5.grid()
-            if nombre_partie > 1 :
-                recap2=tkinter.Label(fen_recap,text=f'Vous avec terminé avec {str(argent_joueur)} crédits\n'+ 
-                             f'vous avez réaliser {str(nombre_partie)} parties\n')
-                recap2.pack()
-            elif nombre_partie == 1 or nombre_partie == 0:
-                recap2=tkinter.Label(fen_recap,text=f'Vous avec terminé avec {str(argent_joueur)} crédits\n'+ 
-                             f'vous avez réaliser {str(nombre_partie)} partie\n')
-                recap2.pack()
-            if nombre_emprunt!=0:
-                recap3=tkinter.Label(fen_recap,text=f'vous avez fait {str(nombre_emprunt)} emprunts\n')
-                recap3.pack()
-            if dette!=0:
-                recap4=tkinter.Label(fen_recap, text=f'Vous avez actuellement {str(dette)} € de dettes ' +\
-                'envers la banque')
-                recap4.pack()
-            fermer=tkinter.Button(fen_recap, text='X', bg='red', fg='white',
-                                  command=quitter)
-            fermer.pack(side='right', anchor='ne')
-            root.destroy()
-            fen_recap.mainloop()
 
+"""fenêtre pour afficher le recap du joeur en fin de partie"""
+
+
+def recap_fin(event):
+    global argent_joueur
+    global nombre_partie
+    global nom_joueur
+    global nombre_emprunt
+    if event.widget == bouton_quitter or event.widget == term:
+        fen_recap = tkinter.Tk()
+        fen_recap.title('Fin de jeu')
+        fen_recap.geometry == accueil.geometry
+        fen_recap.configure == root.configure
+        recap1 = tkinter.Label(fen_recap, text='Voici votre récapitulatif ' +
+                               'de fin de partie')
+        recap1.pack()
+        recap = tkinter.Label(fen_recap, text=nom_joueur + ', vous venez de ' +
+                              'quitter le jeu')
+        recap.pack()
+        recap5 = tkinter.Label(fen_recap, text='Vous avez commencé le jeu ' +
+                               f'avec {str(int(my_entry2))} crédits')
+        recap5.grid()
+        if nombre_partie > 1:
+            recap2 = tkinter.Label(fen_recap, text='Vous avec terminé avec' +
+                                   f' {str(argent_joueur)} crédits\n' +
+                                   f'vous avez réaliser {str(nombre_partie)}' +
+                                   'parties\n')
+            recap2.pack()
+        elif nombre_partie == 1 or nombre_partie == 0:
+            recap2 = tkinter.Label(fen_recap, text='Vous avec terminé avec' +
+                                   f' {str(argent_joueur)} crédits\n' +
+                                   f'vous avez réaliser {str(nombre_partie)}' +
+                                   'parties\n')
+            recap2.pack()
+        if nombre_emprunt != 0:
+            recap3 = tkinter.Label(
+                fen_recap, text=f'vous avez fait {str(nombre_emprunt)}' +
+                ' emprunts\n')
+            recap3.pack()
+        if dette != 0:
+            recap4 = tkinter.Label(fen_recap, text='Vous avez actuellement' +
+                                   f' {str(dette)} € de dettes ' +
+                                   'envers la banque')
+            recap4.pack()
+        fermer = tkinter.Button(fen_recap, text='X', bg='red', fg='white',
+                                command=quitter)
+        fermer.pack(side='right', anchor='ne')
+        root.destroy()
+        fen_recap.mainloop()
 
 
 """Fenêtre accueil"""
@@ -1541,12 +1525,6 @@ cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
       cc14]
 
 numero_main = tkinter.Label(root, text='')
-
-"""label pour afficher l'action du joueur"""
-stand_label = tkinter.Label(root, bg='dark green', fg='black',
-                            text="<<Je m'arrête>>",
-                            font=("helvetica", "15"))
-stand_label.bind('<Button-1>', confirm)
 
 resultat_final = tkinter.Label(
     root, text='annonce', bg='dark green', fg='red')
