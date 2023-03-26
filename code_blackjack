@@ -85,8 +85,8 @@ debug = 1
 if debug == 1:
     print(coupe)
 #variable pour compter le nombre de partie
-nombre_partie=1
-
+nombre_partie=0
+nombre_emprunt=0
 """Fonctions"""
 
 
@@ -219,6 +219,7 @@ def donne_initiale():
     global blackjack
     global assurance_prise
     global mise_totale
+    global nombre_partie
     disparition_mise()
     bouton_donne_initiale.grid_forget()
     nb_carte_piochee = 0
@@ -234,6 +235,7 @@ def donne_initiale():
             f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
             f'dans la défausse: {str(len(defausse))}'
         nb_carte_piochee += 1
+        nombre_partie +=1
     creer_image(main_joueur[0], cj1, 'cj1')
     root.after(500, root.update())
     creer_image(main_croupier[0], cc1, 'cc1')
@@ -806,7 +808,6 @@ def rejouer():
         # Le paquet est remélangé et la carte rouge replacée dans ce dernier
         random.shuffle(paquet)
         coupe = random.randint(52, len(paquet)-52)
-        nombre_partie +=1
     bouton_rejouer.grid_forget()
     apparition_mise()
     bouton_donne_initiale.grid(column=2, row=3)
@@ -954,7 +955,9 @@ def emprunter(event):
     pour continuer de jouer
     """
     global argent_joueur
+    global nombre_emprunt
     if event.widget == emprunt:
+        nombre_emprunt=+1
         term.grid_forget()
         emprunt.grid_forget()
         valid.grid(column=9, columnspan=5, row=6)
@@ -981,7 +984,7 @@ def validd(event):
             dette += int(my_entry3.get())
             dette_label['text'] = f'Vous avez {str(dette)} € de dettes ' +\
                 'envers la banque'
-            dette_label.grid(column=9, columnspan=5, row=7)
+            dette_label.grid(column=9, columnspan=5, row=2)
             for i in range(len(canvas_emprunt)):
                 canvas_emprunt[i].grid_forget()
 
@@ -1050,7 +1053,11 @@ def tutoriel(event):
 
 """fenêtre pour afficher le recap du joeur en fin de partie"""
 def recap_fin(event):
-        if event.widget==bouton_quitter:
+        global argent_joueur
+        global nombre_partie
+        global nom_joueur
+        global nombre_emprunt
+        if event.widget==bouton_quitter or event.widget==term:
             fen_recap=tkinter.Tk()
             fen_recap.title('Fin de jeu')
             fen_recap.geometry == accueil.geometry
@@ -1059,9 +1066,27 @@ def recap_fin(event):
             recap1.pack()
             recap=tkinter.Label(fen_recap,text=nom_joueur + ', vous venez de quitter le jeu')
             recap.pack()
-            recap2=tkinter.Label(fen_recap,text='Vous avec commencé avec'+ argent_joueur +'crédits\n'+ 
-                             'vous avez réaliser'+ nombre_partie +'parties')
-            recap2.pack()
+            recap5=tkinter.Label(fen_recap, text=f'Vous avez commencé le jeu avec {str(int(my_entry2))} crédits')
+            recap5.grid()
+            if nombre_partie > 1 :
+                recap2=tkinter.Label(fen_recap,text=f'Vous avec terminé avec {str(argent_joueur)} crédits\n'+ 
+                             f'vous avez réaliser {str(nombre_partie)} parties\n')
+                recap2.pack()
+            elif nombre_partie == 1 or nombre_partie == 0:
+                recap2=tkinter.Label(fen_recap,text=f'Vous avec terminé avec {str(argent_joueur)} crédits\n'+ 
+                             f'vous avez réaliser {str(nombre_partie)} partie\n')
+                recap2.pack()
+            if nombre_emprunt!=0:
+                recap3=tkinter.Label(fen_recap,text=f'vous avez fait {str(nombre_emprunt)} emprunts\n')
+                recap3.pack()
+            if dette!=0:
+                recap4=tkinter.Label(fen_recap, text=f'Vous avez actuellement {str(dette)} € de dettes ' +\
+                'envers la banque')
+                recap4.pack()
+            fermer=tkinter.Button(fen_recap, text='X', bg='red', fg='white',
+                                  command=quitter)
+            fermer.pack(side='right', anchor='ne')
+            root.destroy()
             fen_recap.mainloop()
 
 
@@ -1277,7 +1302,7 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 """bouton pour quitter la partie"""
 bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
 bouton_quitter.grid(column=2, row=11)
-bouton_quitter.bind('<Button-1>', quitter)
+bouton_quitter.bind('<Button-1>', recap_fin)
 
 """mélanger le jeu de carte"""
 bouton_melanger = tkinter.Button(
@@ -1342,7 +1367,7 @@ banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
 emprunt = tkinter.Button(root, text='Emprunt')
 emprunt.bind('<Button-1>', emprunter)
 term = tkinter.Button(root, text='Terminer')
-term.bind('<Button-1>', quitter)
+term.bind('<Button-1>', recap_fin)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       'emprunter ?', fg='black',
