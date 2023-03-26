@@ -480,6 +480,7 @@ def stand():
     piocher des cartes et garder sa main en l'état actuel
     """
     global split
+    stand_label.grid(column=10, row=5)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
@@ -825,6 +826,7 @@ def rejouer():
     resultat_label.grid_forget()
     resultat_final.grid_forget()
     assurance_valeur.grid_forget()
+    stand_label.grid_forget()
     # Si le joueur n'a plus d'argent il lui est proposé de prendre un emprunt
     if argent_joueur == 0:
         emprunt.grid(column=9, row=5)
@@ -1519,6 +1521,10 @@ cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
 
 numero_main = tkinter.Label(root, text='')
 
+"""label pour afficher l'action du joueur"""
+stand_label = tkinter.Label(root, bg='dark green', fg='black',
+                            text="<<Je m'arrête>>",
+                            font=("helvetica", "15"))
 resultat_final = tkinter.Label(
     root, text='annonce', bg='dark green', fg='red')
 resultat_label = tkinter.Label(
