@@ -198,14 +198,6 @@ def debut(event):
         accueil.destroy()
 
 
-def fenêtre():
-    F1 = tkinter.Toplevel(accueil)
-
-
-def fenêtre_bis():
-    F2 = tkinter.Toplevel(accueil)
-
-
 def donne_initiale():
     """Donne initiale des cartes aux joueurs et au croupier.
 
