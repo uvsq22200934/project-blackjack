@@ -180,22 +180,24 @@ def debut(event):
     global nom_joueur
     global argent_joueur
     if event.widget == play:
-        if my_entry2.get() != int or int(my_entry2) <= 0:
-            entry1_label = tkinter.Label(
-                accueil, text='erreur\n Veuillez entrer un nombre positif')
-            entry1_label.pack()
-            entry1_label.after(700, lambda: entry1_label.grid_forget())
         nom_joueur = my_entry.get()
         argent_joueur = my_entry2.get()
-        if not argent_joueur.isnumeric():
-            argent_joueur = ''
+        if not argent_joueur.isdigit() or argent_joueur <= 0:
+            erreur_argent = tkinter.Label(
+                accueil, text='Erreur\n Veuillez entrer un nombre entier ' +
+                'positif supérieur à 0 pour les crédits')
+            erreur_argent.pack()
+        if len(nom_joueur) > 15:
+            erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
+                                       'entrer un nom de 15 caractères ou' +
+                                       'moins')
+            erreur_nom.pack()
         if nom_joueur == '':
             nom_joueur = 'Player'
-        if argent_joueur == '':
-            argent_joueur = 1000
-        elif argent_joueur != '':
+        if argent_joueur != '':
             argent_joueur = int(argent_joueur)
-        accueil.destroy()
+        if argent_joueur != '' and nom_joueur != '':
+            accueil.destroy()
 
 
 def donne_initiale():
@@ -924,6 +926,11 @@ def mise(montant_mise):
     """ Mise
 
     Cette fonction permet de comptabiliser la mise du joueur
+
+    Parametres
+    ----------.
+    montant_mise: int
+        Détermine de combien la mise doit être incrémentée
     """
     global mise_totale
     global argent_joueur
