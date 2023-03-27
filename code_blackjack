@@ -1099,15 +1099,17 @@ play.create_oval(1, 1, 145, 145, width=3, outline='mint cream',
                  fill='mint cream')
 play.create_text(70, 75, text='Play', font=('elephant', 35), fill='black')
 
-play.pack()
+play.pack(padx=5, pady=5)
 
 play.bind('<Button-1>', debut)
-"""play.bind('<Button-1>', mode_jeu)"""
-
-# image_debut= Image.open("./Images/image0.png")
-# image_debut = image_debut.resize(np.array())
-# image_debut.TK= ImageTk.PhotoImage(image_debut)
-
+#placer l'image sur la fenêtre accueil
+#copie code internet
+image = Image.open("./Images/image0.png")
+resize_image = image.resize((260, 220))
+img = ImageTk.PhotoImage(resize_image)
+label1 = tkinter.Label(bg='red',image=img)
+label1.image = img
+label1.pack(padx=5, pady=5)
 """ entrée permettant au joueur de choisir son pseudo
 ainsi que le nombre de crédit souhaité """
 
