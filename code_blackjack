@@ -1102,14 +1102,11 @@ play.create_text(70, 75, text='Play', font=('elephant', 35), fill='black')
 play.pack(padx=5, pady=5)
 
 play.bind('<Button-1>', debut)
-#placer l'image sur la fenêtre accueil
-#copie code internet
+
 image = Image.open("./Images/image0.png")
 resize_image = image.resize((260, 220))
 img = ImageTk.PhotoImage(resize_image)
-label1 = tkinter.Label(bg='red',image=img)
-label1.image = img
-label1.pack(padx=5, pady=5)
+play.create_image(70, 60, image=img, anchor='center')
 """ entrée permettant au joueur de choisir son pseudo
 ainsi que le nombre de crédit souhaité """
 
