@@ -236,18 +236,18 @@ def donne_initiale():
         nombre_partie += 1
     # cj signifie carte joueur, le numéro sert à l'indentifier par rapport aux
     # autres cartes du joueur
-    creer_image(main_joueur[0], cj1, 'cj1')
+    creer_image(main_joueur[0], cj['cj1'], 'cj1')
     # Les différents root.after du programme servent à ne faire apparaitre les
     # cartes qu'après 0,5 seconde pour rendre le jeu plus naturel. Ils n'ont
     # donc qu'un but purement décoratif
     root.after(500, root.update())
     # cc signifie carte croupier, le numéro sert à l'indentifier par rapport
     # aux autres cartes du croupier
-    creer_image(main_croupier[0], cc1, 'cc1')
+    creer_image(main_croupier[0], cc['cc1'], 'cc1')
     root.after(500, root.update())
-    creer_image(main_joueur[1], cj2, 'cj2')
+    creer_image(main_joueur[1], cj['cj2'], 'cj2')
     root.after(500, root.update())
-    dos_carte(cc2, 'cc2')
+    dos_carte(cc['cc2'], 'cc2')
     if 'A' in main_croupier[0]:
         if debug == 1:
             print('As détecté')
@@ -349,11 +349,13 @@ def hit(main, pointeur):
             f'dans la défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
-                creer_image(main[i-1], carte[i-1], f'{carte[i]}')
-                carte[i-1].grid(column=4+i, row=7+a)
+                creer_image(main[i-1], carte[f'cj{i}'],
+                            f'cj{i}')
+                carte[f'cj{i}'].grid(column=4+i, row=7+a)
         # on vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
+        carte = cc
         if debug == 1:
             print(len(main))
         main.append(paquet[0])
@@ -363,9 +365,9 @@ def hit(main, pointeur):
             f'dans la défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
-                creer_image(main[i-1], cc[i-1], f'cc{i}')
+                creer_image(main[i-1], carte[f'cc{i}'], f'cc{i}')
                 root.after(500, root.update())
-                cc[i-1].grid(column=4+i, row=1)
+                carte[f'cc{i}'].grid(column=4+i, row=1)
     root.update()
 
 
@@ -471,8 +473,8 @@ def croupier():
     jusqu'à avoir 17 points ou plus
     """
     global main_croupier
-    creer_image(main_croupier[1], cc2, 'cc2')
-    cc2.grid(column=3, row=1)
+    creer_image(main_croupier[1], cc['cc2'], 'cc2')
+    cc['cc2'].grid(column=3, row=1)
     root.update()
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 16:
@@ -753,12 +755,12 @@ def splitter():
     # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
     # l'interface graphique des deux premières carte de la deuxième main du
     # joueur
-    cj1a.grid(column=1, row=8)
-    cj2a.grid(column=3, row=8)
+    cja['cj1a'].grid(column=1, row=8)
+    cja['cj2a'].grid(column=3, row=8)
     # La deuxième carte de la deuxième main disparait sur l'interface
     # graphique puisque correspondant désoirmais à la première carte de la
     # deuxième main
-    cj2.delete('all')
+    cj['cj2'].delete('all')
     main_joueur_split.append(main_joueur[1])
     del main_joueur[1]
     main_joueur.append(paquet[0])
@@ -771,11 +773,11 @@ def splitter():
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
-    creer_image(main_joueur_split[0], cj1a, 'cj1a')
+    creer_image(main_joueur_split[0], cja['cj1a'], 'cj1a')
     root.after(500, root.update())
-    creer_image(main_joueur[1], cj2, 'cj2')
+    creer_image(main_joueur[1], cj['cj2'], 'cj2')
     root.after(500, root.update())
-    creer_image(main_joueur_split[1], cj2a, 'cj2a')
+    creer_image(main_joueur_split[1], cja['cj2a'], 'cj2a')
     root.after(500, root.update())
     numero_main.grid(column=2, row=1)
     # Si le joueur a une paire d'as et qu'il split, il ne peut avoir que 2
@@ -829,14 +831,14 @@ def rejouer():
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
     # Les images des cartes disparaissent des l'interface graphqiue
-    cc1.delete('all')
-    cc2.delete('all')
-    cj1.delete('all')
-    cj2.delete('all')
-    for i in range(2, 14):
-        cc[i].grid_forget()
-        cj[i].grid_forget()
-        cja[i].grid_forget()
+    cc['cc1'].delete('all')
+    cc['cc2'].delete('all')
+    cj['cj1'].delete('all')
+    cj['cj2'].delete('all')
+    for i in range(3, 22):
+        cc[f'cc{i}'].grid_forget()
+        cj[f'cj{i}'].grid_forget()
+        cja[f'cj{i}a'].grid_forget()
     resultat_label.grid_forget()
     resultat_final.grid_forget()
     assurance_valeur.grid_forget()
@@ -1424,19 +1426,6 @@ jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge, jeton_noir,
 
 """interface graphique"""
 
-
-# interface emplacement des cartes 1 et 2 du joueur
-cj1 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj1.grid(column=1, row=7)
-cj2 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj2.grid(column=3, row=7)
-
-# interface emplacement des cartes 1 et 2 du croupier
-cc1 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc1.grid(column=1, row=1)
-cc2 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc2.grid(column=3, row=1)
-
 # texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="Dealer ", font=(
     "helvetica", "15"), bg="dark green", fg="black")
@@ -1451,74 +1440,29 @@ labelj.grid(column=0, row=7)
 # un joueur peut avoir au maximum 21 cartes car il y a 24 As valant 1 points
 # dans le jeu et donc si le joueur ne fait que piohcer des As, il aura au
 # maximum 21 cartes)
-cj3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj5 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj6 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj7 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj8 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj9 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj10 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj11 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj12 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj13 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj14 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj15 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj16 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj17 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj18 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj19 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj20 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj21 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 
-cj1a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj2a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj3a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj4a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj5a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj6a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj7a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj8a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj9a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj10a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj11a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj12a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj13a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj14a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj15a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj16a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj17a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj18a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj19a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj20a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cj21a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj = {}
+for i in range(22):
+    cj[f"cj{i}"] = tkinter.Canvas(root, width=66, height=100,
+                                  bg='#55AA55')
 
-cc3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc5 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc6 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc7 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc8 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc9 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc10 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc11 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc12 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc13 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc14 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc15 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc16 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc17 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc18 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc19 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc20 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-cc21 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc = {}
+for i in range(22):
+    cc[f"cc{i}"] = tkinter.Canvas(root, width=66, height=100,
+                                  bg='#55AA55')
 
-cj = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13,
-      cj14, cj15, cj16, cj17, cj18, cj19, cj20, cj21]
-cja = [cj1a, cj2a, cj3a, cj4a, cj5a, cj6a, cj7a, cj8a, cj9a, cj10a, cj11a,
-       cj12a, cj13a, cj14a, cj15a, cj16a, cj17a, cj18a, cj19a, cj20a, cj21a]
-cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
-      cc14, cc15, cc16, cc17, cc18, cc19, cc20, cc21]
+cja = {}
+for i in range(22):
+    cja[f"cj{i}a"] = tkinter.Canvas(root, width=66, height=100,
+                                    bg='#55AA55')
+
+# interface emplacement des cartes 1 et 2 du joueur
+cj['cj1'].grid(column=1, row=7)
+cj['cj2'].grid(column=3, row=7)
+
+# interface emplacement des cartes 1 et 2 du croupier
+cc['cc1'].grid(column=1, row=1)
+cc['cc2'].grid(column=3, row=1)
 
 numero_main = tkinter.Label(root, text='')
 
