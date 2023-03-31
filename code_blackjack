@@ -1025,64 +1025,13 @@ def tutoriel(event):
         interface.mainloop()
 
 
-"""fenêtre pour afficher le recap du joeur en fin de partie"""
-
-
-def recap_fin(event):
-    global argent_joueur
-    global nombre_partie
-    global nom_joueur
-    global nombre_emprunt
-    if event.widget == bouton_quitter or event.widget == term:
-        root.destroy()
-        fen_recap = tkinter.Tk()
-        fen_recap.title('Fin de jeu')
-        fen_recap.geometry == accueil.geometry
-        fen_recap.configure == root.configure
-        recap1 = tkinter.Label(
-            fen_recap, text='Voici votre récapitulatif de fin de partie')
-        recap1.pack()
-        recap = tkinter.Label(fen_recap, text=nom_joueur +
-                              ', vous venez de quitter le jeu')
-        recap.pack()
-        recap5 = tkinter.Label(
-            fen_recap, text='Vous avez commencé le jeu avec ' +
-            f'{str(int(my_entry2))} crédits')
-        recap5.grid()
-        if nombre_partie > 1:
-            recap2 = tkinter.Label(fen_recap, text='Vous avec terminé avec ' +
-                                   f'{str(argent_joueur)} crédits\n Vous ' +
-                                   f'avez réaliser {str(nombre_partie)} ' +
-                                   'parties\n')
-            recap2.pack()
-        elif nombre_partie == 1 or nombre_partie == 0:
-            recap2 = tkinter.Label(fen_recap, text='Vous avec terminé avec ' +
-                                   f'{str(argent_joueur)} crédits\n Vous ' +
-                                   f'avez réaliser {str(nombre_partie)} ' +
-                                   'parties\n')
-            recap2.pack()
-        if nombre_emprunt != 0:
-            recap3 = tkinter.Label(
-                fen_recap, text=f'vous avez fait {str(nombre_emprunt)} ' +
-                'emprunts\n')
-            recap3.pack()
-        if dette != 0:
-            recap4 = tkinter.Label(fen_recap, text='Vous avez actuellement ' +
-                                   f'{str(dette)} € de dettes ' +
-                                   'envers la banque')
-            recap4.pack()
-        fermer = tkinter.Button(fen_recap, text='X', bg='red', fg='white',
-                                command=quitter)
-        fermer.pack(side='right', anchor='ne')
-        fen_recap.mainloop()
-
-
 """Fenêtre accueil"""
 
 accueil = tkinter.Tk()
 accueil.title('Menu BlackJack 21')
 accueil.geometry('700x600')
 accueil.configure(bg='red')
+accueil.resizable(width=False, height=False)
 
 # Variables relatives aux graphismes du jeu
 """Graphismes"""
@@ -1093,20 +1042,21 @@ bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
                    font=('helvetica', 50))
 bj.pack()
 
-play = tkinter.Canvas(accueil, width=150, height=150, bg='red',
+play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
-play.create_oval(1, 1, 145, 145, width=3, outline='mint cream',
+play.create_oval(34, 40, 180, 190
+                 , width=3, outline='mint cream',
                  fill='mint cream')
-play.create_text(70, 75, text='Play', font=('elephant', 35), fill='black')
+play.create_text(102, 115, text='Play', font=('elephant', 35), fill='black')
 
-play.pack(padx=5, pady=5)
+play.pack(anchor='center')
 
 play.bind('<Button-1>', debut)
 
 image = Image.open("./Images/image0.png")
-resize_image = image.resize((260, 220))
+resize_image = image.resize((240, 200))
 img = ImageTk.PhotoImage(resize_image)
-play.create_image(70, 60, image=img, anchor='center')
+play.create_image(100, 100, image=img, anchor='center')
 """ entrée permettant au joueur de choisir son pseudo
 ainsi que le nombre de crédit souhaité """
 
