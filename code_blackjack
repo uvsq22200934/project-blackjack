@@ -182,7 +182,7 @@ def debut(event):
     if event.widget == play:
         nom_joueur = my_entry.get()
         argent_joueur = my_entry2.get()
-        if not argent_joueur.isdigit() or argent_joueur <= 0:
+        if not argent_joueur.isdigit() or int(argent_joueur) <= 0:
             erreur_argent = tkinter.Label(
                 accueil, text='Erreur\n Veuillez entrer un nombre entier ' +
                 'positif supérieur à 0 pour les crédits')
@@ -1237,7 +1237,7 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 """bouton pour quitter la partie"""
 bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
 bouton_quitter.grid(column=2, row=11)
-bouton_quitter.bind('<Button-1>', recap_fin)
+bouton_quitter.bind('<Button-1>', quitter)
 
 """mélanger le jeu de carte"""
 bouton_melanger = tkinter.Button(
@@ -1302,7 +1302,7 @@ banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
 emprunt = tkinter.Button(root, text='Emprunt')
 emprunt.bind('<Button-1>', emprunter)
 term = tkinter.Button(root, text='Terminer')
-term.bind('<Button-1>', recap_fin)
+term.bind('<Button-1>', quitter)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       'emprunter ?', fg='black',
