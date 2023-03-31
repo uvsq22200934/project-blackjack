@@ -13,6 +13,7 @@ __status__ = "Developement"
 import random
 import tkinter
 from PIL import Image, ImageTk
+import _tkinter
 
 # listes et variables
 
@@ -184,13 +185,20 @@ def debut(event):
         argent_joueur = my_entry2.get()
         if not argent_joueur.isdigit() or argent_joueur <= 0:
             erreur_argent = tkinter.Label(
-                accueil, text='Erreur\n Veuillez entrer un nombre entier ' +
-                'positif supérieur à 0 pour les crédits')
-            erreur_argent.pack()
+                accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
+                'positif supérieur à 0 pour les crédits', width=35,
+                justify='center')
+            # Si la fonction pack_info retourne une erreur Tcl, alors l'erreur
+            # n'est pas encore pack et donc le programme la pack. Cela permet
+            # de ne pas pack plusieurs fois le messag d'erreur
+            try:
+                erreur_argent.pack_info()
+            except _tkinter.TclError:
+                erreur_argent.pack()
         if len(nom_joueur) > 15:
             erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
                                        'entrer un nom de 15 caractères ou' +
-                                       'moins')
+                                       'moins', width=35)
             erreur_nom.pack()
         if nom_joueur == '':
             nom_joueur = 'Player'
