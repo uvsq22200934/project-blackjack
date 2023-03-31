@@ -1115,7 +1115,7 @@ accueil.mainloop()
 root = tkinter.Tk()
 root.title('Blackjack 21')
 """root.state('zoomed')"""
-
+root.resizable(width=False, height=False)
 root.geometry = accueil.geometry
 root.configure(bg="dark green")
 
@@ -1127,6 +1127,7 @@ def dir_regles(event):
         règle = tkinter.Tk()
         règle.title('Règle du jeu')
         règle.geometry = accueil.geometry
+        règle.resizable(width=False,height=False)
         règle.configure(bg='white')
         titre = tkinter.Label(règle, text='REGLE DU BLACKJACK 21\n',
                               bg='white', fg='black', font=('helvetica', 23))
