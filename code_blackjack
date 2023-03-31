@@ -193,10 +193,8 @@ def debut(event):
                 erreur_argent.pack_info()
             except _tkinter.TclError:
                 erreur_argent.pack()
-                print(erreur_argent.pack_info())
         if len(nom_joueur) > 15:
             try:
-                print(erreur_argent.pack_info())
                 erreur_nom.pack_info()
             except _tkinter.TclError:
                 erreur_nom.pack()
@@ -1094,13 +1092,13 @@ cartes3.pack(side='right', anchor='n')
 cartes4.pack(side='right', anchor='n')
 
 erreur_argent = tkinter.Label(
-                accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
-                'positif supérieur à 0 pour les crédits', width=35,
-                justify='center')
+    accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
+    'positif supérieur à 0 pour les crédits', width=35,
+    justify='center')
 
 erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
-                                       'entrer un nom de 15 caractères\nou ' +
-                                       'moins', width=35)
+                           'entrer un nom de 15 caractères\nou ' +
+                           'moins', width=35)
 
 jetonnoir = tkinter.Canvas(accueil, bg='red', width=60, height=60,
                            relief='raised', borderwidth=0,
