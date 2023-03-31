@@ -184,22 +184,22 @@ def debut(event):
         nom_joueur = my_entry.get()
         argent_joueur = my_entry2.get()
         if not argent_joueur.isdigit() or int(argent_joueur) <= 0:
-            erreur_argent = tkinter.Label(
-                accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
-                'positif supérieur à 0 pour les crédits', width=35,
-                justify='center')
-            # Si la fonction pack_info retourne une erreur Tcl, alors l'erreur
-            # n'est pas encore pack et donc le programme la pack. Cela permet
-            # de ne pas pack plusieurs fois le messag d'erreur
+            # Si la fonction pack_info retourne une erreur Tcl, alors le
+            # message d'erreur n'est pas encore pack et donc le programme le
+            # pack. Cela permet de ne pas pack plusieurs fois le message
+            # d'erreur
+            """ print(erreur_argent.pack_info())"""
             try:
                 erreur_argent.pack_info()
             except _tkinter.TclError:
                 erreur_argent.pack()
+                print(erreur_argent.pack_info())
         if len(nom_joueur) > 15:
-            erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
-                                       'entrer un nom de 15 caractères ou' +
-                                       'moins', width=35)
-            erreur_nom.pack()
+            try:
+                print(erreur_argent.pack_info())
+                erreur_nom.pack_info()
+            except _tkinter.TclError:
+                erreur_nom.pack()
         if nom_joueur == '':
             nom_joueur = 'Player'
         if argent_joueur != '':
@@ -1052,8 +1052,7 @@ bj.pack()
 
 play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
-play.create_oval(34, 40, 180, 190
-                 , width=3, outline='mint cream',
+play.create_oval(34, 40, 180, 190, width=3, outline='mint cream',
                  fill='mint cream')
 play.create_text(102, 115, text='Play', font=('elephant', 35), fill='black')
 
@@ -1093,6 +1092,15 @@ cartes3 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
 cartes4 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
 cartes3.pack(side='right', anchor='n')
 cartes4.pack(side='right', anchor='n')
+
+erreur_argent = tkinter.Label(
+                accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
+                'positif supérieur à 0 pour les crédits', width=35,
+                justify='center')
+
+erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
+                                       'entrer un nom de 15 caractères\nou ' +
+                                       'moins', width=35)
 
 jetonnoir = tkinter.Canvas(accueil, bg='red', width=60, height=60,
                            relief='raised', borderwidth=0,
@@ -1135,7 +1143,7 @@ def dir_regles(event):
         règle = tkinter.Tk()
         règle.title('Règle du jeu')
         règle.geometry = accueil.geometry
-        règle.resizable(width=False,height=False)
+        règle.resizable(width=False, height=False)
         règle.configure(bg='white')
         titre = tkinter.Label(règle, text='REGLE DU BLACKJACK 21\n',
                               bg='white', fg='black', font=('helvetica', 23))
