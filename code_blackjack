@@ -5,7 +5,6 @@ __author__ = "Mathilde, Maïlys, Joseph"
 __copyright__ = "Copyright 2023, Projet Blacjack"
 __credits__ = ["Mathilde", "Maïlys", "Joseph"]
 __license__ = "GPL"
-__version__ = "0.1.1"
 __maintainer__ = "Joseph ARIAS"
 __email__ = "joseph.arias@ens.uvsq.fr"
 __status__ = "Developement"
@@ -14,6 +13,10 @@ import random
 import tkinter
 from PIL import Image, ImageTk
 import _tkinter
+
+# Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
+# n'apparait
+debug = 1
 
 # listes et variables
 
@@ -41,6 +44,9 @@ defausse = []
 # reste des commentaires du code, on parlera donc de carte rouge
 coupe = random.randint(52, len(paquet)-52)
 
+if debug == 1:
+    print(coupe)
+
 # Différentes main pour acceuillir les cartes piochées
 main_joueur = []
 main_croupier = []
@@ -54,12 +60,15 @@ main_joueur_split = []
 # split. Si split == 1, alors le joueur a fait un split et joue sa première
 # main. Si split == 2, le joueur joue sa deuxième main.
 split = 0
+
 # Blacjack peut valoir 0 ou 1 et permet de savoir si le joueur a fait un
 # blackjack
 blackjack = 0
+
 # Assurance prise peut valoir 0 ou 1 et permet de savoir si le joueur a payé
 # une assurance lorsque le croupier a révélé que sa première carte était un As
 assurance_prise = 0
+
 # Assurance gagnante peut valoir 0 ou 1 permet de savoir si l'assurance prise
 # par le joueur est gagnate ou non, c'est à dire si le croupier avait
 # effectivement un blackjack ou pas
@@ -78,15 +87,6 @@ nombre_emprunt = 0
 
 images = dict()
 image_dos = dict()
-
-# Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
-# n'apparait
-
-debug = 1
-
-
-if debug == 1:
-    print(coupe)
 
 """Fonctions"""
 
@@ -181,14 +181,13 @@ def debut(event):
     global nom_joueur
     global argent_joueur
     if event.widget == play:
-        nom_joueur = my_entry.get()
-        argent_joueur = my_entry2.get()
+        nom_joueur = entree_username.get()
+        argent_joueur = entree_credit.get()
         if not argent_joueur.isdigit() or int(argent_joueur) <= 0:
             # Si la fonction pack_info retourne une erreur Tcl, alors le
             # message d'erreur n'est pas encore pack et donc le programme le
             # pack. Cela permet de ne pas pack plusieurs fois le message
             # d'erreur
-            """ print(erreur_argent.pack_info())"""
             try:
                 erreur_argent.pack_info()
             except _tkinter.TclError:
@@ -235,11 +234,15 @@ def donne_initiale():
             f'dans la défausse: {str(len(defausse))}'
         nb_carte_piochee += 1
         nombre_partie += 1
+    # cj signifie carte joueur, le numéro sert à l'indentifier par rapport aux
+    # autres cartes du joueur
     creer_image(main_joueur[0], cj1, 'cj1')
     # Les différents root.after du programme servent à ne faire apparaitre les
     # cartes qu'après 0,5 seconde pour rendre le jeu plus naturel. Ils n'ont
     # donc qu'un but purement décoratif
     root.after(500, root.update())
+    # cc signifie carte croupier, le numéro sert à l'indentifier par rapport
+    # aux autres cartes du croupier
     creer_image(main_croupier[0], cc1, 'cc1')
     root.after(500, root.update())
     creer_image(main_joueur[1], cj2, 'cj2')
@@ -655,6 +658,9 @@ def resultat(action=0):
         if split == 0:
             annonce = f'Votre score: {str(score_joueur)} \n Score' + \
                 f' du Dealer: {str(score_croupier)} \n'
+        # Si le joueur a fait un split, l'affichage lié au résultat est
+        # différent que s'il n'y avait pas eu de split afin d'afficher les
+        # résultats des différentes mains
         if split == 2:
             annonce = f'Score main 1: {str(score_joueur)}\n'
             resultat_label['text'] += '\n Main 2 \n'
@@ -1044,9 +1050,9 @@ accueil.resizable(width=False, height=False)
 """configuration de l'écran d'acceuil"""
 
 
-bj = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
-                   font=('helvetica', 50))
-bj.pack()
+titre_jeu = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
+                          font=('helvetica', 50))
+titre_jeu.pack()
 
 play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
@@ -1058,8 +1064,8 @@ play.pack(anchor='center')
 
 play.bind('<Button-1>', debut)
 
-image = Image.open("./Images/image0.png")
-resize_image = image.resize((240, 200))
+image_jeton_play = Image.open("./Images/image0.png")
+resize_image = image_jeton_play.resize((240, 200))
 img = ImageTk.PhotoImage(resize_image)
 play.create_image(100, 100, image=img, anchor='center')
 """ entrée permettant au joueur de choisir son pseudo
@@ -1069,15 +1075,15 @@ username = tkinter.Label(accueil, text="Username:",
                          font=('helvetica', 10), fg='black')
 username.pack()
 
-my_entry = tkinter.Entry(accueil)
-my_entry.pack()
+entree_username = tkinter.Entry(accueil)
+entree_username.pack()
 
 credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
                        fg='black')
 credit.pack()
 
-my_entry2 = tkinter.Entry(accueil)
-my_entry2.pack()
+entree_credit = tkinter.Entry(accueil)
+entree_credit.pack()
 
 """graphisme fenêtre acceuil"""
 
@@ -1441,7 +1447,10 @@ labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
                        bg="dark green", fg="black")
 labelj.grid(column=0, row=7)
 
-"""cartes cachées dans la pioche"""
+# canvas pour l'affichage des cartes dans l'interface graphique (techniquement
+# un joueur peut avoir au maximum 21 cartes car il y a 24 As valant 1 points
+# dans le jeu et donc si le joueur ne fait que piohcer des As, il aura au
+# maximum 21 cartes)
 cj3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj5 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
@@ -1454,6 +1463,13 @@ cj11 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj12 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj13 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj14 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj15 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj16 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj17 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj18 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj19 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj20 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj21 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 
 cj1a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj2a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
@@ -1469,6 +1485,13 @@ cj11a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj12a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj13a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cj14a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj15a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj16a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj17a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj18a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj19a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj20a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cj21a = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 
 cc3 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc4 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
@@ -1482,17 +1505,24 @@ cc11 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc12 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc13 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 cc14 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc15 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc16 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc17 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc18 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc19 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc20 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cc21 = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 
 cj = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13,
-      cj14]
+      cj14, cj15, cj16, cj17, cj18, cj19, cj20, cj21]
 cja = [cj1a, cj2a, cj3a, cj4a, cj5a, cj6a, cj7a, cj8a, cj9a, cj10a, cj11a,
-       cj12a, cj13a, cj14a]
+       cj12a, cj13a, cj14a, cj15a, cj16a, cj17a, cj18a, cj19a, cj20a, cj21a]
 cc = [cc1, cc2, cc3, cc4, cc5, cc6, cc7, cc8, cc9, cc10, cc11, cc12, cc13,
-      cc14]
+      cc14, cc15, cc16, cc17, cc18, cc19, cc20, cc21]
 
 numero_main = tkinter.Label(root, text='')
 
-"""label pour afficher l'action du joueur"""
+# label pour afficher l'action du joueur
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "15"))
@@ -1501,7 +1531,7 @@ resultat_final = tkinter.Label(
 resultat_label = tkinter.Label(
     root, text='', bg='dark green', fg='yellow')
 
-"""label qui affiche le nombre de cartes restantes"""
+# label qui affiche le nombre de cartes restantes
 nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
