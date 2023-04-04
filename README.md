@@ -6,7 +6,7 @@ filière : LDDBI L1
 
 Noms des étudiants : 
 Maïlys VAUDEVIRE 
-Mathilde Gauteur 
+Mathilde GAUTEUR 
 Joseph ARIAS
 
 URL de dépôt : 
