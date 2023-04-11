@@ -13,10 +13,15 @@ import random
 import tkinter
 from PIL import Image, ImageTk
 import _tkinter
+import time
 
 # Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
 # n'apparait
 debug = 1
+
+# Variable qui permet de savoir quand est-ce qu'un bouton a été appuyé pour la
+# dernière fois
+last_press = 0
 
 
 # Listes et variables
@@ -88,13 +93,12 @@ assurance_prise = 0
 # effectivement un blackjack ou pas
 assurance_gagnante = 0
 
-
+# Variable qui permet de savoir si le joueur a cliqué sur play sur l'écran
+# d'accueil
 fenetre_jeu = 0
 
 
 # Variables qui dépendent du joueur et/ou peuvent évoluer au cours de la partie
-
-
 argent_joueur = 0
 prix_assurance = 0
 dette = 0
@@ -104,8 +108,6 @@ nombre_emprunt = 0
 
 
 # Dictionnaires permettant de contourner le garbage collector
-
-
 images = dict()
 image_dos = dict()
 
@@ -131,38 +133,55 @@ def creer_image(carte, position_carte, texte):
     image_carte = Image.open("./Images/cartes.png")
     if debug == 1:
         print('ok', carte)
-    # A, B, C, D ont été mesurées au préalable et correspond à l'écart entre
-    # chaque carte sur l'image cartes.png
+    # A, B, C, D ont été mesurées au préalable et correspondent à l'écart entre
+    # chaque carte sur l'image "cartes.png"
     A = 30
     B = 30
     C = 390
     D = 570
+    # Si la carte est de la famille "coeur"
     if 'co' in carte:
         B += 570
         D += 570
+    # Si la carte est de la famille "carreau"
     if 'ca' in carte:
         B += 570*2
         D += 570*2
+    # Si la carte est de la famille "trèfle"
     if 't' in carte:
         B += 570*3
         D += 570*3
     for i in range(2, 11):
+        # Si la valeur nominale de la carte est cimprise entre 2 et 10
         if str(i) in carte:
             A += 390 * (i-1)
             C += 390 * (i-1)
+    # Si la carte est un Valet
     if 'V' in carte:
         A += 390*10
         C += 390*10
+    # Si la carte est une Dame
     if 'D' in carte:
         A += 390*11
         C += 390*11
+    # Si la carte est un Roi
     if 'R' in carte:
         A += 390*12
         C += 390*12
+    # On notera que si la carte est un As, aucune valeur n'est incrémentée à A
+    # et C et que si la carte est un pique, aucune valeur n'es incrémentée à B
+    # et D. C'est parce que A et C correspondent au pixel le plus à droite et
+    # au pixel le plus à gauche de la carte qui sont les mêmes pour tous les
+    # As et corrspondent et valeurs A et C initiales. Il en va de même pour C
+    # et D qui correspondent au pixel le plus haut et celui le plus bas de la
+    # carte qui sont les mêmes pour tous les piques et corrspondent et valeurs
+    # B et D initiales.
     if debug == 1:
         print(A, B, C, D)
     crop_rectangle = (A, B, C, D)
     cropped_im = image_carte.crop(crop_rectangle)
+    # image_fin permet de faire correspondre la taille de l'image à la taille
+    # du canva qui va l'accueillir
     image_fin = cropped_im.resize((66, 100))
     # L'ajout de "texte" au doctionnaire image permet d'éviter le garbage
     # collector
@@ -206,7 +225,10 @@ def debut(event):
     if event.widget == play:
         nom_joueur = entree_username.get()
         argent_joueur = entree_credit.get()
-        if not argent_joueur.isdigit() or int(argent_joueur) <= 0:
+        # Si le joueur n'a pas entré un nombre compris entre 0 et 1 000 000 000
+        # exclus
+        if not argent_joueur.isdigit() or int(argent_joueur) <= 0 or\
+                len(argent_joueur) > 10:
             # Si la fonction pack_info retourne une erreur Tcl, alors le
             # message d'erreur n'est pas encore pack et donc le programme le
             # pack. Cela permet de ne pas pack plusieurs fois le message
@@ -217,7 +239,9 @@ def debut(event):
                 erreur_argent.pack()
         else:
             erreur_argent.pack_forget()
-        if len(nom_joueur) > 15:
+        # Si le nom du joueur fait plus de 15 caractère et/ou n'est consitué
+        # que d'espaces
+        if len(nom_joueur) > 15 and len(nom_joueur.strip()) != 0:
             try:
                 erreur_nom.pack_info()
             except _tkinter.TclError:
@@ -228,14 +252,17 @@ def debut(event):
         if nom_joueur == '':
             nom_joueur = 'Player'
         # On vérifie que le joueur ai bien rentré un texte uniquement composé
-        # de chiffres
+        # de chiffres et que le nombre soit compris entre 0 et 1 000 000 000
+        # exclus
         if argent_joueur != '' and argent_joueur.isdigit():
             argent_joueur = int(argent_joueur)
         # On vérifie avant de lancer la fenêtre de jeu que le joueur ai bien
         # rentré un crédit uniquement composé de chiffre et que son nom ne
-        # soit pas trop long
+        # soit pas trop long ni constitué uniquement d'espaces
         if argent_joueur != '' and nom_joueur != '' and\
-                str(argent_joueur).isdigit() and len(nom_joueur) < 15:
+                str(argent_joueur).isdigit() and len(nom_joueur) < 15 and\
+                len(str(argent_joueur)) <= 10 and argent_joueur > 0 and\
+                len(nom_joueur.strip()) != 0:
             accueil.destroy()
             fenetre_jeu = 1
 
@@ -256,6 +283,8 @@ def donne_initiale():
     disparition_mise()
     bouton_donne_initiale.grid_forget()
     nb_carte_piochee = 0
+    # Le joueur pioche 1 carte puis le croupier en fait de même jusqu'à ce
+    # qu'ils aient 2 cartes chacun
     while nb_carte_piochee < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
@@ -328,7 +357,17 @@ def reponse_assurance(reponse=0):
     global bouton_oui_assurance
     global blackjack
     global mise_totale
+    global last_press
+    # Si un bouton a été pressé il y a moins de 0.5 secondes
+    if time.time() - last_press < 0.5:
+        # La fonction s'arrête immédiatement
+        return
+    else:
+        # Sinon on relève le temps où le bouton a été pressé pour éviter un
+        # spam qui "casserait" le programme
+        last_press = time.time()
     prix_assurance = mise_totale // 2
+    # Si le joueur souhaite prendre l'assurance
     if reponse == 'oui':
         argent_joueur -= prix_assurance
         assurance_prise = 1
@@ -338,6 +377,7 @@ def reponse_assurance(reponse=0):
     bouton_oui_assurance.grid_forget()
     texte_assurance.grid_forget()
     argent['text'] = f'Crédits: {str(argent_joueur)}'
+    # Si le joueur a un blacjack
     if score(main_joueur) == 21:
         blackjack = 1
         croupier()
@@ -362,6 +402,11 @@ def hit(main, pointeur):
     global main_joueur
     global main_croupier
     global paquet
+    global last_press
+    if time.time() - last_press < 0.5:
+        return
+    else:
+        last_press = time.time()
     if split == 2 and main != main_croupier:
         # cja correspond à la liste de canvas utilisée pour afficher les
         # cartes de la deucime main du joueur en cas de split
@@ -388,7 +433,7 @@ def hit(main, pointeur):
                     creer_image(main[i-1], carte[f'cj{i}a'],
                                 f'cj{i}a')
                     carte[f'cj{i}a'].grid(column=4+i, row=8)
-        # on vérifie que le joueur n'ai pas de Blackjack
+        # On vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
         carte = cc
@@ -534,10 +579,16 @@ def stand():
     piocher des cartes et garder sa main en l'état actuel
     """
     global split
+    global last_press
+    if time.time() - last_press < 0.5:
+        return
+    else:
+        last_press = time.time()
     stand_label.grid(column=10, row=5)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
+    # Si le joueur n'a pas split ou si le joueur a split et joué ses deux mains
     if split == 0 or split == 2:
         croupier()
         disparition_bouton_joueur()
@@ -560,6 +611,11 @@ def doubble_down(main):
     global mise_totale
     global argent_joueur
     global split
+    global last_press
+    if time.time() - last_press < 0.5:
+        return
+    else:
+        last_press = time.time()
     bouton_split.grid_forget()
     argent_joueur -= mise_totale
     mise_totale *= 2
@@ -582,6 +638,11 @@ def surrender():
     avant de piocher une carte et récupère la moitié de sa mise.
     """
     global split
+    global last_press
+    if time.time() - last_press < 0.5:
+        return
+    else:
+        last_press = time.time()
     bouton_split.grid_forget()
     if split == 1:
         split = 2
@@ -792,6 +853,11 @@ def splitter():
     des deux main et ne peut pas avoir de Blackjack
     """
     global split
+    global last_press
+    if time.time() - last_press < 0.5:
+        return
+    else:
+        last_press = time.time()
     split = 1
     bouton_split.grid_forget()
     # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
@@ -808,12 +874,12 @@ def splitter():
     main_joueur.append(paquet[0])
     del paquet[0]
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la ' +\
         f' défausse: {str(len(defausse))}'
     main_joueur_split.append(paquet[0])
     del paquet[0]
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la ' +\
         f' défausse: {str(len(defausse))}'
     creer_image(main_joueur_split[0], cja['cj1a'], 'cj1a')
     root.after(500, root.update())
@@ -851,6 +917,11 @@ def rejouer():
     # joueur sur l'interface graphique
     global cj
     global cja
+    global last_press
+    if time.time() - last_press < 0.5:
+        return
+    else:
+        last_press = time.time()
     blackjack = 0
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
@@ -1027,11 +1098,19 @@ def validd(event):
     global argent_joueur
     global dette
     if event.widget == valid:
-        if my_entry3.get() != int or int(my_entry3) <= 0:
+        global last_press
+        if time.time() - last_press < 0.5:
+            return
+        else:
+            last_press = time.time()
+        argent_demande = my_entry3.get()
+        if argent_demande != int or int(argent_demande) <= 0 or\
+                len(argent_demande) >= 3:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
-                ' un nombre entier positif'
+                ' un nombre entier positif inférieur à 999'
             entry_label.grid(column=9, columnspan=5, row=7)
-        if my_entry3.get().isdigit():
+        if argent_demande.isdigit() and int(argent_demande) > 0 and\
+                len(argent_demande) <= 3:
             if debug == 1:
                 print(entry_label.grid_info())
             argent_joueur += int(my_entry3.get())
@@ -1247,7 +1326,8 @@ cartes4.pack(side='right', anchor='n')
 
 erreur_argent = tkinter.Label(
     accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
-    'positif supérieur à 0 pour les crédits', width=35,
+    'positif supérieur à 0 et inférieur à 9 999 999 999 \n' +
+    'pour les crédits', width=35,
     justify='center')
 
 erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
@@ -1481,17 +1561,17 @@ if fenetre_jeu == 1:
     jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge,
                      jeton_noir, jeton_tapis, miser]
 
-    # texte qui définit le côté du croupier
+    # Texte qui définit le côté du croupier
     labelc = tkinter.Label(root, text="Dealer ", font=(
         "helvetica", "15"), bg="dark green", fg="black")
     labelc.grid(column=0, row=1)
 
-    # texte qui définit le côté du joueur
+    # Texte qui définit le côté du joueur
     labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
                            bg="dark green", fg="black")
     labelj.grid(column=0, row=7)
 
-    # canvas pour l'affichage des cartes dans l'interface graphique
+    # Canvas pour l'affichage des cartes dans l'interface graphique
     # (techniquement un joueur peut avoir au maximum 21 cartes car il y a 24
     # As valant 1 points dans le jeu et donc si le joueur ne fait que piohcer
     # des As, il aura au maximum 21 cartes)
@@ -1510,17 +1590,17 @@ if fenetre_jeu == 1:
         cja[f"cj{i}a"] = tkinter.Canvas(root, width=66, height=100,
                                         bg='#55AA55')
 
-    # interface emplacement des cartes 1 et 2 du joueur
+    # Interface emplacement des cartes 1 et 2 du joueur
     cj['cj1'].grid(column=1, row=7)
     cj['cj2'].grid(column=3, row=7)
 
-    # interface emplacement des cartes 1 et 2 du croupier
+    # Interface emplacement des cartes 1 et 2 du croupier
     cc['cc1'].grid(column=1, row=1)
     cc['cc2'].grid(column=3, row=1)
 
     numero_main = tkinter.Label(root, text='')
 
-    # label pour afficher l'action du joueur
+    # Label pour afficher l'action du joueur
     stand_label = tkinter.Label(root, bg='dark green', fg='black',
                                 text="<<Je m'arrête>>",
                                 font=("helvetica", "15"))
@@ -1529,11 +1609,11 @@ if fenetre_jeu == 1:
     resultat_label = tkinter.Label(
         root, text='', bg='dark green', fg='yellow')
 
-    # label qui affiche le nombre de cartes restantes
+    # Label qui affiche le nombre de cartes restantes
     nb_carte_paquet = tkinter.Label(
         root, text='Nombre de cartes restantes dans le paquet:' +
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
-        f'défausse: {str(len(defausse))}', bg='dark green')
+        f' défausse: {str(len(defausse))}', bg='dark green')
     nb_carte_paquet.grid(column=10, row=0)
 
     root.mainloop()
