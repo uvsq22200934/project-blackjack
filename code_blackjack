@@ -1049,7 +1049,7 @@ def tutoriel(event):
         image_tuto = Image.open('./Images/image_début.png')
         resize_image = image_tuto.resize((240, 200))
         imgg = ImageTk.PhotoImage(resize_image)
-        canvas_im.create_image(100, 100, image=img, anchor='center')
+        canvas_im.create_image(100, 100, image=imgg, anchor='center')
         i = 0
         def retour(event): 
             image = ['./Images/image_début.png','./Images/image_mise.png',
