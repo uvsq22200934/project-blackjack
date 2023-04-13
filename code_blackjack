@@ -1031,45 +1031,49 @@ graphismes"""
 
 
 def tutoriel(event):
+
+    i = 0
+
+    def retour():
+        global i
+        image = ['./Images/image_début.png', './Images/image_mise.png',
+                 './Images/image_action.png',
+                 './Images/image_résultat.png',
+                 './Images/image_emprunt.png']
+        if event.widget == bouton_retour and i != 0:
+            while i != len(image):
+                image_tuto[''] = image[i-1]
+        else:
+            i += 1
+
+    def passer():
+        global i
+        image = ['./Images/image_début.png', './Images/image_mise.png',
+                 './Images/image_action.png', './Images/image_résultat.png',
+                 './Images/image_emprunt.png']
+        if event.widget == bouton_pass and i != len(image):
+            image_tuto[''] = image[i+1]
+        else:
+            interface.destroy()
+        interface.mainloop()
+
     if event.widget == bouton_tutoriel:
         interface = tkinter.Tk()
         interface.title('Tutoriel')
         interface.geometry == accueil.geometry
         interface.configure == root.configure
         bouton_pass = tkinter.Button(interface, text='suivant',
-                                     bg='white', fg='black')
+                                     bg='white', fg='black', command=passer)
         bouton_pass.pack(side='right', anchor='s')
         bouton_retour = tkinter.Button(interface, text='retour',
-                                       bg='white', fg='black')
+                                       bg='white', fg='black', command=retour)
         bouton_retour.pack(side='left', anchor='s')
-        bouton_retour.bind('<Button-1>',retour)
-        bouton_pass.bind('<Button-1>',passer)
         canvas_im = tkinter.Canvas(interface)
         canvas_im.pack()
         image_tuto = Image.open('./Images/image_début.png')
         resize_image = image_tuto.resize((240, 200))
         imgg = ImageTk.PhotoImage(resize_image)
         canvas_im.create_image(100, 100, image=imgg, anchor='center')
-        i = 0
-        def retour(event): 
-            image = ['./Images/image_début.png','./Images/image_mise.png',
-                    './Images/image_action.png','./Images/image_résultat.png',
-                    './Images/image_emprunt.png']
-            if event.widget == bouton_retour and i != 0: 
-                while i != len(image) : 
-                    image_tuto['']=image[i-1]
-            else :
-                i += 1
-        def passer(event): 
-            image = ['./Images/image_début.png','./Images/image_mise.png',
-                    './Images/image_action.png','./Images/image_résultat.png',
-                    './Images/image_emprunt.png']
-            if event.widget == bouton_pass and i != len(image):  
-                    image_tuto['']=image[i+1]
-            else :
-                interface.destroy()
-        interface.mainloop()
-
 
 
 """Fenêtre accueil"""
