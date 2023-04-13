@@ -1155,12 +1155,52 @@ def test_dette():
 
 
 def tutoriel(event):
+
+    i = 0
+
+    def retour():
+        #fonction pour faire un retour en arrière 
+        global i
+        image = ['./Images/image_début.png', './Images/image_mise.png',
+                 './Images/image_action.png',
+                 './Images/image_résultat.png',
+                 './Images/image_emprunt.png']
+        if event.widget == bouton_retour and i != 0:
+            while i != len(image):
+                image_tuto[''] = image[i-1]
+        else:
+            i += 1
+
+    def passer():
+        #fonction pour passer d'une image à une autre
+        global i
+        image = ['./Images/image_début.png', './Images/image_mise.png',
+                 './Images/image_action.png', './Images/image_résultat.png',
+                 './Images/image_emprunt.png']
+        if event.widget == bouton_pass and i != len(image):
+            image_tuto[''] = image[i+1]
+        else:
+            interface.destroy()
+        interface.mainloop()
+
     if event.widget == bouton_tutoriel:
+        #affiche de la fenêtre liée au tutoriel
         interface = tkinter.Tk()
         interface.title('Tutoriel')
         interface.geometry == accueil.geometry
         interface.configure == root.configure
-        interface.mainloop()
+        bouton_pass = tkinter.Button(interface, text='suivant',
+                                     bg='white', fg='black', command=passer)
+        bouton_pass.pack(side='right', anchor='s')
+        bouton_retour = tkinter.Button(interface, text='retour',
+                                       bg='white', fg='black', command=retour)
+        bouton_retour.pack(side='left', anchor='s')
+        canvas_im = tkinter.Canvas(interface)
+        canvas_im.pack()
+        image_tuto = Image.open('./Images/image_début.png')
+        resize_image = image_tuto.resize((240, 200))
+        imgg = ImageTk.PhotoImage(resize_image)
+        canvas_im.create_image(100, 100, image=imgg, anchor='center')
 
 
 def dir_regles(event):
