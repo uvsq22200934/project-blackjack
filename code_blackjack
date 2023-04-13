@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = "Mathilde GAUTEUR, Maïlys VAUDEVIRE, Joseph ARIAS"
+__author__ = "Mathilde, Maïlys, Joseph"
 __copyright__ = "Copyright 2023, Projet Blacjack"
-__credits__ = ["Mathilde GAUTEUR", "Maïlys VAUDEVIRE", "Joseph ARIAS"]
+__credits__ = ["Mathilde", "Maïlys", "Joseph"]
 __license__ = "GPL"
 __maintainer__ = "Joseph ARIAS"
 __email__ = "joseph.arias@ens.uvsq.fr"
@@ -13,22 +13,13 @@ import random
 import tkinter
 from PIL import Image, ImageTk
 import _tkinter
-import time
 
 # Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
 # n'apparait
 debug = 1
 
-# Variable qui permet de savoir quand est-ce qu'un bouton a été appuyé pour la
-# dernière fois
-last_press = 0
+# listes et variables
 
-
-# Listes et variables
-
-
-# Ce dictionnaire permet de faire la correspondance entre une carte, et sa
-# valeur
 # p = pique, co = coeur, t = trèfle, ca = carreau
 dic_valeur_cartes = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7,
                      '8p': 8, '9p': 9, '10p': 10, 'Vp': 10, 'Dp': 10,
@@ -44,36 +35,26 @@ dic_valeur_cartes = {'2p': 2, '3p': 3, '4p': 4, '5p': 5, '6p': 6, '7p': 7,
                      'Dca': 10, 'Rca': 10, 'Aca': 11}
 
 
-# Le Blacjack se joue avec 6 paquets de 52 cartes, la variable paquet contient
-# donc tous les paquets nécéssaires ppur le jeu
 paquet = list(dic_valeur_cartes.keys())*6
-
-# Les cartes jouées sont placées dans la défausse et ne seront remises en jeu
-# que lorsque la carte rouge plus tard (les explications concernant la carte
-# rouge se trouvent dans le commentaire suivant)
 defausse = []
-
 # La coupe correspond au nombre de carte qui vont être jouées avant que le
 # croupier ne remélange le jeu. Dans la réalité, le croupier place une carte
-# rouge dans le paquet de carte à un endroit aléatoire (il doit cependant y
-# avoir au moins un jeu, soit 52 cartes, avant et apès la carte rouge). Dans le
+# rouge dans le paquet de carte à un endroit aléatoire (il doit cependnat y
+# avoir au moin sun jeu soit 52 cartes avant et apès la carte rouge). Dans le
 # reste des commentaires du code, on parlera donc de carte rouge
 coupe = random.randint(52, len(paquet)-52)
 
 if debug == 1:
     print(coupe)
 
-# Différentes main pour accueillir les cartes piochées
+# Différentes main pour acceuillir les cartes piochées
 main_joueur = []
 main_croupier = []
-
 # Main utilisée lorsque le joueur fait un split
 main_joueur_split = []
 
-
 # Variables permettant au programme de savoir si le joueur a effectué
 # certaines actions. Lorsque la variable vaut 0, l'action n'a pas été effectuée
-
 
 # Split peut valoir 0, 1 ou 2. Si plit == 0, alors le joueur n'a pas fait de
 # split. Si split == 1, alors le joueur a fait un split et joue sa première
@@ -93,12 +74,8 @@ assurance_prise = 0
 # effectivement un blackjack ou pas
 assurance_gagnante = 0
 
-# Variable qui permet de savoir si le joueur a cliqué sur play sur l'écran
-# d'accueil
-fenetre_jeu = 0
-
-
 # Variables qui dépendent du joueur et/ou peuvent évoluer au cours de la partie
+
 argent_joueur = 0
 prix_assurance = 0
 dette = 0
@@ -106,13 +83,12 @@ nom_joueur = ''
 nombre_partie = 0
 nombre_emprunt = 0
 
-
 # Dictionnaires permettant de contourner le garbage collector
+
 images = dict()
 image_dos = dict()
 
-
-# Fonctions
+"""Fonctions"""
 
 
 def creer_image(carte, position_carte, texte):
@@ -133,55 +109,38 @@ def creer_image(carte, position_carte, texte):
     image_carte = Image.open("./Images/cartes.png")
     if debug == 1:
         print('ok', carte)
-    # A, B, C, D ont été mesurées au préalable et correspondent à l'écart entre
-    # chaque carte sur l'image "cartes.png"
+    # A, B, C, D ont été mesurées au préalable et correspond à l'écart entre
+    # chaque carte sur l'image cartes.png
     A = 30
     B = 30
     C = 390
     D = 570
-    # Si la carte est de la famille "coeur"
     if 'co' in carte:
         B += 570
         D += 570
-    # Si la carte est de la famille "carreau"
     if 'ca' in carte:
         B += 570*2
         D += 570*2
-    # Si la carte est de la famille "trèfle"
     if 't' in carte:
         B += 570*3
         D += 570*3
     for i in range(2, 11):
-        # Si la valeur nominale de la carte est cimprise entre 2 et 10
         if str(i) in carte:
             A += 390 * (i-1)
             C += 390 * (i-1)
-    # Si la carte est un Valet
     if 'V' in carte:
         A += 390*10
         C += 390*10
-    # Si la carte est une Dame
     if 'D' in carte:
         A += 390*11
         C += 390*11
-    # Si la carte est un Roi
     if 'R' in carte:
         A += 390*12
         C += 390*12
-    # On notera que si la carte est un As, aucune valeur n'est incrémentée à A
-    # et C et que si la carte est un pique, aucune valeur n'es incrémentée à B
-    # et D. C'est parce que A et C correspondent au pixel le plus à droite et
-    # au pixel le plus à gauche de la carte qui sont les mêmes pour tous les
-    # As et corrspondent et valeurs A et C initiales. Il en va de même pour C
-    # et D qui correspondent au pixel le plus haut et celui le plus bas de la
-    # carte qui sont les mêmes pour tous les piques et corrspondent et valeurs
-    # B et D initiales.
     if debug == 1:
         print(A, B, C, D)
     crop_rectangle = (A, B, C, D)
     cropped_im = image_carte.crop(crop_rectangle)
-    # image_fin permet de faire correspondre la taille de l'image à la taille
-    # du canva qui va l'accueillir
     image_fin = cropped_im.resize((66, 100))
     # L'ajout de "texte" au doctionnaire image permet d'éviter le garbage
     # collector
@@ -221,14 +180,10 @@ def debut(event):
     """
     global nom_joueur
     global argent_joueur
-    global fenetre_jeu
     if event.widget == play:
         nom_joueur = entree_username.get()
         argent_joueur = entree_credit.get()
-        # Si le joueur n'a pas entré un nombre compris entre 0 et 1 000 000 000
-        # exclus
-        if not argent_joueur.isdigit() or int(argent_joueur) <= 0 or\
-                len(argent_joueur) > 10:
+        if not argent_joueur.isdigit() or int(argent_joueur) <= 0:
             # Si la fonction pack_info retourne une erreur Tcl, alors le
             # message d'erreur n'est pas encore pack et donc le programme le
             # pack. Cela permet de ne pas pack plusieurs fois le message
@@ -237,34 +192,17 @@ def debut(event):
                 erreur_argent.pack_info()
             except _tkinter.TclError:
                 erreur_argent.pack()
-        else:
-            erreur_argent.pack_forget()
-        # Si le nom du joueur fait plus de 15 caractère et/ou n'est consitué
-        # que d'espaces
-        if len(nom_joueur) > 15 and len(nom_joueur.strip()) != 0:
+        if len(nom_joueur) > 15:
             try:
                 erreur_nom.pack_info()
             except _tkinter.TclError:
                 erreur_nom.pack()
-        else:
-            erreur_nom.pack_forget()
-        # Si le joueur n'entre pas de nom, il est nommé 'Player' par défaut
         if nom_joueur == '':
             nom_joueur = 'Player'
-        # On vérifie que le joueur ai bien rentré un texte uniquement composé
-        # de chiffres et que le nombre soit compris entre 0 et 1 000 000 000
-        # exclus
-        if argent_joueur != '' and argent_joueur.isdigit():
+        if argent_joueur != '':
             argent_joueur = int(argent_joueur)
-        # On vérifie avant de lancer la fenêtre de jeu que le joueur ai bien
-        # rentré un crédit uniquement composé de chiffre et que son nom ne
-        # soit pas trop long ni constitué uniquement d'espaces
-        if argent_joueur != '' and nom_joueur != '' and\
-                str(argent_joueur).isdigit() and len(nom_joueur) < 15 and\
-                len(str(argent_joueur)) <= 10 and argent_joueur > 0 and\
-                len(nom_joueur.strip()) != 0:
+        if argent_joueur != '' and nom_joueur != '':
             accueil.destroy()
-            fenetre_jeu = 1
 
 
 def donne_initiale():
@@ -283,8 +221,6 @@ def donne_initiale():
     disparition_mise()
     bouton_donne_initiale.grid_forget()
     nb_carte_piochee = 0
-    # Le joueur pioche 1 carte puis le croupier en fait de même jusqu'à ce
-    # qu'ils aient 2 cartes chacun
     while nb_carte_piochee < 2:
         main_joueur.append(paquet[0])
         del paquet[0]
@@ -297,7 +233,7 @@ def donne_initiale():
             f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
             f'dans la défausse: {str(len(defausse))}'
         nb_carte_piochee += 1
-    nombre_partie += 1
+        nombre_partie += 1
     # cj signifie carte joueur, le numéro sert à l'indentifier par rapport aux
     # autres cartes du joueur
     creer_image(main_joueur[0], cj['cj1'], 'cj1')
@@ -357,17 +293,7 @@ def reponse_assurance(reponse=0):
     global bouton_oui_assurance
     global blackjack
     global mise_totale
-    global last_press
-    # Si un bouton a été pressé il y a moins de 0.5 secondes
-    if time.time() - last_press < 0.5:
-        # La fonction s'arrête immédiatement
-        return
-    else:
-        # Sinon on relève le temps où le bouton a été pressé pour éviter un
-        # spam qui "casserait" le programme
-        last_press = time.time()
     prix_assurance = mise_totale // 2
-    # Si le joueur souhaite prendre l'assurance
     if reponse == 'oui':
         argent_joueur -= prix_assurance
         assurance_prise = 1
@@ -377,7 +303,6 @@ def reponse_assurance(reponse=0):
     bouton_oui_assurance.grid_forget()
     texte_assurance.grid_forget()
     argent['text'] = f'Crédits: {str(argent_joueur)}'
-    # Si le joueur a un blacjack
     if score(main_joueur) == 21:
         blackjack = 1
         croupier()
@@ -402,18 +327,17 @@ def hit(main, pointeur):
     global main_joueur
     global main_croupier
     global paquet
-    global last_press
-    if time.time() - last_press < 0.5:
-        return
-    else:
-        last_press = time.time()
     if split == 2 and main != main_croupier:
         # cja correspond à la liste de canvas utilisée pour afficher les
         # cartes de la deucime main du joueur en cas de split
         carte = cja
         main = main_joueur_split
+        # a est une variable permettant d'ajuster la position de les cartes de
+        # la deucième main du joueur sur l'interface graphique en cas de split
+        a = 1
     else:
         carte = cj
+        a = 0
     if pointeur == 'main_joueur':
         bouton_double_down.grid_forget()
         bouton_split.grid_forget()
@@ -425,15 +349,10 @@ def hit(main, pointeur):
             f'dans la défausse: {str(len(defausse))}'
         for i in range(3, 14):
             if len(main) == i:
-                if main == main_joueur:
-                    creer_image(main[i-1], carte[f'cj{i}'],
-                                f'cj{i}')
-                    carte[f'cj{i}'].grid(column=4+i, row=7)
-                if main == main_joueur_split:
-                    creer_image(main[i-1], carte[f'cj{i}a'],
-                                f'cj{i}a')
-                    carte[f'cj{i}a'].grid(column=4+i, row=8)
-        # On vérifie que le joueur n'ai pas de Blackjack
+                creer_image(main[i-1], carte[f'cj{i}'],
+                            f'cj{i}')
+                carte[f'cj{i}'].grid(column=4+i, row=7+a)
+        # on vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
         carte = cc
@@ -498,7 +417,6 @@ def fin_manche():
     """
     global main_croupier
     global main_joueur
-    global main_joueur_split
     global defausse
     disparition_bouton_joueur()
     while len(main_joueur) != 0:
@@ -507,9 +425,6 @@ def fin_manche():
     while len(main_croupier) != 0:
         defausse.append(main_croupier[0])
         del main_croupier[0]
-    while len(main_joueur_split) != 0:
-        defausse.append(main_joueur_split[0])
-        del main_joueur_split[0]
     if debug == 1:
         print(len(paquet), paquet)
         print('mains croupier ', main_croupier, 'main joueur', main_joueur)
@@ -558,7 +473,6 @@ def croupier():
     jusqu'à avoir 17 points ou plus
     """
     global main_croupier
-    numero_main.grid_forget()
     creer_image(main_croupier[1], cc['cc2'], 'cc2')
     cc['cc2'].grid(column=3, row=1)
     root.update()
@@ -579,16 +493,10 @@ def stand():
     piocher des cartes et garder sa main en l'état actuel
     """
     global split
-    global last_press
-    if time.time() - last_press < 0.5:
-        return
-    else:
-        last_press = time.time()
     stand_label.grid(column=10, row=5)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
-    # Si le joueur n'a pas split ou si le joueur a split et joué ses deux mains
     if split == 0 or split == 2:
         croupier()
         disparition_bouton_joueur()
@@ -611,11 +519,6 @@ def doubble_down(main):
     global mise_totale
     global argent_joueur
     global split
-    global last_press
-    if time.time() - last_press < 0.5:
-        return
-    else:
-        last_press = time.time()
     bouton_split.grid_forget()
     argent_joueur -= mise_totale
     mise_totale *= 2
@@ -638,11 +541,6 @@ def surrender():
     avant de piocher une carte et récupère la moitié de sa mise.
     """
     global split
-    global last_press
-    if time.time() - last_press < 0.5:
-        return
-    else:
-        last_press = time.time()
     bouton_split.grid_forget()
     if split == 1:
         split = 2
@@ -777,12 +675,12 @@ def resultat(action=0):
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
+        calcul_gain(consequence, assurance_gagnante)
         boucle -= 1
         if split != 0:
             # La désincrémetation de split permet de calculer la deuxième main
             # du joueur
             split -= 1
-        calcul_gain(consequence, assurance_gagnante)
 
 
 def calcul_gain(consequence=0, assurance_gagnante=0):
@@ -840,8 +738,7 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
     test_dette()
     if debug == 1:
         print('fin calcul gain')
-    if split == 0:
-        fin_manche()
+    fin_manche()
 
 
 def splitter():
@@ -853,11 +750,6 @@ def splitter():
     des deux main et ne peut pas avoir de Blackjack
     """
     global split
-    global last_press
-    if time.time() - last_press < 0.5:
-        return
-    else:
-        last_press = time.time()
     split = 1
     bouton_split.grid_forget()
     # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
@@ -874,12 +766,12 @@ def splitter():
     main_joueur.append(paquet[0])
     del paquet[0]
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-        f' {str(len(paquet))} \nNombre de cartes restantes dans la ' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     main_joueur_split.append(paquet[0])
     del paquet[0]
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
-        f' {str(len(paquet))} \nNombre de cartes restantes dans la ' +\
+        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
         f' défausse: {str(len(defausse))}'
     creer_image(main_joueur_split[0], cja['cj1a'], 'cj1a')
     root.after(500, root.update())
@@ -892,7 +784,6 @@ def splitter():
     # cartes par main, as inclu. Son tour se finit donc automatiqument après
     # avoir reçu une carte supplémentaire par main
     if 'A' in main_joueur[0] and 'A' in main_joueur_split[0]:
-        split = 2
         croupier()
     else:
         numero_main['text'] = 'Main 1'
@@ -910,18 +801,13 @@ def rejouer():
     global mise_totale
     global coupe
     global blackjack
+    global nombre_partie
     # cc correspond à la liste de canvas permettant l'affichage des cartes du
     # croupier sur l'interface graphique
     global cc
     # cc correspond à la liste de canvas permettant l'affichage des cartes du
     # joueur sur l'interface graphique
     global cj
-    global cja
-    global last_press
-    if time.time() - last_press < 0.5:
-        return
-    else:
-        last_press = time.time()
     blackjack = 0
     nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le paquet:' +\
         f' {str(len(paquet))} \nNombre de cartes restantes dans la' +\
@@ -952,9 +838,7 @@ def rejouer():
     for i in range(3, 22):
         cc[f'cc{i}'].grid_forget()
         cj[f'cj{i}'].grid_forget()
-    for i in range(0, 22):
         cja[f'cj{i}a'].grid_forget()
-        cja[f'cj{i}a'].delete('all')
     resultat_label.grid_forget()
     resultat_final.grid_forget()
     assurance_valeur.grid_forget()
@@ -1098,19 +982,11 @@ def validd(event):
     global argent_joueur
     global dette
     if event.widget == valid:
-        global last_press
-        if time.time() - last_press < 0.5:
-            return
-        else:
-            last_press = time.time()
-        argent_demande = my_entry3.get()
-        if argent_demande != int or int(argent_demande) <= 0 or\
-                len(argent_demande) >= 3:
+        if my_entry3.get() != int or int(my_entry3) <= 0:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
-                ' un nombre entier positif inférieur à 999'
+                ' un nombre entier positif'
             entry_label.grid(column=9, columnspan=5, row=7)
-        if argent_demande.isdigit() and int(argent_demande) > 0 and\
-                len(argent_demande) <= 3:
+        if my_entry3.get().isdigit():
             if debug == 1:
                 print(entry_label.grid_info())
             argent_joueur += int(my_entry3.get())
@@ -1118,7 +994,7 @@ def validd(event):
             dette += int(my_entry3.get())
             dette_label['text'] = f'Vous avez {str(dette)} € de dettes ' +\
                 'envers la banque'
-            dette_label.grid(column=9, columnspan=5, row=1)
+            dette_label.grid(column=9, columnspan=5, row=2)
             for i in range(len(canvas_emprunt)):
                 canvas_emprunt[i].grid_forget()
 
@@ -1148,10 +1024,10 @@ def test_dette():
             dette_label.after(5000, lambda: dette_label.grid_forget())
 
 
-# Interface pour permettre au joueur de comprendre les boutons et graphismes
+"""interface pour permettre au joueur de comprendre les boutons et
+graphismes"""
 
-
-# Fonction pour afficher un tuto sur comment jouer
+"""fonction pour afficher un tuto sur comment joueur"""
 
 
 def tutoriel(event):
@@ -1160,7 +1036,143 @@ def tutoriel(event):
         interface.title('Tutoriel')
         interface.geometry == accueil.geometry
         interface.configure == root.configure
+        bouton_pass = tkinter.Button(interface, text='suivant',
+                                     bg='white', fg='black')
+        bouton_pass.pack(side='right', anchor='s')
+        bouton_retour = tkinter.Button(interface, text='retour',
+                                       bg='white', fg='black')
+        bouton_retour.pack(side='left', anchor='s')
+        bouton_retour.bind('<Button-1>',retour)
+        bouton_pass.bind('<Button-1>',passer)
+        canvas_im = tkinter.Canvas(interface)
+        canvas_im.pack()
+        image_tuto = Image.open('./Images/image_début.png')
+        resize_image = image_tuto.resize((240, 200))
+        imgg = ImageTk.PhotoImage(resize_image)
+        canvas_im.create_image(100, 100, image=img, anchor='center')
+        i = 0
+        def retour(event): 
+            image = ['./Images/image_début.png','./Images/image_mise.png',
+                    './Images/image_action.png','./Images/image_résultat.png',
+                    './Images/image_emprunt.png']
+            if event.widget == bouton_retour and i != 0: 
+                while i != len(image) : 
+                    image_tuto['']=image[i-1]
+            else :
+                i += 1
+        def passer(event): 
+            image = ['./Images/image_début.png','./Images/image_mise.png',
+                    './Images/image_action.png','./Images/image_résultat.png',
+                    './Images/image_emprunt.png']
+            if event.widget == bouton_pass and i != len(image):  
+                    image_tuto['']=image[i+1]
+            else :
+                interface.destroy()
         interface.mainloop()
+
+
+
+"""Fenêtre accueil"""
+
+accueil = tkinter.Tk()
+accueil.title('Menu BlackJack 21')
+accueil.geometry('700x600')
+accueil.configure(bg='red')
+accueil.resizable(width=False, height=False)
+
+# Variables relatives aux graphismes du jeu
+"""Graphismes"""
+"""configuration de l'écran d'acceuil"""
+
+
+titre_jeu = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
+                          font=('helvetica', 50))
+titre_jeu.pack()
+
+play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+                      highlightthickness=0)
+play.create_oval(34, 40, 180, 190, width=3, outline='mint cream',
+                 fill='mint cream')
+play.create_text(102, 115, text='Play', font=('elephant', 35), fill='black')
+
+play.pack(anchor='center')
+
+play.bind('<Button-1>', debut)
+
+image_jeton_play = Image.open("./Images/image0.png")
+resize_image = image_jeton_play.resize((240, 200))
+img = ImageTk.PhotoImage(resize_image)
+play.create_image(100, 100, image=img, anchor='center')
+""" entrée permettant au joueur de choisir son pseudo
+ainsi que le nombre de crédit souhaité """
+
+username = tkinter.Label(accueil, text="Username:",
+                         font=('helvetica', 10), fg='black')
+username.pack()
+
+entree_username = tkinter.Entry(accueil)
+entree_username.pack()
+
+credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
+                       fg='black')
+credit.pack()
+
+entree_credit = tkinter.Entry(accueil)
+entree_credit.pack()
+
+"""graphisme fenêtre acceuil"""
+
+cartes1 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
+cartes2 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
+cartes1.pack(side='left', anchor='n')
+cartes2.pack(side='left', anchor='n')
+
+cartes3 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
+cartes4 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
+cartes3.pack(side='right', anchor='n')
+cartes4.pack(side='right', anchor='n')
+
+erreur_argent = tkinter.Label(
+    accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
+    'positif supérieur à 0 pour les crédits', width=35,
+    justify='center')
+
+erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
+                           'entrer un nom de 15 caractères\nou ' +
+                           'moins', width=35)
+
+jetonnoir = tkinter.Canvas(accueil, bg='red', width=60, height=60,
+                           relief='raised', borderwidth=0,
+                           highlightthickness=0)
+jetonnoir.create_oval(1, 1, 55, 55, width=3, outline='gray19', fill='gray14')
+jetonnoir.pack(side='left', anchor='center')
+jetonnoir.place(bordermode='outside', relx=0.05, rely=0.1, anchor='nw')
+
+jetonbleu = tkinter.Canvas(accueil, bg='red', width=60, height=60,
+                           relief='raised', borderwidth=0,
+                           highlightthickness=0)
+jetonbleu.create_oval(1, 1, 55, 55, width=3, outline='blue4', fill='navy')
+jetonbleu.pack(side='left', anchor='center')
+jetonbleu.place(bordermode='outside', relx=0, rely=0, anchor='nw')
+
+jetonblanc = tkinter.Canvas(accueil, bg='red', width=60, height=60,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
+jetonblanc.create_oval(1, 1, 55, 55, width=3,
+                       outline='light grey', fill='mint cream')
+jetonblanc.pack(side='left', anchor='n')
+jetonblanc.place(bordermode='outside', relx=0.1, rely=0, anchor='nw')
+
+accueil.mainloop()
+
+
+"""fenêtre root"""
+root = tkinter.Tk()
+root.title('Blackjack 21')
+"""root.state('zoomed')"""
+root.resizable(width=False, height=False)
+root.geometry = accueil.geometry
+root.configure(bg="dark green")
 
 
 def dir_regles(event):
@@ -1260,360 +1272,247 @@ def dir_regles(event):
     règle.mainloop()
 
 
-# Fenêtre accueil
-
-
-accueil = tkinter.Tk()
-accueil.title('Menu BlackJack 21')
-accueil.geometry('700x600')
-accueil.configure(bg='red')
-accueil.resizable(width=False, height=False)
-
-
-# Variables relatives aux graphismes du jeu
-
-# Graphismes
-
-# Configuration de l'écran d'acceuil"""
-titre_jeu = tkinter.Label(text='BLACK JACK', bg='red', fg='gold',
-                          font=('helvetica', 50))
-titre_jeu.pack()
-
-play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
-                      highlightthickness=0)
-play.create_oval(34, 40, 180, 190, width=3, outline='mint cream',
-                 fill='mint cream')
-play.create_text(102, 115, text='Play', font=('elephant', 35), fill='black')
-
-play.pack(anchor='center')
-
-play.bind('<Button-1>', debut)
-
-image_jeton_play = Image.open("./Images/image0.png")
-resize_image = image_jeton_play.resize((240, 200))
-img = ImageTk.PhotoImage(resize_image)
-play.create_image(100, 100, image=img, anchor='center')
-
-# Entrée permettant au joueur de choisir son pseudo ainsi que le nombre de
-# crédit souhaité
-username = tkinter.Label(accueil, text="Username:",
-                         font=('helvetica', 10), fg='black')
-username.pack()
-
-entree_username = tkinter.Entry(accueil)
-entree_username.pack()
-
-credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
+erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
-credit.pack()
 
-entree_credit = tkinter.Entry(accueil)
-entree_credit.pack()
-
-
-# Graphisme fenêtre acceuil
+cartes = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+dos_carte(cartes, 'cartes')
+cartes.grid(column=2, row=3)
 
 
-cartes1 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
-cartes2 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
-cartes1.pack(side='left', anchor='n')
-cartes2.pack(side='left', anchor='n')
+"""Boutons"""
+"""Ensemble des widgets utilisés dans la fenêtre root"""
 
-cartes3 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
-cartes4 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
-cartes3.pack(side='right', anchor='n')
-cartes4.pack(side='right', anchor='n')
+"""bouton pour accéder aux règles du jeu"""
+bouton_rdj = tkinter.Button(root, text='règle du jeu',
+                            width=13, height=2, fg='navy',
+                            font=('helvetica', 10))
+bouton_rdj.grid(column=0, row=0)
+bouton_rdj.bind('<Button-1>', dir_regles)
 
-erreur_argent = tkinter.Label(
-    accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
-    'positif supérieur à 0 et inférieur à 9 999 999 999 \n' +
-    'pour les crédits', width=35,
-    justify='center')
+"""bouton pour quitter la partie"""
+bouton_quitter = tkinter.Button(text='Quitter la partie', fg='red')
+bouton_quitter.grid(column=2, row=11)
+bouton_quitter.bind('<Button-1>', quitter)
 
-erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
-                           'entrer un nom de 15 caractères\nou ' +
-                           'moins', width=35)
+"""mélanger le jeu de carte"""
+bouton_melanger = tkinter.Button(
+    text='Mélanger', fg='blue', command=random.shuffle(paquet))
+bouton_melanger.grid(column=2, row=3)
+bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
-jetonnoir = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                           relief='raised', borderwidth=0,
-                           highlightthickness=0)
-jetonnoir.create_oval(1, 1, 55, 55, width=3, outline='gray19', fill='gray14')
-jetonnoir.pack(side='left', anchor='center')
-jetonnoir.place(bordermode='outside', relx=0.05, rely=0.1, anchor='nw')
+"""bouton pour distribuer le jeu de carte"""
+bouton_donne_initiale = tkinter.Button(
+    text='Donne initiale', fg="blue")
+bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
-jetonbleu = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                           relief='raised', borderwidth=0,
-                           highlightthickness=0)
-jetonbleu.create_oval(1, 1, 55, 55, width=3, outline='blue4', fill='navy')
-jetonbleu.pack(side='left', anchor='center')
-jetonbleu.place(bordermode='outside', relx=0, rely=0, anchor='nw')
+"""bouton qui relance la partie sans quitter le jeu"""
+bouton_rejouer = tkinter.Button(
+    text='Rejouer', fg="blue", command=rejouer)
 
-jetonblanc = tkinter.Canvas(accueil, bg='red', width=60, height=60,
+"""bouton qui permet de piocher"""
+bouton_hit = tkinter.Button(bg='white', text='Hit')
+bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
+
+"""bouton qui permet de 'double down'"""
+bouton_double_down = tkinter.Button(bg='white', text='Double Down')
+bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
+    main_joueur))
+
+"""bouton qui permet de 'stand'"""
+stand_bouton = tkinter.Button(bg='salmon', text='Stand')
+stand_bouton.bind(
+    "<Button-1>", lambda e: stand())
+
+"""bouton qui permet de 'surrender'"""
+bouton_surrender = tkinter.Button(bg='red', text='Surrender')
+bouton_surrender.bind('<Button-1>', lambda e: surrender())
+
+"""bouton qui 'split'"""
+bouton_split = tkinter.Button(text='Split', command=splitter)
+
+bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
+                 bouton_double_down]
+
+
+texte_assurance = tkinter.Label(text='')
+
+"""widgets pour l'assurance"""
+bouton_oui_assurance = tkinter.Button(text='Oui')
+bouton_non_assurance = tkinter.Button(text='Non')
+
+bouton_oui_assurance.bind(
+    '<Button-1>', lambda e: reponse_assurance(reponse='oui'))
+bouton_non_assurance.bind(
+    '<Button-1>', lambda e: reponse_assurance(reponse='non'))
+
+assurance_valeur = tkinter.Label(text='')
+
+"""widgets associés à l'emprunt + dettes"""
+valid = tkinter.Button(root, text='valider l\'emprunt',
+                       bg='dark green', fg='black')
+valid.bind('<Button-1>', validd)
+banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
+                       font=('helvetica', 15), bg='dark green',
+                       fg='red')
+emprunt = tkinter.Button(root, text='Emprunt')
+emprunt.bind('<Button-1>', emprunter)
+term = tkinter.Button(root, text='Terminer')
+term.bind('<Button-1>', quitter)
+
+eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
+                      'emprunter ?', fg='black',
+                      bg='dark green')
+my_entry3 = tkinter.Entry(root)
+
+entry_label = tkinter.Label(root, text='', bg='dark green', fg='red')
+
+canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
+
+dette_label = tkinter.Label(root, text='', bg='dark green', fg='black',
+                            font=('helvetica', 10))
+
+"""bouton qui permet l'accès au tutoriel"""
+bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
+                                 bg='green', fg='white',
+                                 width=13, height=2,
+                                 font=('helvetica', 10))
+bouton_tutoriel.grid(column=1, row=0)
+bouton_tutoriel.bind('<Button-1>', tutoriel)
+
+""" mise du jeu """
+
+mise_totale = 0
+mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
+               'jeton_blanc': 50, 'jeton_noir': 100, 'tapis': 'argent_joueur'}
+
+""" widgets associés à la mise du joueur"""
+
+argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
+                       bg='dark green', fg='white')
+argent.grid(column=0, row=8)
+
+mise_texte = tkinter.Label(
+    root, text='Mise totale: ', bg='dark green', fg='white')
+
+miser = tkinter.Label(root, text="Cliquez pour miser:",
+                      bg='dark green', fg='white')
+
+""" position des widgets jetons pour la mise"""
+jeton_tapis = tkinter.Canvas(root, bg='dark green', width=60, height=45,
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
+jeton_tapis.create_text(26, 21, text='All in',
+                        font=('helvetica', 12), fill='white')
+jeton_tapis.create_oval(4, 4, 50, 40, width=3,
+                        outline='white')
+
+jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
+jeton_blanc.create_oval(1, 1, 25, 25, width=3,
+                        outline='chartreuse4', fill='green4')
+
+jeton_blanc.create_text(13, 13, text='50', font=('helvetica', 8), fill='white')
+
+jeton_bleu = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jetonblanc.create_oval(1, 1, 55, 55, width=3,
-                       outline='light grey', fill='mint cream')
-jetonblanc.pack(side='left', anchor='n')
-jetonblanc.place(bordermode='outside', relx=0.1, rely=0, anchor='nw')
+jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
+jeton_bleu.create_text(13, 13, text='25', font=('helvetica', 8), fill='white')
 
-accueil.mainloop()
+jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
+jeton_rouge.create_oval(1, 1, 25, 25, width=3, outline='brown4', fill='red')
+jeton_rouge.create_text(13, 13, text='10', font=('helvetica', 8), fill='white')
 
+jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
+jeton_noir.create_oval(1, 1, 25, 25, width=3, outline='gray19', fill='gray14')
+jeton_noir.create_text(13, 13, text='100', font=('helvetica', 8), fill='white')
 
-# Fenêtre root
-if fenetre_jeu == 1:
-    root = tkinter.Tk()
-    root.title('Blackjack 21')
-    """root.state('zoomed')"""
-    root.resizable(width=False, height=False)
-    root.geometry = accueil.geometry
-    root.configure(bg="dark green")
+jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+                            relief='raised', borderwidth=0,
+                            highlightthickness=0)
+jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
+                       fill='mint cream')
+jeton_vert.create_text(13, 13, text='1', font=('helvetica', 8), fill='black')
 
-    erreur = tkinter.Label(root, text='', font=('helvetica', 10),
-                           fg='black')
+"""commande d'incrémentation de mise"""
 
-    cartes = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
-    dos_carte(cartes, 'cartes')
-    cartes.grid(column=2, row=3)
+jeton_vert.bind('<Button-1>', lambda e: mise(1))
 
-    # Interface graphique
+jeton_rouge.bind('<Button-1>', lambda e: mise(10))
 
-    # Ensemble des widgets utilisés dans la fenêtre root
+jeton_bleu.bind('<Button-1>', lambda e: mise(25))
 
-    # Bouton pour accéder aux règles du jeu
-    bouton_rdj = tkinter.Button(root, text='règle du jeu',
-                                width=13, height=2, fg='navy',
-                                font=('helvetica', 10))
-    bouton_rdj.grid(column=0, row=0)
-    bouton_rdj.bind('<Button-1>', dir_regles)
+jeton_blanc.bind('<Button-1>', lambda e: mise(50))
 
-    # Bouton pour quitter la partie
-    bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='red')
-    bouton_quitter.grid(column=2, row=11)
-    bouton_quitter.bind('<Button-1>', quitter)
+jeton_noir.bind('<Button-1>', lambda e: mise(100))
 
-    # Mélanger le jeu de carte
-    bouton_melanger = tkinter.Button(root,
-                                     text='Mélanger', fg='blue',
-                                     command=random.shuffle(paquet))
-    bouton_melanger.grid(column=2, row=3)
-    bouton_melanger.bind('<Button-1>', ordre_boutons2)
+jeton_tapis.bind('<Button-1>', lambda e: mise(argent_joueur))
 
-    # Bouton pour distribuer le jeu de carte
-    bouton_donne_initiale = tkinter.Button(root,
-                                           text='Donne initiale', fg="blue")
-    bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
+jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge, jeton_noir,
+                 jeton_tapis, miser]
 
-    # Bouton qui relance la partie sans quitter le jeu
-    bouton_rejouer = tkinter.Button(root,
-                                    text='Rejouer', fg="blue", command=rejouer)
+"""interface graphique"""
 
-    # Bouton qui permet de piocher
-    bouton_hit = tkinter.Button(root, bg='white', text='Hit')
-    bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
+# texte qui définit le côté du croupier
+labelc = tkinter.Label(root, text="Dealer ", font=(
+    "helvetica", "15"), bg="dark green", fg="black")
+labelc.grid(column=0, row=1)
 
-    # Bouton qui permet de 'double down'
-    bouton_double_down = tkinter.Button(root, bg='white', text='Double Down')
-    bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
-        main_joueur))
+# texte qui définit le côté du joueur
+labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
+                       bg="dark green", fg="black")
+labelj.grid(column=0, row=7)
 
-    # Bouton qui permet de 'stand'
-    stand_bouton = tkinter.Button(root, bg='salmon', text='Stand')
-    stand_bouton.bind(
-        "<Button-1>", lambda e: stand())
+# canvas pour l'affichage des cartes dans l'interface graphique (techniquement
+# un joueur peut avoir au maximum 21 cartes car il y a 24 As valant 1 points
+# dans le jeu et donc si le joueur ne fait que piohcer des As, il aura au
+# maximum 21 cartes)
 
-    # Bouton qui permet de 'surrender'
-    bouton_surrender = tkinter.Button(root, bg='red', text='Surrender')
-    bouton_surrender.bind('<Button-1>', lambda e: surrender())
+cj = {}
+for i in range(22):
+    cj[f"cj{i}"] = tkinter.Canvas(root, width=66, height=100,
+                                  bg='#55AA55')
 
-    # Bouton qui 'split'
-    bouton_split = tkinter.Button(root, text='Split', command=splitter)
+cc = {}
+for i in range(22):
+    cc[f"cc{i}"] = tkinter.Canvas(root, width=66, height=100,
+                                  bg='#55AA55')
 
-    bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
-                     bouton_double_down]
+cja = {}
+for i in range(22):
+    cja[f"cj{i}a"] = tkinter.Canvas(root, width=66, height=100,
+                                    bg='#55AA55')
 
-    texte_assurance = tkinter.Label(root, text='')
+# interface emplacement des cartes 1 et 2 du joueur
+cj['cj1'].grid(column=1, row=7)
+cj['cj2'].grid(column=3, row=7)
 
-    # Widgets pour l'assurance
-    bouton_oui_assurance = tkinter.Button(root, text='Oui')
-    bouton_non_assurance = tkinter.Button(root, text='Non')
+# interface emplacement des cartes 1 et 2 du croupier
+cc['cc1'].grid(column=1, row=1)
+cc['cc2'].grid(column=3, row=1)
 
-    bouton_oui_assurance.bind(
-        '<Button-1>', lambda e: reponse_assurance(reponse='oui'))
-    bouton_non_assurance.bind(
-        '<Button-1>', lambda e: reponse_assurance(reponse='non'))
+numero_main = tkinter.Label(root, text='')
 
-    assurance_valeur = tkinter.Label(root, text='')
+# label pour afficher l'action du joueur
+stand_label = tkinter.Label(root, bg='dark green', fg='black',
+                            text="<<Je m'arrête>>",
+                            font=("helvetica", "15"))
+resultat_final = tkinter.Label(
+    root, text='annonce', bg='dark green', fg='red')
+resultat_label = tkinter.Label(
+    root, text='', bg='dark green', fg='yellow')
 
-    # Widgets associés à l'emprunt + dettes
-    valid = tkinter.Button(root, text='valider l\'emprunt',
-                           bg='dark green', fg='black')
-    valid.bind('<Button-1>', validd)
-    banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
-                           font=('helvetica', 15), bg='dark green',
-                           fg='red')
-    emprunt = tkinter.Button(root, text='Emprunt')
-    emprunt.bind('<Button-1>', emprunter)
-    term = tkinter.Button(root, text='Terminer')
-    term.bind('<Button-1>', quitter)
+# label qui affiche le nombre de cartes restantes
+nb_carte_paquet = tkinter.Label(
+    root, text='Nombre de cartes restantes dans le paquet:' +
+    f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
+    f'défausse: {str(len(defausse))}', bg='dark green')
+nb_carte_paquet.grid(column=10, row=0)
 
-    eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
-                          'emprunter ?', fg='black',
-                          bg='dark green')
-    my_entry3 = tkinter.Entry(root)
-
-    entry_label = tkinter.Label(root, text='', bg='dark green', fg='red')
-
-    canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
-
-    dette_label = tkinter.Label(root, text='', bg='dark green', fg='red',
-                                font=('helvetica', 10))
-
-    # Bouton qui permet l'accès au tutoriel
-    bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
-                                     bg='green', fg='white',
-                                     width=13, height=2,
-                                     font=('helvetica', 10))
-    bouton_tutoriel.grid(column=1, row=0)
-    bouton_tutoriel.bind('<Button-1>', tutoriel)
-
-    # Mise du jeu """
-    mise_totale = 0
-    mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
-                   'jeton_blanc': 50, 'jeton_noir': 100,
-                   'tapis': 'argent_joueur'}
-
-    # Widgets associés à la mise du joueur
-
-    argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
-                           bg='dark green', fg='white')
-    argent.grid(column=0, row=8)
-
-    mise_texte = tkinter.Label(
-        root, text='Mise totale: ', bg='dark green', fg='white')
-
-    miser = tkinter.Label(root, text="Cliquez pour miser:",
-                          bg='dark green', fg='white')
-
-    # Position des widgets jetons pour la mise
-
-    jeton_tapis = tkinter.Canvas(root, bg='dark green', width=60, height=45,
-                                 relief='raised', borderwidth=0,
-                                 highlightthickness=0)
-    jeton_tapis.create_text(26, 21, text='All in',
-                            font=('helvetica', 12), fill='white')
-    jeton_tapis.create_oval(4, 4, 50, 40, width=3,
-                            outline='white')
-
-    jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                 relief='raised', borderwidth=0,
-                                 highlightthickness=0)
-    jeton_blanc.create_oval(1, 1, 25, 25, width=3,
-                            outline='chartreuse4', fill='green4')
-
-    jeton_blanc.create_text(
-        13, 13, text='50', font=('helvetica', 8), fill='white')
-
-    jeton_bleu = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                relief='raised', borderwidth=0,
-                                highlightthickness=0)
-    jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
-    jeton_bleu.create_text(13, 13, text='25', font=(
-        'helvetica', 8), fill='white')
-
-    jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                 relief='raised', borderwidth=0,
-                                 highlightthickness=0)
-    jeton_rouge.create_oval(1, 1, 25, 25, width=3,
-                            outline='brown4', fill='red')
-    jeton_rouge.create_text(
-        13, 13, text='10', font=('helvetica', 8), fill='white')
-
-    jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                relief='raised', borderwidth=0,
-                                highlightthickness=0)
-    jeton_noir.create_oval(1, 1, 25, 25, width=3,
-                           outline='gray19', fill='gray14')
-    jeton_noir.create_text(13, 13, text='100', font=(
-        'helvetica', 8), fill='white')
-
-    jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                relief='raised', borderwidth=0,
-                                highlightthickness=0)
-    jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
-                           fill='mint cream')
-    jeton_vert.create_text(13, 13, text='1', font=(
-        'helvetica', 8), fill='black')
-
-    # Commande d'incrémentation de mises
-
-    jeton_vert.bind('<Button-1>', lambda e: mise(1))
-
-    jeton_rouge.bind('<Button-1>', lambda e: mise(10))
-
-    jeton_bleu.bind('<Button-1>', lambda e: mise(25))
-
-    jeton_blanc.bind('<Button-1>', lambda e: mise(50))
-
-    jeton_noir.bind('<Button-1>', lambda e: mise(100))
-
-    jeton_tapis.bind('<Button-1>', lambda e: mise(argent_joueur))
-
-    jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge,
-                     jeton_noir, jeton_tapis, miser]
-
-    # Texte qui définit le côté du croupier
-    labelc = tkinter.Label(root, text="Dealer ", font=(
-        "helvetica", "15"), bg="dark green", fg="black")
-    labelc.grid(column=0, row=1)
-
-    # Texte qui définit le côté du joueur
-    labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
-                           bg="dark green", fg="black")
-    labelj.grid(column=0, row=7)
-
-    # Canvas pour l'affichage des cartes dans l'interface graphique
-    # (techniquement un joueur peut avoir au maximum 21 cartes car il y a 24
-    # As valant 1 points dans le jeu et donc si le joueur ne fait que piohcer
-    # des As, il aura au maximum 21 cartes)
-    cj = {}
-    for i in range(22):
-        cj[f"cj{i}"] = tkinter.Canvas(root, width=66, height=100,
-                                      bg='#55AA55')
-
-    cc = {}
-    for i in range(22):
-        cc[f"cc{i}"] = tkinter.Canvas(root, width=66, height=100,
-                                      bg='#55AA55')
-
-    cja = {}
-    for i in range(22):
-        cja[f"cj{i}a"] = tkinter.Canvas(root, width=66, height=100,
-                                        bg='#55AA55')
-
-    # Interface emplacement des cartes 1 et 2 du joueur
-    cj['cj1'].grid(column=1, row=7)
-    cj['cj2'].grid(column=3, row=7)
-
-    # Interface emplacement des cartes 1 et 2 du croupier
-    cc['cc1'].grid(column=1, row=1)
-    cc['cc2'].grid(column=3, row=1)
-
-    numero_main = tkinter.Label(root, text='')
-
-    # Label pour afficher l'action du joueur
-    stand_label = tkinter.Label(root, bg='dark green', fg='black',
-                                text="<<Je m'arrête>>",
-                                font=("helvetica", "15"))
-    resultat_final = tkinter.Label(
-        root, text='annonce', bg='dark green', fg='red')
-    resultat_label = tkinter.Label(
-        root, text='', bg='dark green', fg='yellow')
-
-    # Label qui affiche le nombre de cartes restantes
-    nb_carte_paquet = tkinter.Label(
-        root, text='Nombre de cartes restantes dans le paquet:' +
-        f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
-        f' défausse: {str(len(defausse))}', bg='dark green')
-    nb_carte_paquet.grid(column=10, row=0)
-
-    root.mainloop()
+root.mainloop()
