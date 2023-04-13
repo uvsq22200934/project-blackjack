@@ -1035,6 +1035,7 @@ def tutoriel(event):
     i = 0
 
     def retour():
+        #fonction pour faire un retour en arrière 
         global i
         image = ['./Images/image_début.png', './Images/image_mise.png',
                  './Images/image_action.png',
@@ -1047,6 +1048,7 @@ def tutoriel(event):
             i += 1
 
     def passer():
+        #fonction pour passer d'une image à une autre
         global i
         image = ['./Images/image_début.png', './Images/image_mise.png',
                  './Images/image_action.png', './Images/image_résultat.png',
@@ -1058,6 +1060,7 @@ def tutoriel(event):
         interface.mainloop()
 
     if event.widget == bouton_tutoriel:
+        #affiche de la fenêtre liée au tutoriel
         interface = tkinter.Tk()
         interface.title('Tutoriel')
         interface.geometry == accueil.geometry
