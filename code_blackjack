@@ -1379,7 +1379,7 @@ img = ImageTk.PhotoImage(resize_image)
 play.create_image(100, 100, image=img, anchor='center')
 
 
-#affichage image du jeton bleu
+# affichage image du jeton bleu
 bleu = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
 bleu.grid(column=2, row=4, padx=10)
@@ -1388,16 +1388,16 @@ resize_image1 = image_jeton_bleu.resize((220, 200))
 img1 = ImageTk.PhotoImage(resize_image1)
 bleu.create_image(100, 100, image=img1, anchor='center')
 
-#affichage image du jeton rouge
+# affichage image du jeton rouge
 rouge = tkinter.Canvas(accueil, width=200, height=200, bg='red',
-                      highlightthickness=0)
-rouge.grid(column=4,row=4, padx=10)
+                       highlightthickness=0)
+rouge.grid(column=4, row=4, padx=10)
 image_jeton_rouge = Image.open("./Images/image_jeton_rouge.png")
 resize_image2 = image_jeton_rouge.resize((220, 190))
 img2 = ImageTk.PhotoImage(resize_image2)
 rouge.create_image(100, 100, image=img2, anchor='center')
 
-#affichage image du jeton vert
+# affichage image du jeton vert
 vert = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
 vert.grid(column=1, row=4, padx=10)
@@ -1406,7 +1406,7 @@ resize_image3 = image_jeton_vert.resize((220, 220))
 img3 = ImageTk.PhotoImage(resize_image3)
 vert.create_image(100, 100, image=img3, anchor='center')
 
-#affichage image du jeton noir
+# affichage image du jeton noir
 noir = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
 noir.grid(column=5, row=4, padx=10)
@@ -1427,7 +1427,7 @@ entree_username.grid(column=3, row=6)
 
 credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
                        fg='black')
-credit.grid(column=3, row=7)      
+credit.grid(column=3, row=7)
 
 entree_credit = tkinter.Entry(accueil)
 entree_credit.grid(column=3, row=8)
@@ -1435,7 +1435,7 @@ entree_credit.grid(column=3, row=8)
 
 # Graphisme fenêtre acceuil
 
-#affichage image de la pile de jeton
+# affichage image de la pile de jeton
 pile = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
 pile.grid(column=3, rowspan=10)
@@ -1445,7 +1445,7 @@ img0 = ImageTk.PhotoImage(resize_image0)
 pile.create_image(100, 100, image=img0, anchor='center')
 
 pile1 = tkinter.Canvas(accueil, width=200, height=200, bg='red',
-                      highlightthickness=0)
+                       highlightthickness=0)
 pile1.grid(column=3, row=10)
 image_jeton_pile1 = Image.open("./Images/jeton_pile.png")
 resize_image00 = image_jeton_pile1.resize((240, 200))
@@ -1475,7 +1475,6 @@ erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
 # code à afficher pour les jetons
 
 accueil.grid()
-
 
 
 # Fenêtre root
