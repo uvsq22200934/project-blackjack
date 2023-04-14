@@ -981,7 +981,6 @@ def quitter(event):
     window.destroy()
 
 
-
 # Les deux fonctions qui suivent servent à déterminer l'ordre d'appartion des
 # widgets dans la fenêtre de jeu
 
@@ -1160,78 +1159,91 @@ def test_dette():
 
 # Fonction pour afficher un tuto sur comment jouer
 
+index_image = 0
+
 
 def tutoriel(event):
 
-    i = 0
-
-    def retour():
-        # Fonction pour faire un retour en arrière 
-        global i
+    def retour(event):
+        # Fonction pour faire un retour en arrière
+        global index_image
         image = ['./Images/image_debut.png', './Images/image_mise.png',
                  './Images/image_action.png',
                  './Images/image_résultat.png',
                  './Images/image_emprunt.png']
-        if event.widget == bouton_retour and i != 0:
-            while i != len(image):
-                image_tuto['test'] = image[i-1]
+        if event.widget == bouton_retour and index_image != 0:
+            while index_image != len(image):
+                image_tuto['test'] = image[index_image-1]
         else:
-            i += 1
-##à compléter et corriger
-    def passer():
-        # Fonction pour passer d'une image à une autre
-        global i
-        if event.widget == bouton_pass and i == 0 : 
-            i += 1
-            image_tuto = Image.open('./Images/image_mise.png')
-            resize_image = image_tuto.resize((500,500))
-            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
-            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
-        if event.widget == bouton_pass and i == 1 : 
-            i += 1
-            image_tuto = Image.open('./Images/image_action.png')
-            resize_image = image_tuto.resize((500,500))
-            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
-            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
-        if event.widget == bouton_pass and i == 2 : 
-            i += 1
-            image_tuto = Image.open('./Images/image_résultat.png')
-            resize_image = image_tuto.resize((500,500))
-            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
-            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
-        if event.widget == bouton_pass and i == 3 : 
-            i += 1
-            image_tuto = Image.open('./Images/image_emprunt.png')
-            resize_image = image_tuto.resize((500,500))
-            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
-            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
-        if event.widget == bouton_pass  and i == 4:
-            bouton_pass['command']= interface.pack_forget()
+            index_image += 1
+        return index_image
+# à compléter et corriger
 
+    def passer(event):
+        # Fonction pour passer d'une image à une autre
+        global index_image
+        print(index_image)
+        if event.widget == bouton_pass and index_image == 0:
+            index_image += 1
+            image_tuto = Image.open('./Images/image_mise.png')
+            resize_image = image_tuto.resize((1000, 685))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
+                                                        master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
+                                   anchor='center')
+        if event.widget == bouton_pass and index_image == 1:
+            index_image += 1
+            image_tuto = Image.open('./Images/image_action.png')
+            resize_image = image_tuto.resize((1000, 685))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
+                                                        master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
+                                   anchor='nw')
+        if event.widget == bouton_pass and index_image == 2:
+            index_image += 1
+            image_tuto = Image.open('./Images/image_résultat.png')
+            resize_image = image_tuto.resize((1000, 685))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
+                                                        master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
+                                   anchor='nw')
+        if event.widget == bouton_pass and index_image == 3:
+            index_image += 1
+            image_tuto = Image.open('./Images/image_emprunt.png')
+            resize_image = image_tuto.resize((1000, 685))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
+                                                        master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
+                                   anchor='nw')
+        if event.widget == bouton_pass and index_image == 4:
+            bouton_pass['command'] = interface.pack_forget()
+        return index_image
 
     if event.widget == bouton_tutoriel:
-        #affiche de la fenêtre liée au tutoriel
+        # affiche de la fenêtre liée au tutoriel
         interface = tkinter.Frame()
         interface.configure == root.configure
-        #bouton pour passer à l'image suivante
+        interface.pack(expand=True, fill=tkinter.BOTH)
+        # bouton pour passer à l'image suivante
         bouton_pass = tkinter.Button(interface, text='suivant',
                                      bg='white', fg='black')
         bouton_pass.pack(side='right', anchor='s')
         bouton_pass.bind('<Button-1>', passer)
-        #bouton pour revenir à l'image précédente
+        # bouton pour revenir à l'image précédente
         bouton_retour = tkinter.Button(interface, text='retour',
                                        bg='white', fg='black')
         bouton_retour.pack(side='left', anchor='s')
         bouton_retour.bind('<Button-1>', retour)
 
         canvas_im = tkinter.Canvas(interface)
-        canvas_im.pack()
+        canvas_im.pack(expand=True, fill=tkinter.BOTH)
         image_tuto = Image.open('./Images/image_debut.png')
-        resize_image = image_tuto.resize((500,500))
-        image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
-        canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
+        image_tuto = image_tuto.resize((1000, 685))
+        image_tuto_dic['text'] = ImageTk.PhotoImage(image_tuto,
+                                                    master=interface)
+        canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
+                               anchor='nw')
         root.pack_forget()
-        interface.pack(expand=True, fill=tkinter.BOTH)
 
 
 def dir_regles(event):
@@ -1335,7 +1347,7 @@ def dir_regles(event):
 
 window = tkinter.Tk()
 window.title('Menu BlackJack 21')
-#window.geometry('750x600')
+# window.geometry('750x600')
 window.state("zoomed")
 window.resizable(width=False, height=False)
 
@@ -1367,7 +1379,7 @@ img = ImageTk.PhotoImage(resize_image)
 play.create_image(100, 100, image=img, anchor='center')
 
 
-#affichage image de la pile de jeton
+# affichage image de la pile de jeton
 pile = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
 pile.pack(anchor='center')
@@ -1394,7 +1406,7 @@ image_jeton_rouge = Image.open("./Images/image_jeton_rouge.png")
 resize_image2 = image_jeton_rouge.resize((220, 200))
 img2 = ImageTk.PhotoImage(resize_image2)
 rouge.create_image(100, 100, image=img2, anchor='center')
- 
+
 #affichage image du jeton vert
 vert = tkinter.Canvas(accueil, width=100, height=100, bg='red',
                       highlightthickness=0)
@@ -1454,10 +1466,9 @@ erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
                            'entrer un nom de 15 caractères\nou ' +
                            'moins', width=35)
 
-#code à afficher pour les jetons
+# code à afficher pour les jetons
 
 accueil.pack(fill=tkinter.BOTH, expand=True)
-
 
 
 # Fenêtre root
@@ -1466,7 +1477,7 @@ root = tkinter.Frame()
 root.configure(bg="dark green")
 
 erreur = tkinter.Label(root, text='', font=('helvetica', 10),
-                        fg='black')
+                       fg='black')
 
 cartes = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
 dos_carte(cartes, 'cartes')
@@ -1490,14 +1501,14 @@ bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
 bouton_melanger = tkinter.Button(root,
-                                    text='Mélanger', fg='blue',
-                                    command=random.shuffle(paquet))
+                                 text='Mélanger', fg='blue',
+                                 command=random.shuffle(paquet))
 bouton_melanger.grid(column=2, row=3)
 bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
 # Bouton pour distribuer le jeu de carte
 bouton_donne_initiale = tkinter.Button(root,
-                                        text='Donne initiale', fg="blue")
+                                       text='Donne initiale', fg="blue")
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
 # Bouton qui relance la partie sans quitter le jeu
@@ -1526,7 +1537,7 @@ bouton_surrender.bind('<Button-1>', lambda e: surrender())
 bouton_split = tkinter.Button(root, text='Split', command=splitter)
 
 bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
-                    bouton_double_down]
+                 bouton_double_down]
 
 texte_assurance = tkinter.Label(root, text='')
 
@@ -1543,19 +1554,19 @@ assurance_valeur = tkinter.Label(root, text='')
 
 # Widgets associés à l'emprunt + dettes
 valid = tkinter.Button(root, text='valider l\'emprunt',
-                        bg='dark green', fg='black')
+                       bg='dark green', fg='black')
 valid.bind('<Button-1>', validd)
 banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
-                        font=('helvetica', 15), bg='dark green',
-                        fg='red')
+                       font=('helvetica', 15), bg='dark green',
+                       fg='red')
 emprunt = tkinter.Button(root, text='Emprunt')
 emprunt.bind('<Button-1>', emprunter)
 term = tkinter.Button(root, text='Terminer')
 term.bind('<Button-1>', quitter)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
-                        'emprunter ?', fg='black',
-                        bg='dark green')
+                      'emprunter ?', fg='black',
+                      bg='dark green')
 my_entry3 = tkinter.Entry(root)
 
 entry_label = tkinter.Label(root, text='', bg='dark green', fg='red')
@@ -1567,43 +1578,43 @@ dette_label = tkinter.Label(root, text='', bg='dark green', fg='red',
 
 # Bouton qui permet l'accès au tutoriel
 bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
-                                    bg='green', fg='white',
-                                    width=13, height=2,
-                                    font=('helvetica', 10))
+                                 bg='green', fg='white',
+                                 width=13, height=2,
+                                 font=('helvetica', 10))
 bouton_tutoriel.grid(column=1, row=0)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
 
 # Mise du jeu """
 mise_totale = 0
 mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
-                'jeton_blanc': 50, 'jeton_noir': 100,
-                'tapis': 'argent_joueur'}
+               'jeton_blanc': 50, 'jeton_noir': 100,
+               'tapis': 'argent_joueur'}
 
 # Widgets associés à la mise du joueur
 
 argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
-                        bg='dark green', fg='white')
+                       bg='dark green', fg='white')
 argent.grid(column=0, row=8)
 
 mise_texte = tkinter.Label(
     root, text='Mise totale: ', bg='dark green', fg='white')
 
 miser = tkinter.Label(root, text="Cliquez pour miser:",
-                        bg='dark green', fg='white')
+                      bg='dark green', fg='white')
 
 # Position des widgets jetons pour la mise
 
 jeton_tapis = tkinter.Canvas(root, bg='dark green', width=60, height=45,
-                                relief='raised', borderwidth=0,
-                                highlightthickness=0)
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
 jeton_tapis.create_text(26, 21, text='All in',
                         font=('helvetica', 12), fill='white')
 jeton_tapis.create_oval(4, 4, 50, 40, width=3,
                         outline='white')
 
 jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                relief='raised', borderwidth=0,
-                                highlightthickness=0)
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
 jeton_blanc.create_oval(1, 1, 25, 25, width=3,
                         outline='chartreuse4', fill='green4')
 
@@ -1618,8 +1629,8 @@ jeton_bleu.create_text(13, 13, text='25', font=(
     'helvetica', 8), fill='white')
 
 jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
-                                relief='raised', borderwidth=0,
-                                highlightthickness=0)
+                             relief='raised', borderwidth=0,
+                             highlightthickness=0)
 jeton_rouge.create_oval(1, 1, 25, 25, width=3,
                         outline='brown4', fill='red')
 jeton_rouge.create_text(
@@ -1629,7 +1640,7 @@ jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_noir.create_oval(1, 1, 25, 25, width=3,
-                        outline='gray19', fill='gray14')
+                       outline='gray19', fill='gray14')
 jeton_noir.create_text(13, 13, text='100', font=(
     'helvetica', 8), fill='white')
 
@@ -1637,7 +1648,7 @@ jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
 jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
-                        fill='mint cream')
+                       fill='mint cream')
 jeton_vert.create_text(13, 13, text='1', font=(
     'helvetica', 8), fill='black')
 
@@ -1656,7 +1667,7 @@ jeton_noir.bind('<Button-1>', lambda e: mise(100))
 jeton_tapis.bind('<Button-1>', lambda e: mise(argent_joueur))
 
 jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge,
-                    jeton_noir, jeton_tapis, miser]
+                 jeton_noir, jeton_tapis, miser]
 
 # Texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="Dealer ", font=(
@@ -1665,7 +1676,7 @@ labelc.grid(column=0, row=1)
 
 # Texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
-                        bg="dark green", fg="black")
+                       bg="dark green", fg="black")
 labelj.grid(column=0, row=7)
 
 # Canvas pour l'affichage des cartes dans l'interface graphique
@@ -1675,12 +1686,12 @@ labelj.grid(column=0, row=7)
 cj = {}
 for i in range(22):
     cj[f"cj{i}"] = tkinter.Canvas(root, width=66, height=100,
-                                    bg='#55AA55')
+                                  bg='#55AA55')
 
 cc = {}
 for i in range(22):
     cc[f"cc{i}"] = tkinter.Canvas(root, width=66, height=100,
-                                    bg='#55AA55')
+                                  bg='#55AA55')
 
 cja = {}
 for i in range(22):
