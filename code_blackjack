@@ -235,20 +235,20 @@ def debut(event):
             # pack. Cela permet de ne pas pack plusieurs fois le message
             # d'erreur
             try:
-                erreur_argent.pack_info()
+                erreur_argent.grid_info()
             except _tkinter.TclError:
-                erreur_argent.pack()
+                erreur_argent.grid()
         else:
-            erreur_argent.pack_forget()
+            erreur_argent.grid_forget()
         # Si le nom du joueur fait plus de 15 caractère et/ou n'est consitué
         # que d'espaces
         if len(nom_joueur) > 15 and len(nom_joueur.strip()) != 0:
             try:
-                erreur_nom.pack_info()
+                erreur_nom.grid_info()
             except _tkinter.TclError:
                 erreur_nom.pack()
         else:
-            erreur_nom.pack_forget()
+            erreur_nom.grid_forget()
         # Si le joueur n'entre pas de nom, il est nommé 'Player' par défaut
         if nom_joueur == '':
             nom_joueur = 'Player'
@@ -258,7 +258,6 @@ def debut(event):
         # de chiffres et que le nombre soit compris entre 0 et 1 000 000 000
         # exclus
         if argent_joueur != '' and argent_joueur.isdigit():
-            print('ok ca marhve', argent_joueur)
             argent_joueur = int(argent_joueur)
         # On vérifie avant de lancer la fenêtre de jeu que le joueur ai bien
         # rentré un crédit uniquement composé de chiffre et que son nom ne
@@ -268,7 +267,7 @@ def debut(event):
                 len(str(argent_joueur)) <= 10 and argent_joueur > 0 and\
                 len(nom_joueur.strip()) != 0:
             argent['text'] = 'Crédits: '+str(argent_joueur)
-            accueil.pack_forget()
+            accueil.grid_forget()
             root.pack(fill=tkinter.BOTH, expand=True)
             fenetre_jeu = 1
 
@@ -1349,6 +1348,7 @@ window = tkinter.Tk()
 window.title('Menu BlackJack 21')
 # window.geometry('750x600')
 window.state("zoomed")
+window.configure(bg='red')
 window.resizable(width=False, height=False)
 
 accueil = tkinter.Frame()
@@ -1361,7 +1361,7 @@ accueil.configure(bg='red')
 # Configuration de l'écran d'acceuil"""
 titre_jeu = tkinter.Label(accueil, text='BLACK JACK', bg='red', fg='gold',
                           font=('helvetica', 70))
-titre_jeu.pack()
+titre_jeu.grid(columnspan=3, column=2, row=1)
 
 play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
@@ -1369,7 +1369,7 @@ play.create_oval(34, 40, 180, 190, width=3, outline='mint cream',
                  fill='mint cream')
 play.create_text(102, 115, text='Play', font=('elephant', 35), fill='black')
 
-play.pack(anchor='center')
+play.grid(column=3, row=4, padx=10)
 
 play.bind('<Button-1>', debut)
 
@@ -1379,82 +1379,88 @@ img = ImageTk.PhotoImage(resize_image)
 play.create_image(100, 100, image=img, anchor='center')
 
 
-# affichage image de la pile de jeton
-pile = tkinter.Canvas(accueil, width=200, height=200, bg='red',
-                      highlightthickness=0)
-pile.pack(anchor='center')
-image_jeton_pile = Image.open("./Images/jeton_pile.png")
-resize_image0 = image_jeton_pile.resize((240, 200))
-img0 = ImageTk.PhotoImage(resize_image0)
-pile.create_image(100, 100, image=img0, anchor='center')
-
-"""
 #affichage image du jeton bleu
-bleu = tkinter.Canvas(accueil, width=100, height=100, bg='red',
+bleu = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
-bleu.pack(side='top', anchor='ne')
+bleu.grid(column=2, row=4, padx=10)
 image_jeton_bleu = Image.open("./Images/image_jeton_bleu.png")
 resize_image1 = image_jeton_bleu.resize((220, 200))
 img1 = ImageTk.PhotoImage(resize_image1)
 bleu.create_image(100, 100, image=img1, anchor='center')
 
 #affichage image du jeton rouge
-rouge = tkinter.Canvas(accueil, width=100, height=100, bg='red',
+rouge = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
-rouge.pack(side='top', anchor='nw')
+rouge.grid(column=4,row=4, padx=10)
 image_jeton_rouge = Image.open("./Images/image_jeton_rouge.png")
-resize_image2 = image_jeton_rouge.resize((220, 200))
+resize_image2 = image_jeton_rouge.resize((220, 190))
 img2 = ImageTk.PhotoImage(resize_image2)
 rouge.create_image(100, 100, image=img2, anchor='center')
 
 #affichage image du jeton vert
-vert = tkinter.Canvas(accueil, width=100, height=100, bg='red',
+vert = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
-rouge.pack(side='bottom', anchor='nw')
+vert.grid(column=1, row=4, padx=10)
 image_jeton_vert = Image.open("./Images/image_jeton_vert.png")
-resize_image3 = image_jeton_vert.resize((220, 200))
+resize_image3 = image_jeton_vert.resize((220, 220))
 img3 = ImageTk.PhotoImage(resize_image3)
 vert.create_image(100, 100, image=img3, anchor='center')
 
 #affichage image du jeton noir
-noir = tkinter.Canvas(accueil, width=100, height=100, bg='red',
+noir = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                       highlightthickness=0)
-noir.pack(side='bottom', anchor='nw')
+noir.grid(column=5, row=4, padx=10)
 image_jeton_vert = Image.open("./Images/image_jeton_noir.png")
-resize_image4 = image_jeton_vert.resize((220, 200))
+resize_image4 = image_jeton_vert.resize((220, 230))
 img4 = ImageTk.PhotoImage(resize_image4)
 noir.create_image(100, 100, image=img4, anchor='center')
 
-"""
+
 # Entrée permettant au joueur de choisir son pseudo ainsi que le nombre de
 # crédit souhaité
 username = tkinter.Label(accueil, text="Username:",
                          font=('helvetica', 10), fg='black')
-username.pack()
+username.grid(column=3, row=5)
 
 entree_username = tkinter.Entry(accueil)
-entree_username.pack(anchor='center')
+entree_username.grid(column=3, row=6)
 
 credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
                        fg='black')
-credit.pack()
+credit.grid(column=3, row=7)      
 
 entree_credit = tkinter.Entry(accueil)
-entree_credit.pack()
+entree_credit.grid(column=3, row=8)
 
 
 # Graphisme fenêtre acceuil
 
+#affichage image de la pile de jeton
+pile = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+                      highlightthickness=0)
+pile.grid(column=3, rowspan=10)
+image_jeton_pile = Image.open("./Images/jeton_pile.png")
+resize_image0 = image_jeton_pile.resize((240, 200))
+img0 = ImageTk.PhotoImage(resize_image0)
+pile.create_image(100, 100, image=img0, anchor='center')
 
-cartes1 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
-cartes2 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
-cartes1.pack(side='left', anchor='n')
-cartes2.pack(side='left', anchor='n')
+pile1 = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+                      highlightthickness=0)
+pile1.grid(column=3, row=10)
+image_jeton_pile1 = Image.open("./Images/jeton_pile.png")
+resize_image00 = image_jeton_pile1.resize((240, 200))
+img00 = ImageTk.PhotoImage(resize_image00)
+pile1.create_image(100, 100, image=img00, anchor='center')
 
-cartes3 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
-cartes4 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
-cartes3.pack(side='right', anchor='n')
-cartes4.pack(side='right', anchor='n')
+cartes1 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
+cartes2 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
+cartes1.grid(column=1, row=9)
+cartes2.grid(column=2, row=9)
+
+cartes3 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
+cartes4 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
+cartes3.grid(column=4, row=9)
+cartes4.grid(column=5, row=9)
 
 erreur_argent = tkinter.Label(
     accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
@@ -1468,7 +1474,8 @@ erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
 
 # code à afficher pour les jetons
 
-accueil.pack(fill=tkinter.BOTH, expand=True)
+accueil.grid()
+
 
 
 # Fenêtre root
