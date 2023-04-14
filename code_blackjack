@@ -1177,41 +1177,61 @@ def tutoriel(event):
                 image_tuto['test'] = image[i-1]
         else:
             i += 1
-
+##à compléter et corriger
     def passer():
         # Fonction pour passer d'une image à une autre
         global i
-        image = ['./Images/image_debut.png', './Images/image_mise.png',
-                 './Images/image_action.png', './Images/image_résultat.png',
-                 './Images/image_emprunt.png']
-        if event.widget == bouton_pass and i != len(image):
-            image_carte = Image.open(image[i+1])
-            image_fin = image_carte.resize((66, 100))
-            image_tuto_dic['texte'] = ImageTk.PhotoImage(image_fin, master=interface)
-            canvas_im.create_image(2, 2, anchor='nw', image=image_tuto_dic['texte'])
-        else:
-            interface.pack_forget()
-            root.pack(fill=tkinter.BOTH, expand=True)
+        if event.widget == bouton_pass and i == 0 : 
+            i += 1
+            image_tuto = Image.open('./Images/image_mise.png')
+            resize_image = image_tuto.resize((500,500))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
+        if event.widget == bouton_pass and i == 1 : 
+            i += 1
+            image_tuto = Image.open('./Images/image_action.png')
+            resize_image = image_tuto.resize((500,500))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
+        if event.widget == bouton_pass and i == 2 : 
+            i += 1
+            image_tuto = Image.open('./Images/image_résultat.png')
+            resize_image = image_tuto.resize((500,500))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
+        if event.widget == bouton_pass and i == 3 : 
+            i += 1
+            image_tuto = Image.open('./Images/image_emprunt.png')
+            resize_image = image_tuto.resize((500,500))
+            image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
+            canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
+        if event.widget == bouton_pass  and i == 4:
+            bouton_pass['command']= interface.pack_forget()
+
 
     if event.widget == bouton_tutoriel:
         #affiche de la fenêtre liée au tutoriel
         interface = tkinter.Frame()
         interface.configure == root.configure
+        #bouton pour passer à l'image suivante
         bouton_pass = tkinter.Button(interface, text='suivant',
-                                     bg='white', fg='black', command=passer)
+                                     bg='white', fg='black')
         bouton_pass.pack(side='right', anchor='s')
+        bouton_pass.bind('<Button-1>', passer)
+        #bouton pour revenir à l'image précédente
         bouton_retour = tkinter.Button(interface, text='retour',
-                                       bg='white', fg='black', command=retour)
+                                       bg='white', fg='black')
         bouton_retour.pack(side='left', anchor='s')
+        bouton_retour.bind('<Button-1>', retour)
+
         canvas_im = tkinter.Canvas(interface)
         canvas_im.pack()
         image_tuto = Image.open('./Images/image_debut.png')
-        resize_image = image_tuto.resize((240, 200))
+        resize_image = image_tuto.resize((500,500))
         image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
-        canvas_im.create_image(100, 100, image=image_tuto_dic['text'], anchor='center')
+        canvas_im.create_image(10, 10, image=image_tuto_dic['text'], anchor='center')
         root.pack_forget()
         interface.pack(expand=True, fill=tkinter.BOTH)
-
 
 
 def dir_regles(event):
@@ -1328,7 +1348,7 @@ accueil.configure(bg='red')
 
 # Configuration de l'écran d'acceuil"""
 titre_jeu = tkinter.Label(accueil, text='BLACK JACK', bg='red', fg='gold',
-                          font=('helvetica', 50))
+                          font=('helvetica', 70))
 titre_jeu.pack()
 
 play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
@@ -1353,7 +1373,7 @@ username = tkinter.Label(accueil, text="Username:",
 username.pack()
 
 entree_username = tkinter.Entry(accueil)
-entree_username.pack()
+entree_username.pack(anchor='center')
 
 credit = tkinter.Label(accueil, text="Crédit:", font=('helvetica', 10),
                        fg='black')
@@ -1366,13 +1386,13 @@ entree_credit.pack()
 # Graphisme fenêtre acceuil
 
 
-cartes1 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
-cartes2 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
+cartes1 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
+cartes2 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
 cartes1.pack(side='left', anchor='n')
 cartes2.pack(side='left', anchor='n')
 
-cartes3 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
-cartes4 = tkinter.Canvas(accueil, width=100, height=160, bg='green')
+cartes3 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
+cartes4 = tkinter.Canvas(accueil, width=180, height=260, bg='green')
 cartes3.pack(side='right', anchor='n')
 cartes4.pack(side='right', anchor='n')
 
@@ -1386,27 +1406,7 @@ erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
                            'entrer un nom de 15 caractères\nou ' +
                            'moins', width=35)
 
-jetonnoir = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                           relief='raised', borderwidth=0,
-                           highlightthickness=0)
-jetonnoir.create_oval(1, 1, 55, 55, width=3, outline='gray19', fill='gray14')
-jetonnoir.pack(side='left', anchor='center')
-jetonnoir.place(bordermode='outside', relx=0.05, rely=0.1, anchor='nw')
-
-jetonbleu = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                           relief='raised', borderwidth=0,
-                           highlightthickness=0)
-jetonbleu.create_oval(1, 1, 55, 55, width=3, outline='blue4', fill='navy')
-jetonbleu.pack(side='left', anchor='center')
-jetonbleu.place(bordermode='outside', relx=0, rely=0, anchor='nw')
-
-jetonblanc = tkinter.Canvas(accueil, bg='red', width=60, height=60,
-                            relief='raised', borderwidth=0,
-                            highlightthickness=0)
-jetonblanc.create_oval(1, 1, 55, 55, width=3,
-                       outline='light grey', fill='mint cream')
-jetonblanc.pack(side='left', anchor='n')
-jetonblanc.place(bordermode='outside', relx=0.1, rely=0, anchor='nw')
+#code à afficher pour les jetons
 
 accueil.pack(fill=tkinter.BOTH, expand=True)
 
