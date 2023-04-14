@@ -110,6 +110,7 @@ nombre_emprunt = 0
 # Dictionnaires permettant de contourner le garbage collector
 images = dict()
 image_dos = dict()
+image_tuto_dic = dict()
 
 
 # Fonctions
@@ -1165,26 +1166,29 @@ def tutoriel(event):
     i = 0
 
     def retour():
-        #fonction pour faire un retour en arrière 
+        # Fonction pour faire un retour en arrière 
         global i
-        image = ['./Images/image_début.png', './Images/image_mise.png',
+        image = ['./Images/image_debut.png', './Images/image_mise.png',
                  './Images/image_action.png',
                  './Images/image_résultat.png',
                  './Images/image_emprunt.png']
         if event.widget == bouton_retour and i != 0:
             while i != len(image):
-                image_tuto[''] = image[i-1]
+                image_tuto['test'] = image[i-1]
         else:
             i += 1
 
     def passer():
-        #fonction pour passer d'une image à une autre
+        # Fonction pour passer d'une image à une autre
         global i
-        image = ['./Images/image_début.png', './Images/image_mise.png',
+        image = ['./Images/image_debut.png', './Images/image_mise.png',
                  './Images/image_action.png', './Images/image_résultat.png',
                  './Images/image_emprunt.png']
         if event.widget == bouton_pass and i != len(image):
-            image_tuto[''] = image[i+1]
+            image_carte = Image.open(image[i+1])
+            image_fin = image_carte.resize((66, 100))
+            image_tuto_dic['texte'] = ImageTk.PhotoImage(image_fin, master=interface)
+            canvas_im.create_image(2, 2, anchor='nw', image=image_tuto_dic['texte'])
         else:
             interface.pack_forget()
             root.pack(fill=tkinter.BOTH, expand=True)
@@ -1201,12 +1205,13 @@ def tutoriel(event):
         bouton_retour.pack(side='left', anchor='s')
         canvas_im = tkinter.Canvas(interface)
         canvas_im.pack()
-        image_tuto = Image.open('./Images/image_début.png')
+        image_tuto = Image.open('./Images/image_debut.png')
         resize_image = image_tuto.resize((240, 200))
-        imgg = ImageTk.PhotoImage(resize_image)
-        canvas_im.create_image(100, 100, image=imgg, anchor='center')
+        image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image, master=interface)
+        canvas_im.create_image(100, 100, image=image_tuto_dic['text'], anchor='center')
         root.pack_forget()
         interface.pack(expand=True, fill=tkinter.BOTH)
+
 
 
 def dir_regles(event):
