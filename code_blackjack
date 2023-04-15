@@ -1216,12 +1216,12 @@ def tutoriel(event):
                                    anchor='nw')
         if event.widget == bouton_pass and index_image == 4:
             bouton_pass['command'] = interface.pack_forget()
+            root.pack(expand=True, fill='both')
         return index_image
 
     if event.widget == bouton_tutoriel:
         # affiche de la fenêtre liée au tutoriel
         interface = tkinter.Frame()
-        interface.configure == root.configure
         interface.pack(expand=True, fill=tkinter.BOTH)
         # bouton pour passer à l'image suivante
         bouton_pass = tkinter.Button(interface, text='suivant',
