@@ -183,7 +183,7 @@ def creer_image(carte, position_carte, texte):
     cropped_im = image_carte.crop(crop_rectangle)
     # image_fin permet de faire correspondre la taille de l'image à la taille
     # du canva qui va l'accueillir
-    image_fin = cropped_im.resize((66, 100))
+    image_fin = cropped_im.resize((136, 200))
     # L'ajout de "texte" au doctionnaire image permet d'éviter le garbage
     # collector
     images[texte] = ImageTk.PhotoImage(image_fin)
@@ -205,7 +205,7 @@ def dos_carte(position, texte):
         eviter le garbage collector
     """
     image_carte = Image.open("./Images/dos_cartes3.jpg")
-    image_fin = image_carte.resize((66, 100))
+    image_fin = image_carte.resize((136, 200))
     images[texte] = ImageTk.PhotoImage(image_fin)
     position.create_image(2, 2, anchor='nw', image=images[texte])
 
@@ -324,7 +324,7 @@ def donne_initiale():
         if argent_joueur >= prix_assurance:
             texte_assurance['text'] = 'Le Dealer vient de tirer un ' + \
                 f'As. Voulez vous payer une assurance ({prix_assurance})?'
-            texte_assurance.grid(column=7, columnspan=2, row=9)
+            texte_assurance.grid(column=7, columnspan=2, row=9, rowspan=3)
             bouton_oui_assurance.grid(column=7, columnspan=2, row=10)
             bouton_non_assurance.grid(column=7, columnspan=2, row=11)
             root.update()
@@ -433,11 +433,11 @@ def hit(main, pointeur):
                 if main == main_joueur:
                     creer_image(main[i-1], carte[f'cj{i}'],
                                 f'cj{i}')
-                    carte[f'cj{i}'].grid(column=10+i, row=13, padx=10, rowspan=5)
+                    carte[f'cj{i}'].grid(column=10+i, row=15, padx=10, rowspan=5, pady=10)
                 if main == main_joueur_split:
                     creer_image(main[i-1], carte[f'cj{i}a'],
                                 f'cj{i}a')
-                    carte[f'cj{i}a'].grid(column=10+i, row=14, padx=10, rowspan=5)
+                    carte[f'cj{i}a'].grid(column=10+i, row=15, padx=10, rowspan=5, pady=10)
         # On vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
@@ -453,7 +453,7 @@ def hit(main, pointeur):
             if len(main) == i:
                 creer_image(main[i-1], carte[f'cc{i}'], f'cc{i}')
                 root.after(500, root.update())
-                carte[f'cc{i}'].grid(column=10+i, row=5,rowspan=5)
+                carte[f'cc{i}'].grid(column=10+i, row=5,rowspan=5, pady=10, padx=10)
     root.update()
 
 
@@ -518,7 +518,7 @@ def fin_manche():
     if debug == 1:
         print(len(paquet), paquet)
         print('mains croupier ', main_croupier, 'main joueur', main_joueur)
-    bouton_rejouer.grid(column=7, row=11, columnspan=2)
+    bouton_rejouer.grid(column=7, row=12, columnspan=2)
 
 
 def score(main):
@@ -870,10 +870,10 @@ def splitter():
     # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
     # l'interface graphique des deux premières carte de la deuxième main du
     # joueur
-    cja['cj1a'].grid(column=5, columnspan=2, row=13, rowspan=3)
-    cja['cj2a'].grid(column=9,  columnspan=2, row=13, rowspan=3)
+    cja['cj1a'].grid(column=5, columnspan=2, row=13, rowspan=5)
+    cja['cj2a'].grid(column=9,  columnspan=2, row=13, rowspan=5)
     # La deuxième carte de la deuxième main disparait sur l'interface
-    # graphique puisque correspondant désoirmais à la première carte de la
+    # graphique puisque correspondant désormais à la première carte de la
     # deuxième main
     cj['cj2'].delete('all')
     main_joueur_split.append(main_joueur[1])
@@ -947,7 +947,7 @@ def rejouer():
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
     apparition_mise()
-    bouton_donne_initiale.grid(column=7, row=10,rowspan=2)
+    bouton_donne_initiale.grid(column=7, row=12,rowspan=2)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
@@ -968,8 +968,8 @@ def rejouer():
     stand_label.grid_forget()
     # Si le joueur n'a plus d'argent il lui est proposé de prendre un emprunt
     if argent_joueur == 0:
-        emprunt.grid(column=12, columnspan=2, row=9)
-        term.grid(column=13, columnspan=2, row=9)
+        emprunt.grid(column=13, columnspan=2, row=9)
+        term.grid(column=14, columnspan=2, row=9)
         banque.grid(column=12, columnspan=4, row=8)
 
 
@@ -990,7 +990,7 @@ def ordre_boutons2(event):
     if event.widget == bouton_melanger:
         bouton_melanger.grid_forget()
         bouton_donne_initiale.grid(column=7,
-                                    row=10, rowspan=2)
+                                    row=12, rowspan=2)
         apparition_mise()
 
 
@@ -1003,7 +1003,7 @@ def ordre_boutons3(event):
             donne_initiale()
         else:
             bouton_donne_initiale.grid_forget()
-            erreur.grid(column=7, row=10, rowspan=2)
+            erreur.grid(column=7, row=12, rowspan=2)
             erreur.lift()
             erreur['text'] = 'Veuillez miser pour jouer'
 
@@ -1040,14 +1040,14 @@ def apparition_mise():
     Cette fonction permet de faire apparaitre les différents jetons relatifs
     aux mises sur l'interface graphique
     """
-    jeton_blanc.grid(column=8, row=18, rowspan=2)
-    jeton_bleu.grid(column=7, row=18, rowspan=2)
-    jeton_rouge.grid(column=6, row=18,rowspan=2)
-    jeton_noir.grid(column=9, row=18,rowspan=2)
-    jeton_vert.grid(column=5, row=18,rowspan=2)
-    jeton_tapis.grid(column=10, row=18,rowspan=2)
-    miser.grid(column=0, row=17, columnspan=2)
-    mise_texte.grid(column=0, row=18, columnspan=2)
+    jeton_blanc.grid(column=8, row=22, rowspan=2)
+    jeton_bleu.grid(column=7, row=22, rowspan=2)
+    jeton_rouge.grid(column=6, row=22,rowspan=2)
+    jeton_noir.grid(column=9, row=22,rowspan=2)
+    jeton_vert.grid(column=5, row=22,rowspan=2)
+    jeton_tapis.grid(column=10, row=22,rowspan=2)
+    miser.grid(column=0, row=22, columnspan=2)
+    mise_texte.grid(column=0, row=21, columnspan=2)
 
 
 def disparition_mise():
@@ -1074,7 +1074,7 @@ def mise(montant_mise):
     global argent_joueur
     if (argent_joueur - montant_mise) >= 0:
         erreur.grid_forget()
-        bouton_donne_initiale.grid(column=7, row=10,rowspan=2)
+        bouton_donne_initiale.grid(column=7, row=12,rowspan=2)
         mise_totale += montant_mise
         argent_joueur -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
@@ -1154,10 +1154,6 @@ def test_dette():
             dette_label['text'] = 'Vos dettes sont remboursées'
             dette_label['fg'] = 'red'
             dette_label.after(5000, lambda: dette_label.grid_forget())
-
-
-# Interface pour permettre au joueur de comprendre les boutons et graphismes
-
 
 # Fonction pour afficher un tuto sur comment jouer
 
@@ -1446,6 +1442,7 @@ resize_image0 = image_jeton_pile.resize((240, 200))
 img0 = ImageTk.PhotoImage(resize_image0)
 pile.create_image(100, 100, image=img0, anchor='center')
 
+# affichage image de pile1
 pile1 = tkinter.Canvas(accueil, width=200, height=200, bg='red',
                        highlightthickness=0)
 pile1.grid(column=5, columnspan=2, row=9)
@@ -1454,16 +1451,19 @@ resize_image00 = image_jeton_pile1.resize((240, 200))
 img00 = ImageTk.PhotoImage(resize_image00)
 pile1.create_image(100, 100, image=img00, anchor='center')
 
+# graphisme cartes à gauche
 cartes1 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
 cartes2 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
 cartes1.grid(column=1, padx=5, columnspan=2, row=9)
 cartes2.grid(column=3, columnspan=2, row=9)
 
+# graphisme cartes à droite
 cartes3 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
 cartes4 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
-cartes3.grid(column=10,padx=10, columnspan=2, row=9)
+cartes3.grid(column=10, padx=10, columnspan=2, row=9)
 cartes4.grid(column=12, columnspan=2, row=9)
 
+# affichage des erreurs crédit et username
 erreur_argent = tkinter.Label(
     accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
     'positif supérieur à 0 et inférieur à 9 999 999 999 \n' +
@@ -1473,8 +1473,6 @@ erreur_argent = tkinter.Label(
 erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
                            'entrer un nom de 15 caractères\nou ' +
                            'moins', width=35)
-
-# code à afficher pour les jetons
 
 accueil.pack(expand=True, fill='both')
 
@@ -1490,7 +1488,7 @@ erreur = tkinter.Label(root, text='', font=('helvetica', 10),
 
 cartes = tkinter.Canvas(root, width=136, height=200, bg='#55AA55')
 dos_carte(cartes, 'cartes')
-cartes.grid(column=7, row=9, rowspan=3)
+cartes.grid(column=7, row=10, rowspan=5)
 
 # Interface graphique
 
@@ -1506,7 +1504,7 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 # Bouton pour quitter la partie
 bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='white',
                                 bg='red',font=('helvetica', 15))
-bouton_quitter.grid(column=14, row=19,columnspan=2)
+bouton_quitter.grid(column=14, row=22,columnspan=2)
 bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
@@ -1514,7 +1512,7 @@ bouton_melanger = tkinter.Button(root,
                                  text='Mélanger', fg='blue',
                                  command=random.shuffle(paquet),
                                  font=('helvetica', 15))
-bouton_melanger.grid(column=6, row=10, columnspan=2)
+bouton_melanger.grid(column=7, row=12, columnspan=2)
 bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
 # Bouton pour distribuer le jeu de carte
@@ -1575,14 +1573,16 @@ assurance_valeur = tkinter.Label(root, text='',font=('helvetica', 12))
 # Widgets associés à l'emprunt + dettes
 valid = tkinter.Button(root, text='valider l\'emprunt',
                        bg='dark green', fg='black',
-                       font=('helvetica', 15))
+                       font=('helvetica', 15), relief='raised')
 valid.bind('<Button-1>', validd)
 banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
                        font=('helvetica', 15), bg='dark green',
                        fg='red')
-emprunt = tkinter.Button(root, text='Emprunt',font=('helvetica', 9))
+emprunt = tkinter.Button(root, text='Emprunt',font=('helvetica', 9),
+                         relief='raised')
 emprunt.bind('<Button-1>', emprunter)
-term = tkinter.Button(root, text='Terminer',font=('helvetica', 9))
+term = tkinter.Button(root, text='Terminer',font=('helvetica', 9),
+                      relief='raised')
 term.bind('<Button-1>', quitter)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
@@ -1590,7 +1590,8 @@ eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       bg='dark green',font=('helvetica', 10))
 my_entry3 = tkinter.Entry(root)
 
-entry_label = tkinter.Label(root, text='', bg='dark green', fg='red',font=('helvetica', 15))
+entry_label = tkinter.Label(root, text='', bg='dark green', fg='red',
+                            font=('helvetica', 15))
 
 canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
 
@@ -1600,7 +1601,7 @@ dette_label = tkinter.Label(root, text='', bg='dark green', fg='red',
 # Bouton qui permet l'accès au tutoriel
 bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
                                  bg='green', fg='white',
-                                 width=13, height=2,
+                                 width=13, height=2, relief='raised',
                                  font=('helvetica', 10))
 bouton_tutoriel.grid(column=2, columnspan=2, row=1)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
@@ -1616,7 +1617,7 @@ mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
 argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
                        bg='dark green', fg='white',
                        font=('helvetica', 15))
-argent.grid(column=0, row=16,columnspan=2)
+argent.grid(column=0, row=20,columnspan=2)
 
 mise_texte = tkinter.Label(
     root, text='Mise totale: ', bg='dark green', fg='white',
@@ -1695,13 +1696,13 @@ jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge,
 
 # Texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="Dealer ", font=(
-    "helvetica", "15"), bg="dark green", fg="black")
-labelc.grid(column=0, row=4,columnspan=2)
+    "helvetica", 20), bg="dark green", fg="black")
+labelc.grid(column=0, row=7,columnspan=5)
 
 # Texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
+labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", 20),
                        bg="dark green", fg="black")
-labelj.grid(column=0, row=13, columnspan=2)
+labelj.grid(column=0, row=17, columnspan=5)
 
 # Canvas pour l'affichage des cartes dans l'interface graphique
 # (techniquement un joueur peut avoir au maximum 21 cartes car il y a 24
@@ -1723,12 +1724,12 @@ for i in range(22):
                                     bg='#55AA55')
 
 # Interface emplacement des cartes 1 et 2 du joueur
-cj['cj1'].grid(column=5, row=13)
-cj['cj2'].grid(column=9, row=13)
+cj['cj1'].grid(column=5, row=15, rowspan=5, columnspan=2, pady=10)
+cj['cj2'].grid(column=9, row=15, rowspan=5, columnspan=2, pady=10)
 
 # Interface emplacement des cartes 1 et 2 du croupier
-cc['cc1'].grid(column=5, row=5)
-cc['cc2'].grid(column=9, row=5)
+cc['cc1'].grid(column=5, row=5, rowspan=5, columnspan=2)
+cc['cc2'].grid(column=9, row=5, rowspan=5, columnspan=2)
 
 numero_main = tkinter.Label(root, text='')
 
