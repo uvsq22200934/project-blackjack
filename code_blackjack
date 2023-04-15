@@ -324,9 +324,9 @@ def donne_initiale():
         if argent_joueur >= prix_assurance:
             texte_assurance['text'] = 'Le Dealer vient de tirer un ' + \
                 f'As. Voulez vous payer une assurance ({prix_assurance})?'
-            texte_assurance.grid(column=2, row=3)
-            bouton_oui_assurance.grid(column=2, row=4)
-            bouton_non_assurance.grid(column=2, row=5)
+            texte_assurance.grid(column=7, columnspan=2, row=9)
+            bouton_oui_assurance.grid(column=7, columnspan=2, row=10)
+            bouton_non_assurance.grid(column=7, columnspan=2, row=11)
             root.update()
         else:
             if score(main_joueur) == 21:
@@ -377,7 +377,7 @@ def reponse_assurance(reponse=0):
         argent_joueur -= prix_assurance
         assurance_prise = 1
         assurance_valeur['text'] = f'Assurance: {str(prix_assurance)}'
-        assurance_valeur.grid(column=0, row=10)
+        assurance_valeur.grid(column=0, row=15)
     bouton_non_assurance.grid_forget()
     bouton_oui_assurance.grid_forget()
     texte_assurance.grid_forget()
@@ -414,7 +414,7 @@ def hit(main, pointeur):
         last_press = time.time()
     if split == 2 and main != main_croupier:
         # cja correspond à la liste de canvas utilisée pour afficher les
-        # cartes de la deucime main du joueur en cas de split
+        # cartes de la deuxième main du joueur en cas de split
         carte = cja
         main = main_joueur_split
     else:
@@ -433,11 +433,11 @@ def hit(main, pointeur):
                 if main == main_joueur:
                     creer_image(main[i-1], carte[f'cj{i}'],
                                 f'cj{i}')
-                    carte[f'cj{i}'].grid(column=4+i, row=7)
+                    carte[f'cj{i}'].grid(column=10+i, row=13, padx=10, rowspan=5)
                 if main == main_joueur_split:
                     creer_image(main[i-1], carte[f'cj{i}a'],
                                 f'cj{i}a')
-                    carte[f'cj{i}a'].grid(column=4+i, row=8)
+                    carte[f'cj{i}a'].grid(column=10+i, row=14, padx=10, rowspan=5)
         # On vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
@@ -453,7 +453,7 @@ def hit(main, pointeur):
             if len(main) == i:
                 creer_image(main[i-1], carte[f'cc{i}'], f'cc{i}')
                 root.after(500, root.update())
-                carte[f'cc{i}'].grid(column=4+i, row=1)
+                carte[f'cc{i}'].grid(column=10+i, row=5,rowspan=5)
     root.update()
 
 
@@ -518,7 +518,7 @@ def fin_manche():
     if debug == 1:
         print(len(paquet), paquet)
         print('mains croupier ', main_croupier, 'main joueur', main_joueur)
-    bouton_rejouer.grid(column=2, row=3)
+    bouton_rejouer.grid(column=7, row=11, columnspan=2)
 
 
 def score(main):
@@ -565,7 +565,7 @@ def croupier():
     global main_croupier
     numero_main.grid_forget()
     creer_image(main_croupier[1], cc['cc2'], 'cc2')
-    cc['cc2'].grid(column=3, row=1)
+    cc['cc2'].grid(column=5, row=5,columnspan=2)
     root.update()
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 16:
@@ -589,7 +589,7 @@ def stand():
         return
     else:
         last_press = time.time()
-    stand_label.grid(column=10, row=5)
+    stand_label.grid(column=4, row=10, columnspan=2)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
@@ -777,8 +777,10 @@ def resultat(action=0):
             annonce += f'Score main 2: {str(score_joueur)}\n' + \
                 f'Score du Dealer: {str(score_croupier)} \n'
         resultat_final['text'] = annonce
-        resultat_final.grid(column=6+len(main_croupier), row=3)
-        resultat_label.grid(column=6+len(main_croupier), row=2)
+        resultat_final.grid(column=13+len(main_croupier),
+                             row=3, columnspan=2)
+        resultat_label.grid(column=13+len(main_croupier),
+                             row=3, columnspan=2)
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
@@ -868,8 +870,8 @@ def splitter():
     # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
     # l'interface graphique des deux premières carte de la deuxième main du
     # joueur
-    cja['cj1a'].grid(column=1, row=8)
-    cja['cj2a'].grid(column=3, row=8)
+    cja['cj1a'].grid(column=5, columnspan=2, row=13, rowspan=3)
+    cja['cj2a'].grid(column=9,  columnspan=2, row=13, rowspan=3)
     # La deuxième carte de la deuxième main disparait sur l'interface
     # graphique puisque correspondant désoirmais à la première carte de la
     # deuxième main
@@ -945,7 +947,7 @@ def rejouer():
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
     apparition_mise()
-    bouton_donne_initiale.grid(column=2, row=3)
+    bouton_donne_initiale.grid(column=7, row=10,rowspan=2)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
@@ -966,9 +968,9 @@ def rejouer():
     stand_label.grid_forget()
     # Si le joueur n'a plus d'argent il lui est proposé de prendre un emprunt
     if argent_joueur == 0:
-        emprunt.grid(column=9, row=5)
-        term.grid(column=10, row=5)
-        banque.grid(column=9, columnspan=5, row=3)
+        emprunt.grid(column=12, columnspan=2, row=9)
+        term.grid(column=13, columnspan=2, row=9)
+        banque.grid(column=12, columnspan=4, row=8)
 
 
 def quitter(event):
@@ -987,7 +989,8 @@ def quitter(event):
 def ordre_boutons2(event):
     if event.widget == bouton_melanger:
         bouton_melanger.grid_forget()
-        bouton_donne_initiale.grid(column=2, row=3)
+        bouton_donne_initiale.grid(column=7,
+                                    row=10, rowspan=2)
         apparition_mise()
 
 
@@ -1000,7 +1003,7 @@ def ordre_boutons3(event):
             donne_initiale()
         else:
             bouton_donne_initiale.grid_forget()
-            erreur.grid(column=2, row=3)
+            erreur.grid(column=7, row=10, rowspan=2)
             erreur.lift()
             erreur['text'] = 'Veuillez miser pour jouer'
 
@@ -1013,19 +1016,19 @@ def apparition_bouton_joueur():
     sa main
     """
     global argent_joueur
-    bouton_hit.grid(column=2, row=3)
-    stand_bouton.grid(column=2, row=5)
-    bouton_surrender.grid(column=2, row=6)
+    bouton_hit.grid(column=7, columnspan=2, row=11)
+    stand_bouton.grid(column=7,columnspan=2, row=13)
+    bouton_surrender.grid(column=7,columnspan=2, row=14)
     # L'option double down n'est proposée au joueur que s'il possède encore
     # assez d'argent pour miser une seconde fois la même mise que la mise
     # qu'il vient de faire
     if argent_joueur >= mise_totale:
-        bouton_double_down.grid(column=2, row=4)
+        bouton_double_down.grid(column=7,columnspan=2, row=12)
     # Si les deux premières cartes du joueur forment une paire et qu'il
     # possède assez d'argent pour miser une seconde fois la même mise que la
     # mise qu'il vient de faire, il lui est proposé de splitter sa main
     if main_joueur[0][0] == main_joueur[1][0] and argent_joueur >= mise_totale:
-        bouton_split.grid(column=2, row=7)
+        bouton_split.grid(column=7,columnspan=2, row=15)
         argent_joueur -= mise_totale
         mise_texte['text'] == f'Mise main 1: {mise_totale} \n' +\
             f'Mise main 2: {mise_totale}'
@@ -1037,14 +1040,14 @@ def apparition_mise():
     Cette fonction permet de faire apparaitre les différents jetons relatifs
     aux mises sur l'interface graphique
     """
-    jeton_blanc.grid(column=4, row=10)
-    jeton_bleu.grid(column=3, row=10)
-    jeton_rouge.grid(column=2, row=10)
-    jeton_noir.grid(column=6, row=10)
-    jeton_vert.grid(column=1, row=10)
-    jeton_tapis.grid(column=7, row=10)
-    miser.grid(column=0, row=10)
-    mise_texte.grid(column=0, row=9)
+    jeton_blanc.grid(column=8, row=18, rowspan=2)
+    jeton_bleu.grid(column=7, row=18, rowspan=2)
+    jeton_rouge.grid(column=6, row=18,rowspan=2)
+    jeton_noir.grid(column=9, row=18,rowspan=2)
+    jeton_vert.grid(column=5, row=18,rowspan=2)
+    jeton_tapis.grid(column=10, row=18,rowspan=2)
+    miser.grid(column=0, row=17, columnspan=2)
+    mise_texte.grid(column=0, row=18, columnspan=2)
 
 
 def disparition_mise():
@@ -1071,7 +1074,7 @@ def mise(montant_mise):
     global argent_joueur
     if (argent_joueur - montant_mise) >= 0:
         erreur.grid_forget()
-        bouton_donne_initiale.grid(column=2, row=3)
+        bouton_donne_initiale.grid(column=7, row=10,rowspan=2)
         mise_totale += montant_mise
         argent_joueur -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
@@ -1090,8 +1093,8 @@ def emprunter(event):
         nombre_emprunt += 1
         term.grid_forget()
         emprunt.grid_forget()
-        valid.grid(column=9, columnspan=5, row=6)
-        my_entry3.grid(column=9, columnspan=5, row=5)
+        valid.grid(column=12, columnspan=5, row=10)
+        my_entry3.grid(column=12, columnspan=5, row=11)
 
 
 def validd(event):
@@ -1113,7 +1116,7 @@ def validd(event):
                 len(argent_demande) >= 3:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
                 ' un nombre entier positif inférieur à 999'
-            entry_label.grid(column=9, columnspan=5, row=7)
+            entry_label.grid(column=12, columnspan=2, row=12)
         if argent_demande.isdigit() and int(argent_demande) > 0 and\
                 len(argent_demande) <= 3:
             if debug == 1:
@@ -1123,7 +1126,7 @@ def validd(event):
             dette += int(my_entry3.get())
             dette_label['text'] = f'Vous avez {str(dette)} € de dettes ' +\
                 'envers la banque'
-            dette_label.grid(column=9, columnspan=5, row=1)
+            dette_label.grid(column=14, columnspan=2, row=14)
             for i in range(len(canvas_emprunt)):
                 canvas_emprunt[i].grid_forget()
 
@@ -1476,6 +1479,7 @@ erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
 accueil.pack(expand=True, fill='both')
 
 
+
 # Fenêtre root
 root = tkinter.Frame()
 """root.state('zoomed')"""
@@ -1484,9 +1488,9 @@ root.configure(bg="dark green")
 erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
 
-cartes = tkinter.Canvas(root, width=66, height=100, bg='#55AA55')
+cartes = tkinter.Canvas(root, width=136, height=200, bg='#55AA55')
 dos_carte(cartes, 'cartes')
-cartes.grid(column=2, row=3)
+cartes.grid(column=7, row=9, rowspan=3)
 
 # Interface graphique
 
@@ -1496,97 +1500,109 @@ cartes.grid(column=2, row=3)
 bouton_rdj = tkinter.Button(root, text='règle du jeu',
                             width=13, height=2, fg='navy',
                             font=('helvetica', 10))
-bouton_rdj.grid(column=0, row=0)
+bouton_rdj.grid(column=0, row=1, columnspan=2)
 bouton_rdj.bind('<Button-1>', dir_regles)
 
 # Bouton pour quitter la partie
-bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='red')
-bouton_quitter.grid(column=2, row=11)
+bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='white',
+                                bg='red',font=('helvetica', 15))
+bouton_quitter.grid(column=14, row=19,columnspan=2)
 bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
 bouton_melanger = tkinter.Button(root,
                                  text='Mélanger', fg='blue',
-                                 command=random.shuffle(paquet))
-bouton_melanger.grid(column=2, row=3)
+                                 command=random.shuffle(paquet),
+                                 font=('helvetica', 15))
+bouton_melanger.grid(column=6, row=10, columnspan=2)
 bouton_melanger.bind('<Button-1>', ordre_boutons2)
 
 # Bouton pour distribuer le jeu de carte
 bouton_donne_initiale = tkinter.Button(root,
-                                       text='Donne initiale', fg="blue")
+                                       text='Donne initiale', fg="blue",
+                                       font=('helvetica', 15))
 bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
 # Bouton qui relance la partie sans quitter le jeu
-bouton_rejouer = tkinter.Button(root,
-                                text='Rejouer', fg="blue", command=rejouer)
+bouton_rejouer = tkinter.Button(root, text='Rejouer', fg="blue",
+                                 command=rejouer, font=('helvetica', 12))
 
 # Bouton qui permet de piocher
-bouton_hit = tkinter.Button(root, bg='white', text='Hit')
+bouton_hit = tkinter.Button(root, bg='white', text='Hit',
+                            font=('helvetica', 15))
 bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
 
 # Bouton qui permet de 'double down'
-bouton_double_down = tkinter.Button(root, bg='white', text='Double Down')
+bouton_double_down = tkinter.Button(root, bg='white', text='Double Down',
+                                    font=('helvetica', 15))
 bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
     main_joueur))
 
 # Bouton qui permet de 'stand'
-stand_bouton = tkinter.Button(root, bg='salmon', text='Stand')
+stand_bouton = tkinter.Button(root, bg='salmon', text='Stand',
+                              font=('helvetica', 15))
 stand_bouton.bind(
     "<Button-1>", lambda e: stand())
 
 # Bouton qui permet de 'surrender'
-bouton_surrender = tkinter.Button(root, bg='red', text='Surrender')
+bouton_surrender = tkinter.Button(root, bg='red', text='Surrender',
+                                  font=('helvetica', 15))
 bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
 # Bouton qui 'split'
-bouton_split = tkinter.Button(root, text='Split', command=splitter)
+bouton_split = tkinter.Button(root, text='Split', command=splitter,
+                              font=('helvetica', 15))
 
 bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
                  bouton_double_down]
 
-texte_assurance = tkinter.Label(root, text='')
+texte_assurance = tkinter.Label(root, text='',
+                                font=('helvetica', 15))
 
 # Widgets pour l'assurance
-bouton_oui_assurance = tkinter.Button(root, text='Oui')
-bouton_non_assurance = tkinter.Button(root, text='Non')
+bouton_oui_assurance = tkinter.Button(root, text='Oui',
+                                      font=('helvetica', 15))
+bouton_non_assurance = tkinter.Button(root, text='Non',
+                                      font=('helvetica', 15))
 
 bouton_oui_assurance.bind(
     '<Button-1>', lambda e: reponse_assurance(reponse='oui'))
 bouton_non_assurance.bind(
     '<Button-1>', lambda e: reponse_assurance(reponse='non'))
 
-assurance_valeur = tkinter.Label(root, text='')
+assurance_valeur = tkinter.Label(root, text='',font=('helvetica', 12))
 
 # Widgets associés à l'emprunt + dettes
 valid = tkinter.Button(root, text='valider l\'emprunt',
-                       bg='dark green', fg='black')
+                       bg='dark green', fg='black',
+                       font=('helvetica', 15))
 valid.bind('<Button-1>', validd)
 banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
                        font=('helvetica', 15), bg='dark green',
                        fg='red')
-emprunt = tkinter.Button(root, text='Emprunt')
+emprunt = tkinter.Button(root, text='Emprunt',font=('helvetica', 9))
 emprunt.bind('<Button-1>', emprunter)
-term = tkinter.Button(root, text='Terminer')
+term = tkinter.Button(root, text='Terminer',font=('helvetica', 9))
 term.bind('<Button-1>', quitter)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       'emprunter ?', fg='black',
-                      bg='dark green')
+                      bg='dark green',font=('helvetica', 10))
 my_entry3 = tkinter.Entry(root)
 
-entry_label = tkinter.Label(root, text='', bg='dark green', fg='red')
+entry_label = tkinter.Label(root, text='', bg='dark green', fg='red',font=('helvetica', 15))
 
 canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
 
 dette_label = tkinter.Label(root, text='', bg='dark green', fg='red',
-                            font=('helvetica', 10))
+                            font=('helvetica', 13))
 
 # Bouton qui permet l'accès au tutoriel
 bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
                                  bg='green', fg='white',
                                  width=13, height=2,
                                  font=('helvetica', 10))
-bouton_tutoriel.grid(column=1, row=0)
+bouton_tutoriel.grid(column=2, columnspan=2, row=1)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
 
 # Mise du jeu """
@@ -1598,64 +1614,67 @@ mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
 # Widgets associés à la mise du joueur
 
 argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
-                       bg='dark green', fg='white')
-argent.grid(column=0, row=8)
+                       bg='dark green', fg='white',
+                       font=('helvetica', 15))
+argent.grid(column=0, row=16,columnspan=2)
 
 mise_texte = tkinter.Label(
-    root, text='Mise totale: ', bg='dark green', fg='white')
+    root, text='Mise totale: ', bg='dark green', fg='white',
+    font=('helvetica', 15))
 
 miser = tkinter.Label(root, text="Cliquez pour miser:",
-                      bg='dark green', fg='white')
+                      bg='dark green', fg='white',
+                      font=('helvetica', 15))
 
 # Position des widgets jetons pour la mise
 
-jeton_tapis = tkinter.Canvas(root, bg='dark green', width=60, height=45,
+jeton_tapis = tkinter.Canvas(root, bg='dark green', width=100, height=100,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
-jeton_tapis.create_text(26, 21, text='All in',
-                        font=('helvetica', 12), fill='white')
-jeton_tapis.create_oval(4, 4, 50, 40, width=3,
+jeton_tapis.create_text(50, 37, text='All in',
+                        font=('helvetica', 20), fill='white')
+jeton_tapis.create_oval(1, 1, 98, 75, width=3,
                         outline='white')
 
-jeton_blanc = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+jeton_blanc = tkinter.Canvas(root, bg='dark green', width=100, height=100,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
-jeton_blanc.create_oval(1, 1, 25, 25, width=3,
+jeton_blanc.create_oval(1, 1, 75, 75, width=3,
                         outline='chartreuse4', fill='green4')
 
 jeton_blanc.create_text(
-    13, 13, text='50', font=('helvetica', 8), fill='white')
+    38, 38, text='50', font=('helvetica', 20), fill='white')
 
-jeton_bleu = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+jeton_bleu = tkinter.Canvas(root, bg='dark green', width=100, height=100,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_bleu.create_oval(1, 1, 25, 25, width=3, outline='blue4', fill='navy')
-jeton_bleu.create_text(13, 13, text='25', font=(
-    'helvetica', 8), fill='white')
+jeton_bleu.create_oval(1, 1, 75, 75, width=3, outline='blue4', fill='navy')
+jeton_bleu.create_text(38, 37, text='25', font=(
+    'helvetica', 20), fill='white')
 
-jeton_rouge = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+jeton_rouge = tkinter.Canvas(root, bg='dark green', width=100, height=100,
                              relief='raised', borderwidth=0,
                              highlightthickness=0)
-jeton_rouge.create_oval(1, 1, 25, 25, width=3,
+jeton_rouge.create_oval(1, 1, 75, 75, width=3,
                         outline='brown4', fill='red')
 jeton_rouge.create_text(
-    13, 13, text='10', font=('helvetica', 8), fill='white')
+    37, 37, text='10', font=('helvetica', 20), fill='white')
 
-jeton_noir = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+jeton_noir = tkinter.Canvas(root, bg='dark green', width=100, height=100,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_noir.create_oval(1, 1, 25, 25, width=3,
+jeton_noir.create_oval(1, 1, 75, 75, width=3,
                        outline='gray19', fill='gray14')
-jeton_noir.create_text(13, 13, text='100', font=(
-    'helvetica', 8), fill='white')
+jeton_noir.create_text(36, 39, text='100', font=(
+    'helvetica', 20), fill='white')
 
-jeton_vert = tkinter.Canvas(root, bg='dark green', width=30, height=30,
+jeton_vert = tkinter.Canvas(root, bg='dark green', width=100, height=100,
                             relief='raised', borderwidth=0,
                             highlightthickness=0)
-jeton_vert.create_oval(1, 1, 25, 25, width=3, outline='light grey',
+jeton_vert.create_oval(1, 1, 75, 75, width=3, outline='light grey',
                        fill='mint cream')
-jeton_vert.create_text(13, 13, text='1', font=(
-    'helvetica', 8), fill='black')
+jeton_vert.create_text(38, 38, text='1', font=(
+    'helvetica', 20), fill='black')
 
 # Commande d'incrémentation de mises
 
@@ -1677,12 +1696,12 @@ jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge,
 # Texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="Dealer ", font=(
     "helvetica", "15"), bg="dark green", fg="black")
-labelc.grid(column=0, row=1)
+labelc.grid(column=0, row=4,columnspan=2)
 
 # Texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", "15"),
                        bg="dark green", fg="black")
-labelj.grid(column=0, row=7)
+labelj.grid(column=0, row=13, columnspan=2)
 
 # Canvas pour l'affichage des cartes dans l'interface graphique
 # (techniquement un joueur peut avoir au maximum 21 cartes car il y a 24
@@ -1690,26 +1709,26 @@ labelj.grid(column=0, row=7)
 # des As, il aura au maximum 21 cartes)
 cj = {}
 for i in range(22):
-    cj[f"cj{i}"] = tkinter.Canvas(root, width=66, height=100,
+    cj[f"cj{i}"] = tkinter.Canvas(root, width=136, height=200,
                                   bg='#55AA55')
 
 cc = {}
 for i in range(22):
-    cc[f"cc{i}"] = tkinter.Canvas(root, width=66, height=100,
+    cc[f"cc{i}"] = tkinter.Canvas(root, width=136, height=200,
                                   bg='#55AA55')
 
 cja = {}
 for i in range(22):
-    cja[f"cj{i}a"] = tkinter.Canvas(root, width=66, height=100,
+    cja[f"cj{i}a"] = tkinter.Canvas(root, width=136, height=200,
                                     bg='#55AA55')
 
 # Interface emplacement des cartes 1 et 2 du joueur
-cj['cj1'].grid(column=1, row=7)
-cj['cj2'].grid(column=3, row=7)
+cj['cj1'].grid(column=5, row=13)
+cj['cj2'].grid(column=9, row=13)
 
 # Interface emplacement des cartes 1 et 2 du croupier
-cc['cc1'].grid(column=1, row=1)
-cc['cc2'].grid(column=3, row=1)
+cc['cc1'].grid(column=5, row=5)
+cc['cc2'].grid(column=9, row=5)
 
 numero_main = tkinter.Label(root, text='')
 
@@ -1727,7 +1746,7 @@ nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f' défausse: {str(len(defausse))}', bg='dark green')
-nb_carte_paquet.grid(column=10, row=0)
+nb_carte_paquet.grid(column=11,columnspan=3, row=0, rowspan=2)
 
 
 window.mainloop()
