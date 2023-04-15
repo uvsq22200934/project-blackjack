@@ -324,9 +324,9 @@ def donne_initiale():
         if argent_joueur >= prix_assurance:
             texte_assurance['text'] = 'Le Dealer vient de tirer un ' + \
                 f'As. Voulez vous payer une assurance ({prix_assurance})?'
-            texte_assurance.grid(column=7, columnspan=2, row=9, rowspan=3)
-            bouton_oui_assurance.grid(column=7, columnspan=2, row=10)
-            bouton_non_assurance.grid(column=7, columnspan=2, row=11)
+            texte_assurance.grid(column=10, columnspan=5, row=9, rowspan=3)
+            bouton_oui_assurance.grid(column=11, columnspan=2, row=11)
+            bouton_non_assurance.grid(column=13, columnspan=2, row=11)
             root.update()
         else:
             if score(main_joueur) == 21:
@@ -1558,9 +1558,9 @@ texte_assurance = tkinter.Label(root, text='',
                                 font=('helvetica', 15))
 
 # Widgets pour l'assurance
-bouton_oui_assurance = tkinter.Button(root, text='Oui',
+bouton_oui_assurance = tkinter.Button(root, text='Oui', relief='flat',
                                       font=('helvetica', 15))
-bouton_non_assurance = tkinter.Button(root, text='Non',
+bouton_non_assurance = tkinter.Button(root, text='Non', relief='flat',
                                       font=('helvetica', 15))
 
 bouton_oui_assurance.bind(
