@@ -618,6 +618,7 @@ def doubble_down(main):
     main : list
         Correspond à la main qui double down
     """
+    print('dubler down')
     global mise_totale
     global argent_joueur
     global split

@@ -23,6 +23,7 @@ Joseph ARIAS
 Pour que le programme fonctionne, il faut importer les librairies suivantes:
 -Tkinter
 -Pillow
+Le réglage de la taille de l'écran doit être à 125%
 
 ## Installation
 
