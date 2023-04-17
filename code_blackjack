@@ -14,8 +14,7 @@ import tkinter
 from PIL import Image, ImageTk
 import _tkinter
 import time
-from pydub import AudioSegment
-from pydub.playback import play
+
 
 
 
@@ -1376,85 +1375,6 @@ def dir_regles(event):
     règle.pack(fill=tkinter.BOTH, expand=True)
 
 
-def option_musique(event):
-    #fonction qui permet d'afficher des options de musique
-    if event.widget == bouton_musique : 
-        musique_fen = tkinter.Frame()
-        musique_fen.configure(bg='wheat')
-        musique_titre = tkinter.Label(musique_fen, text='OPTIONS DE VOTRE MUSIQUE\n',
-                              bg='wheat', fg='black', font=('helvetica', 23))
-        musique_titre.pack(side='top')
-        option1 = tkinter.Button(musique_fen, text='option1', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option1.pack(side='top', pady=10)
-        option2 = tkinter.Button(musique_fen, text='option2', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option2.pack(side='top', pady=10)
-        option3 = tkinter.Button(musique_fen, text='option3', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option3.pack(side='top', pady=10)
-        option4 = tkinter.Button(musique_fen, text='option4', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option4.pack(side='top', pady=10)
-        option5 = tkinter.Button(musique_fen, text='option5', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option5.pack(side='top', pady=10)
-        option6 = tkinter.Button(musique_fen, text='option6', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option6.pack(side='top', pady=10)
-        option7 = tkinter.Button(musique_fen, text='option7', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option7.pack(side='top', pady=10)
-        option8 = tkinter.Button(musique_fen, text='option8', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option8.pack(side='top', pady=10)
-        option9 = tkinter.Button(musique_fen, text='option9', 
-                                 bg='wheat', fg='gray4', font=('helvetica', 20))
-        option9.pack(side='top', pady=10)
-        triangle_play = tkinter.Label(musique_fen, text=' ▶', 
-                                       bg='wheat',font=('helvetica', 30))
-        triangle_play.pack(anchor='center', side='right')
-        if event.widget == option1 :  
-            song1 = AudioSegment.from_wav("Option1_par_defaut.wav")
-            play(song1)
-        elif event.widget == option2 : 
-            song2 = AudioSegment.from_wav('Option2_musique_fin_partie.wav')
-            play(song2)
-        elif event.widget == option3 : 
-            song3 = AudioSegment.from_wav('Option3_mario.wav')
-            play(song3)
-        elif event.widget == option4 :
-            song4 = AudioSegment.from_wav('Option4_constant.wav')
-            play(song4)
-        elif event.widget == option5 : 
-            song5 = AudioSegment.from_wav('Option5_salle_attente_arcade.wav')
-            play(song5)
-        elif event.widget == option6 : 
-            song6 = AudioSegment.from_wav('Option6_galaxy_land.wav')
-            play(song6)
-        elif event.widget == option7 : 
-            song7 = AudioSegment.from_wav('Option_geometry_dash.wav')
-            play(song7)
-        elif event.widget == option8 : 
-            song8 = AudioSegment.from_wav('Option8_Roller_Coster.wav')
-            play(song8)
-        elif event.widget == option9 : 
-            song9 = AudioSegment.from_wav('Option9_doux.wav')
-            play(song9)
-        def revenir(event):
-            """fonction pour revenir au jeu et de
-            quitter la fenêtre lorsque
-            le bouton est appuyée"""
-            if event.widget == bouton_revenir:
-                musique_fen.pack_forget()
-                root.pack(fill=tkinter.BOTH, expand=True)
-        bouton_revenir = tkinter.Button(musique_fen, text='Revenir au jeu', bg='wheat',
-                                        font=('helvetica', 20), relief='raised')
-        bouton_revenir.pack()
-        bouton_revenir.bind('<Button-1>', revenir)
-    root.pack_forget()
-    musique_fen.pack(fill='both', expand=True)
-
 # Fenêtre accueil
 
 window = tkinter.Tk()
@@ -1719,13 +1639,6 @@ bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
                                  font=('helvetica', 10))
 bouton_tutoriel.grid(column=2, columnspan=2, row=1)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
-
-#bouton qui permet l'accès aux options de musique
-bouton_musique = tkinter.Button(root, text=' ♫', bg='dark green',
-                                fg='black', font=('helvetica', 20),
-                                relief='flat')
-bouton_musique.grid(column=4, columnspan=2, row=1)
-bouton_musique.bind('<Button-1>', option_musique)
 
 # Mise du jeu """
 mise_totale = 0
