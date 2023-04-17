@@ -930,6 +930,8 @@ def rejouer():
     global cj
     global cja
     global last_press
+    global assurance_prise
+    assurance_prise = 0
     if time.time() - last_press < 0.5:
         return
     else:
