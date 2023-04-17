@@ -14,6 +14,8 @@ import tkinter
 from PIL import Image, ImageTk
 import _tkinter
 import time
+from playsound import playsound
+
 
 # Si debug == 1, alors les print sont effectifs. Si debug == 0, aucun print
 # n'apparait
@@ -115,6 +117,8 @@ image_tuto_dic = dict()
 
 # Fonctions
 
+def play1():
+    playsound('Option1_par_defaut.mp3') #joue une musique de fond
 
 def creer_image(carte, position_carte, texte):
     """Créer l'image d'une carte.
@@ -1340,8 +1344,78 @@ def dir_regles(event):
     règle.pack(fill=tkinter.BOTH, expand=True)
 
 
-# Fenêtre accueil
+def option_musique(event):
+    #fonction qui permet d'afficher des options de musique
+    if event.widget == bouton_musique : 
+        musique_fen = tkinter.Frame()
+        musique_fen.configure(bg='wheat')
+        musique_titre = tkinter.Label(musique_fen, text='OPTIONS DE VOTRE MUSIQUE\n',
+                              bg='wheat', fg='black', font=('helvetica', 23))
+        musique_titre.pack(side='top')
+        option1 = tkinter.Button(musique_fen, text='option1', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option1.pack(side='top', pady=10)
+        option2 = tkinter.Button(musique_fen, text='option2', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option2.pack(side='top', pady=10)
+        option3 = tkinter.Button(musique_fen, text='option3', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option3.pack(side='top', pady=10)
+        option4 = tkinter.Button(musique_fen, text='option4', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option4.pack(side='top', pady=10)
+        option5 = tkinter.Button(musique_fen, text='option5', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option5.pack(side='top', pady=10)
+        option6 = tkinter.Button(musique_fen, text='option6', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option6.pack(side='top', pady=10)
+        option7 = tkinter.Button(musique_fen, text='option7', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option7.pack(side='top', pady=10)
+        option8 = tkinter.Button(musique_fen, text='option8', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option8.pack(side='top', pady=10)
+        option9 = tkinter.Button(musique_fen, text='option9', 
+                                 bg='wheat', fg='gray4', font=('helvetica', 20))
+        option9.pack(side='top', pady=10)
+        triangle_play = tkinter.Label(musique_fen, text=' ▶', 
+                                       bg='wheat',font=('helvetica', 30))
+        triangle_play.pack(anchor='center', side='right')
+        if event.widget == option1 :
+            play1('Option1_par_defaut.mp3')
+        elif event.widget == option2 : 
+            play1('Option2_musique_fin_partie.mp3')
+        elif event.widget == option3 : 
+            play1('Option3_mario.mp3')
+        elif event.widget == option4 : 
+            playsound('Option4_constant.mp3')
+        elif event.widget == option5 : 
+            play1('Option5_salle_attente_arcade.mp3')
+        elif event.widget == option6 : 
+            play1('Option6_galaxy_land.mp3')
+        elif event.widget == option7 : 
+            play1('Option_geometry_dash.mp3')
+        elif event.widget == option8 : 
+            play1('Option8_Roller_Coster.mp3')
+        elif event.widget == option9 : 
+            play1('Option9_doux.mp3')
 
+        def revenir(event):
+            """fonction pour revenir au jeu et de
+            quitter la fenêtre lorsque
+            le bouton est appuyée"""
+            if event.widget == bouton_revenir:
+                musique_fen.pack_forget()
+                root.pack(fill=tkinter.BOTH, expand=True)
+        bouton_revenir = tkinter.Button(musique_fen, text='Revenir au jeu', bg='wheat',
+                                        font=('helvetica', 20), relief='raised')
+        bouton_revenir.pack()
+        bouton_revenir.bind('<Button-1>', revenir)
+    root.pack_forget()
+    musique_fen.pack(fill='both', expand=True)
+
+# Fenêtre accueil
 
 window = tkinter.Tk()
 window.title('Menu BlackJack 21')
@@ -1504,7 +1578,7 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 # Bouton pour quitter la partie
 bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='white',
                                 bg='red',font=('helvetica', 15))
-bouton_quitter.grid(column=14, row=22,columnspan=2)
+bouton_quitter.grid(column=14, row=22, columnspan=5)
 bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
@@ -1605,6 +1679,13 @@ bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
                                  font=('helvetica', 10))
 bouton_tutoriel.grid(column=2, columnspan=2, row=1)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
+
+#bouton qui permet l'accès aux options de musique
+bouton_musique = tkinter.Button(root, text=' ♫', bg='dark green',
+                                fg='black', font=('helvetica', 20),
+                                relief='flat')
+bouton_musique.grid(column=4, columnspan=2, row=1)
+bouton_musique.bind('<Button-1>', option_musique)
 
 # Mise du jeu """
 mise_totale = 0
@@ -1747,7 +1828,7 @@ nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f' défausse: {str(len(defausse))}', bg='dark green')
-nb_carte_paquet.grid(column=11,columnspan=3, row=0, rowspan=2)
+nb_carte_paquet.grid(column=15,columnspan=3, row=0, rowspan=2)
 
 
 window.mainloop()
