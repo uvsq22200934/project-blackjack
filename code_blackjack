@@ -947,7 +947,7 @@ def rejouer():
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
     apparition_mise()
-    bouton_donne_initiale.grid(column=7, row=12,rowspan=2, columnspan=2)
+    bouton_donne_initiale.grid(column=7, row=12, columnspan=2)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
@@ -1074,7 +1074,7 @@ def mise(montant_mise):
     global argent_joueur
     if (argent_joueur - montant_mise) >= 0:
         erreur.grid_forget()
-        bouton_donne_initiale.grid(column=7, row=12,rowspan=2, columnspan=2)
+        bouton_donne_initiale.grid(column=7, row=12, columnspan=2)
         mise_totale += montant_mise
         argent_joueur -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
@@ -1523,45 +1523,45 @@ bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
 # Bouton qui relance la partie sans quitter le jeu
 bouton_rejouer = tkinter.Button(root, text='Rejouer', fg="blue",
-                                 command=rejouer, font=('helvetica', 12))
+                                 command=rejouer, font=('helvetica', 15))
 
 # Bouton qui permet de piocher
-bouton_hit = tkinter.Button(root, bg='white', text='Hit',
+bouton_hit = tkinter.Button(root, bg='white', text='Hit', fg="blue",
                             font=('helvetica', 15))
 bouton_hit.bind('<Button-1>', lambda e: hit(main_joueur, 'main_joueur'))
 
 # Bouton qui permet de 'double down'
 bouton_double_down = tkinter.Button(root, bg='white', text='Double Down',
-                                    font=('helvetica', 15))
+                                    fg="blue", font=('helvetica', 15))
 bouton_double_down.bind('<Button-1>', lambda e: doubble_down(
     main_joueur))
 
 # Bouton qui permet de 'stand'
-stand_bouton = tkinter.Button(root, bg='salmon', text='Stand',
+stand_bouton = tkinter.Button(root, bg='white', text='Stand', fg="blue",
                               font=('helvetica', 15))
 stand_bouton.bind(
     "<Button-1>", lambda e: stand())
 
 # Bouton qui permet de 'surrender'
-bouton_surrender = tkinter.Button(root, bg='red', text='Surrender',
-                                  font=('helvetica', 15))
+bouton_surrender = tkinter.Button(root, bg='white', text='Surrender',
+                                  fg="blue", font=('helvetica', 15))
 bouton_surrender.bind('<Button-1>', lambda e: surrender())
 
 # Bouton qui 'split'
 bouton_split = tkinter.Button(root, text='Split', command=splitter,
-                              font=('helvetica', 15))
+                              fg="blue", font=('helvetica', 15))
 
 bouton_joueur = [bouton_hit, stand_bouton, bouton_surrender,
                  bouton_double_down]
 
-texte_assurance = tkinter.Label(root, text='',
+texte_assurance = tkinter.Label(root, text='',fg="blue",
                                 font=('helvetica', 15))
 
 # Widgets pour l'assurance
 bouton_oui_assurance = tkinter.Button(root, text='Oui', relief='flat',
-                                      font=('helvetica', 15))
+                                      fg="blue", font=('helvetica', 15))
 bouton_non_assurance = tkinter.Button(root, text='Non', relief='flat',
-                                      font=('helvetica', 15))
+                                      fg="blue", font=('helvetica', 15))
 
 bouton_oui_assurance.bind(
     '<Button-1>', lambda e: reponse_assurance(reponse='oui'))
@@ -1700,7 +1700,7 @@ labelc = tkinter.Label(root, text="Dealer ", font=(
 labelc.grid(column=0, row=7,columnspan=5)
 
 # Texte qui définit le côté du joueur
-labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", 20),
+labelj = tkinter.Label(root, text= nom_joueur, font=("helvetica", 20),
                        bg="dark green", fg="black")
 labelj.grid(column=0, row=17, columnspan=5)
 
