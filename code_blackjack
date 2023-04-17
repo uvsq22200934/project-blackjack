@@ -229,24 +229,28 @@ def debut(event):
         # Si le joueur n'a pas entré un nombre compris entre 0 et 1 000 000 000
         # exclus
         if not argent_joueur.isdigit() or int(argent_joueur) <= 0 or\
-                len(argent_joueur) > 10:
+                len(argent_joueur) > 4:
             # Si la fonction pack_info retourne une erreur Tcl, alors le
             # message d'erreur n'est pas encore pack et donc le programme le
             # pack. Cela permet de ne pas pack plusieurs fois le message
             # d'erreur
+            print(erreur_nom.grid_info())
             try:
                 erreur_argent.grid_info()
+                print('1', erreur_nom.grid_info())
             except _tkinter.TclError:
-                erreur_argent.grid()
+                erreur_argent.grid(row=9, column=7)
+                print('2', erreur_nom.grid_info())
         else:
             erreur_argent.grid_forget()
         # Si le nom du joueur fait plus de 15 caractère et/ou n'est consitué
         # que d'espaces
-        if len(nom_joueur) > 15 and len(nom_joueur.strip()) != 0:
+        if len(nom_joueur) > 15 or len(nom_joueur.strip()) == 0:
+            print(erreur_nom.grid_info())
             try:
                 erreur_nom.grid_info()
             except _tkinter.TclError:
-                erreur_nom.pack()
+                erreur_nom.grid(row=9, column=7)
         else:
             erreur_nom.grid_forget()
         # Si le joueur n'entre pas de nom, il est nommé 'Player' par défaut
@@ -264,9 +268,10 @@ def debut(event):
         # soit pas trop long ni constitué uniquement d'espaces
         if argent_joueur != '' and nom_joueur != '' and\
                 str(argent_joueur).isdigit() and len(nom_joueur) < 15 and\
-                len(str(argent_joueur)) <= 10 and argent_joueur > 0 and\
+                len(str(argent_joueur)) <= 4 and argent_joueur > 0 and\
                 len(nom_joueur.strip()) != 0:
             argent['text'] = 'Crédits: '+str(argent_joueur)
+            labelj['text'] = nom_joueur
             accueil.pack_forget()
             root.pack(fill=tkinter.BOTH, expand=True)
             fenetre_jeu = 1
@@ -433,11 +438,13 @@ def hit(main, pointeur):
                 if main == main_joueur:
                     creer_image(main[i-1], carte[f'cj{i}'],
                                 f'cj{i}')
-                    carte[f'cj{i}'].grid(column=10+i, row=15, padx=10, rowspan=5, pady=10)
+                    carte[f'cj{i}'].grid(
+                        column=10+i, row=15, padx=10, rowspan=5, pady=10)
                 if main == main_joueur_split:
                     creer_image(main[i-1], carte[f'cj{i}a'],
                                 f'cj{i}a')
-                    carte[f'cj{i}a'].grid(column=10+i, row=15, padx=10, rowspan=5, pady=10)
+                    carte[f'cj{i}a'].grid(
+                        column=10+i, row=15, padx=10, rowspan=5, pady=10)
         # On vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
@@ -453,7 +460,8 @@ def hit(main, pointeur):
             if len(main) == i:
                 creer_image(main[i-1], carte[f'cc{i}'], f'cc{i}')
                 root.after(500, root.update())
-                carte[f'cc{i}'].grid(column=10+i, row=5,rowspan=5, pady=10, padx=10)
+                carte[f'cc{i}'].grid(column=10+i, row=5,
+                                     rowspan=5, pady=10, padx=10)
     root.update()
 
 
@@ -565,7 +573,7 @@ def croupier():
     global main_croupier
     numero_main.grid_forget()
     creer_image(main_croupier[1], cc['cc2'], 'cc2')
-    cc['cc2'].grid(column=5, row=5,columnspan=2)
+    cc['cc2'].grid(column=5, row=5, columnspan=2)
     root.update()
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 16:
@@ -778,9 +786,9 @@ def resultat(action=0):
                 f'Score du Dealer: {str(score_croupier)} \n'
         resultat_final['text'] = annonce
         resultat_final.grid(column=13+len(main_croupier),
-                             row=3, columnspan=2)
+                            row=3, columnspan=2)
         resultat_label.grid(column=13+len(main_croupier),
-                             row=3, columnspan=2)
+                            row=3, columnspan=2)
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
@@ -947,7 +955,7 @@ def rejouer():
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
     apparition_mise()
-    bouton_donne_initiale.grid(column=7, row=12,rowspan=2)
+    bouton_donne_initiale.grid(column=7, row=12, rowspan=2)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
@@ -990,7 +998,7 @@ def ordre_boutons2(event):
     if event.widget == bouton_melanger:
         bouton_melanger.grid_forget()
         bouton_donne_initiale.grid(column=7,
-                                    row=12, rowspan=2)
+                                   row=12, rowspan=2)
         apparition_mise()
 
 
@@ -1017,18 +1025,18 @@ def apparition_bouton_joueur():
     """
     global argent_joueur
     bouton_hit.grid(column=7, columnspan=2, row=11)
-    stand_bouton.grid(column=7,columnspan=2, row=13)
-    bouton_surrender.grid(column=7,columnspan=2, row=14)
+    stand_bouton.grid(column=7, columnspan=2, row=13)
+    bouton_surrender.grid(column=7, columnspan=2, row=14)
     # L'option double down n'est proposée au joueur que s'il possède encore
     # assez d'argent pour miser une seconde fois la même mise que la mise
     # qu'il vient de faire
     if argent_joueur >= mise_totale:
-        bouton_double_down.grid(column=7,columnspan=2, row=12)
+        bouton_double_down.grid(column=7, columnspan=2, row=12)
     # Si les deux premières cartes du joueur forment une paire et qu'il
     # possède assez d'argent pour miser une seconde fois la même mise que la
     # mise qu'il vient de faire, il lui est proposé de splitter sa main
     if main_joueur[0][0] == main_joueur[1][0] and argent_joueur >= mise_totale:
-        bouton_split.grid(column=7,columnspan=2, row=15)
+        bouton_split.grid(column=7, columnspan=2, row=15)
         argent_joueur -= mise_totale
         mise_texte['text'] == f'Mise main 1: {mise_totale} \n' +\
             f'Mise main 2: {mise_totale}'
@@ -1042,10 +1050,10 @@ def apparition_mise():
     """
     jeton_blanc.grid(column=8, row=22, rowspan=2)
     jeton_bleu.grid(column=7, row=22, rowspan=2)
-    jeton_rouge.grid(column=6, row=22,rowspan=2)
-    jeton_noir.grid(column=9, row=22,rowspan=2)
-    jeton_vert.grid(column=5, row=22,rowspan=2)
-    jeton_tapis.grid(column=10, row=22,rowspan=2)
+    jeton_rouge.grid(column=6, row=22, rowspan=2)
+    jeton_noir.grid(column=9, row=22, rowspan=2)
+    jeton_vert.grid(column=5, row=22, rowspan=2)
+    jeton_tapis.grid(column=10, row=22, rowspan=2)
     miser.grid(column=0, row=22, columnspan=2)
     mise_texte.grid(column=0, row=21, columnspan=2)
 
@@ -1074,7 +1082,7 @@ def mise(montant_mise):
     global argent_joueur
     if (argent_joueur - montant_mise) >= 0:
         erreur.grid_forget()
-        bouton_donne_initiale.grid(column=7, row=12,rowspan=2)
+        bouton_donne_initiale.grid(column=7, row=12, rowspan=2)
         mise_totale += montant_mise
         argent_joueur -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
@@ -1156,6 +1164,7 @@ def test_dette():
             dette_label.after(5000, lambda: dette_label.grid_forget())
 
 # Fonction pour afficher un tuto sur comment jouer
+
 
 index_image = 0
 
@@ -1344,7 +1353,7 @@ def dir_regles(event):
 
 
 window = tkinter.Tk()
-window.title('Menu BlackJack 21')
+window.title('BlackJack 21')
 # window.geometry('750x600')
 window.state("zoomed")
 window.resizable(width=False, height=False)
@@ -1466,7 +1475,7 @@ cartes4.grid(column=12, columnspan=2, row=9)
 # affichage des erreurs crédit et username
 erreur_argent = tkinter.Label(
     accueil, text='Erreur\n Veuillez entrer un nombre entier\n' +
-    'positif supérieur à 0 et inférieur à 9 999 999 999 \n' +
+    'positif supérieur à 0 et inférieur à 10 000 \n' +
     'pour les crédits', width=35,
     justify='center')
 
@@ -1475,7 +1484,6 @@ erreur_nom = tkinter.Label(accueil, text='Erreur\nVeuillez ' +
                            'moins', width=35)
 
 accueil.pack(expand=True, fill='both')
-
 
 
 # Fenêtre root
@@ -1503,8 +1511,8 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 
 # Bouton pour quitter la partie
 bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='white',
-                                bg='red',font=('helvetica', 15))
-bouton_quitter.grid(column=14, row=22,columnspan=2)
+                                bg='red', font=('helvetica', 15))
+bouton_quitter.grid(column=14, row=22, columnspan=2)
 bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
@@ -1523,7 +1531,7 @@ bouton_donne_initiale.bind('<Button-1>', ordre_boutons3)
 
 # Bouton qui relance la partie sans quitter le jeu
 bouton_rejouer = tkinter.Button(root, text='Rejouer', fg="blue",
-                                 command=rejouer, font=('helvetica', 12))
+                                command=rejouer, font=('helvetica', 12))
 
 # Bouton qui permet de piocher
 bouton_hit = tkinter.Button(root, bg='white', text='Hit',
@@ -1568,7 +1576,7 @@ bouton_oui_assurance.bind(
 bouton_non_assurance.bind(
     '<Button-1>', lambda e: reponse_assurance(reponse='non'))
 
-assurance_valeur = tkinter.Label(root, text='',font=('helvetica', 12))
+assurance_valeur = tkinter.Label(root, text='', font=('helvetica', 12))
 
 # Widgets associés à l'emprunt + dettes
 valid = tkinter.Button(root, text='valider l\'emprunt',
@@ -1578,16 +1586,16 @@ valid.bind('<Button-1>', validd)
 banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
                        font=('helvetica', 15), bg='dark green',
                        fg='red')
-emprunt = tkinter.Button(root, text='Emprunt',font=('helvetica', 9),
+emprunt = tkinter.Button(root, text='Emprunt', font=('helvetica', 9),
                          relief='raised')
 emprunt.bind('<Button-1>', emprunter)
-term = tkinter.Button(root, text='Terminer',font=('helvetica', 9),
+term = tkinter.Button(root, text='Terminer', font=('helvetica', 9),
                       relief='raised')
 term.bind('<Button-1>', quitter)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       'emprunter ?', fg='black',
-                      bg='dark green',font=('helvetica', 10))
+                      bg='dark green', font=('helvetica', 10))
 my_entry3 = tkinter.Entry(root)
 
 entry_label = tkinter.Label(root, text='', bg='dark green', fg='red',
@@ -1617,7 +1625,7 @@ mise_valeur = {'jeton_vert': 1, 'jeton_rouge': 10, 'jeton_bleu': 25,
 argent = tkinter.Label(root, text='Crédits: '+str(argent_joueur),
                        bg='dark green', fg='white',
                        font=('helvetica', 15))
-argent.grid(column=0, row=20,columnspan=2)
+argent.grid(column=0, row=20, columnspan=2)
 
 mise_texte = tkinter.Label(
     root, text='Mise totale: ', bg='dark green', fg='white',
@@ -1697,7 +1705,7 @@ jeton_et_mise = [jeton_vert, jeton_blanc, jeton_bleu, jeton_rouge,
 # Texte qui définit le côté du croupier
 labelc = tkinter.Label(root, text="Dealer ", font=(
     "helvetica", 20), bg="dark green", fg="black")
-labelc.grid(column=0, row=7,columnspan=5)
+labelc.grid(column=0, row=7, columnspan=5)
 
 # Texte qui définit le côté du joueur
 labelj = tkinter.Label(root, text=nom_joueur, font=("helvetica", 20),
@@ -1747,7 +1755,7 @@ nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f' défausse: {str(len(defausse))}', bg='dark green')
-nb_carte_paquet.grid(column=11,columnspan=3, row=0, rowspan=2)
+nb_carte_paquet.grid(column=11, columnspan=3, row=0, rowspan=2)
 
 
 window.mainloop()
