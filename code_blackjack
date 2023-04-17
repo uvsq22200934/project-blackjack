@@ -565,7 +565,7 @@ def croupier():
     global main_croupier
     numero_main.grid_forget()
     creer_image(main_croupier[1], cc['cc2'], 'cc2')
-    cc['cc2'].grid(column=5, row=5,columnspan=2)
+    cc['cc2'].grid(column=9, row=5,columnspan=2)
     root.update()
     points_croupier = score(main_croupier)
     while score(main_croupier) <= 16:
@@ -947,7 +947,7 @@ def rejouer():
         coupe = random.randint(52, len(paquet)-52)
     bouton_rejouer.grid_forget()
     apparition_mise()
-    bouton_donne_initiale.grid(column=7, row=12,rowspan=2)
+    bouton_donne_initiale.grid(column=7, row=12,rowspan=2, columnspan=2)
     mise_totale = 0
     mise_texte['text'] = "Mise totale: "
     argent['text'] = f'Crédits: {str(argent_joueur)}'
@@ -989,8 +989,8 @@ def quitter(event):
 def ordre_boutons2(event):
     if event.widget == bouton_melanger:
         bouton_melanger.grid_forget()
-        bouton_donne_initiale.grid(column=7,
-                                    row=12, rowspan=2)
+        bouton_donne_initiale.grid(column=7, columnspan=2,
+                                    row=12)
         apparition_mise()
 
 
@@ -1003,7 +1003,7 @@ def ordre_boutons3(event):
             donne_initiale()
         else:
             bouton_donne_initiale.grid_forget()
-            erreur.grid(column=7, row=12, rowspan=2)
+            erreur.grid(column=7, row=12, columnspan=2)
             erreur.lift()
             erreur['text'] = 'Veuillez miser pour jouer'
 
@@ -1074,7 +1074,7 @@ def mise(montant_mise):
     global argent_joueur
     if (argent_joueur - montant_mise) >= 0:
         erreur.grid_forget()
-        bouton_donne_initiale.grid(column=7, row=12,rowspan=2)
+        bouton_donne_initiale.grid(column=7, row=12,rowspan=2, columnspan=2)
         mise_totale += montant_mise
         argent_joueur -= montant_mise
         mise_texte['text'] = f"Mise totale: {str(mise_totale)}"
@@ -1488,7 +1488,7 @@ erreur = tkinter.Label(root, text='', font=('helvetica', 10),
 
 cartes = tkinter.Canvas(root, width=136, height=200, bg='#55AA55')
 dos_carte(cartes, 'cartes')
-cartes.grid(column=7, row=10, rowspan=5)
+cartes.grid(column=7, row=10, rowspan=5, columnspan=2)
 
 # Interface graphique
 
