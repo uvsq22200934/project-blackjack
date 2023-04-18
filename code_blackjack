@@ -1473,34 +1473,57 @@ entree_credit.grid(column=7, row=8)
 # Graphisme fenêtre acceuil
 
 # affichage image de la pile de jeton
-pile = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+pile = tkinter.Canvas(accueil, width=200, height=300, bg='red',
                       highlightthickness=0)
 pile.grid(column=8, row=9, columnspan=2)
 image_jeton_pile = Image.open("./Images/jeton_pile.png")
-resize_image0 = image_jeton_pile.resize((240, 200))
+resize_image0 = image_jeton_pile.resize((240, 250))
 img0 = ImageTk.PhotoImage(resize_image0)
-pile.create_image(100, 100, image=img0, anchor='center')
+pile.create_image(100, 300, image=img0, anchor='s')
 
 # affichage image de pile1
-pile1 = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+pile1 = tkinter.Canvas(accueil, width=200, height=300, bg='red',
                        highlightthickness=0)
 pile1.grid(column=5, columnspan=2, row=9)
 image_jeton_pile1 = Image.open("./Images/jeton_pile.png")
-resize_image00 = image_jeton_pile1.resize((240, 200))
+resize_image00 = image_jeton_pile1.resize((240, 250))
 img00 = ImageTk.PhotoImage(resize_image00)
-pile1.create_image(100, 100, image=img00, anchor='center')
+pile1.create_image(100, 300, image=img00, anchor='s')
 
 # graphisme cartes à gauche
-cartes1 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
-cartes2 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
-cartes1.grid(column=1, padx=5, columnspan=2, row=9)
-cartes2.grid(column=3, columnspan=2, row=9)
+
+
+cartes1 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes1.grid(column=1, padx=5, columnspan=2, row=9, rowspan=10)
+image_cartes1 = Image.open("./Images/dos_cartes3.jpg")
+resize_image1 = image_cartes1.resize((200, 320))
+img_cartes1 = ImageTk.PhotoImage(resize_image1)
+cartes1.create_image(200, 320, image=img_cartes1, anchor='se')
+
+cartes2 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes2.grid(column=3, columnspan=2, row=9, rowspan=10)
+image_cartes2 = Image.open("./Images/dos_cartes3.jpg")
+resize_image2 = image_cartes2.resize((200, 320))
+img_cartes2 = ImageTk.PhotoImage(resize_image2)
+cartes2.create_image(200, 320, image=img_cartes2, anchor='se')
+
 
 # graphisme cartes à droite
-cartes3 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
-cartes4 = tkinter.Canvas(accueil, width=200, height=290, bg='green')
-cartes3.grid(column=10, padx=10, columnspan=2, row=9)
-cartes4.grid(column=12, columnspan=2, row=9)
+
+cartes3 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes3.grid(column=10, padx=10, columnspan=2, row=9, rowspan=10)
+image_cartes3 = Image.open("./Images/dos_cartes3.jpg")
+resize_image3 = image_cartes3.resize((200, 320))
+img_cartes3 = ImageTk.PhotoImage(resize_image3)
+cartes3.create_image(200, 320, image=img_cartes3, anchor='se')
+
+cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes4.grid(column=12, columnspan=2, row=9, rowspan=10)
+image_cartes4 = Image.open("./Images/dos_cartes3.jpg")
+resize_image4 = image_cartes4.resize((200, 320))
+img_cartes4 = ImageTk.PhotoImage(resize_image4)
+cartes4.create_image(200, 320, image=img_cartes4, anchor='se')
+
 
 # affichage des erreurs crédit et username
 erreur_argent = tkinter.Label(
