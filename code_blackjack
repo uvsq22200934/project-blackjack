@@ -12,7 +12,6 @@ __status__ = "Developement"
 import random
 import tkinter
 from PIL import Image, ImageTk
-import _tkinter
 import time
 
 
@@ -94,10 +93,6 @@ assurance_prise = 0
 # effectivement un blackjack ou pas
 assurance_gagnante = 0
 
-# Variable qui permet de savoir si le joueur a cliqué sur play sur l'écran
-# d'accueil
-fenetre_jeu = 0
-
 
 # Variables qui dépendent du joueur et/ou peuvent évoluer au cours de la partie
 argent_joueur = 0
@@ -122,7 +117,7 @@ def creer_image(carte, position_carte, texte):
 
     Cette fonction sert à créer l'image de la carte sur l'interface graphique.
 
-    Parametres
+    Paramètres
     ----------
     carte : str
         Le nom de la carte.
@@ -154,7 +149,7 @@ def creer_image(carte, position_carte, texte):
         B += 570*3
         D += 570*3
     for i in range(2, 11):
-        # Si la valeur nominale de la carte est cimprise entre 2 et 10
+        # Si la valeur nominale de la carte est comprise entre 2 et 10
         if str(i) in carte:
             A += 390 * (i-1)
             C += 390 * (i-1)
@@ -197,7 +192,7 @@ def dos_carte(position, texte):
     Cette fonction sert à créer l'image de du dos des carte sur l'interface
     graphique.
 
-    Parametres
+    Paramètres
     ----------.
     position : canvas
         Le canvas sur lequel l'image de la carte va s'afficher.
@@ -217,7 +212,7 @@ def debut(event):
     Cette fonction sert à afficher la fenêtre correspondant au jeu lorsque
     l'on appuie sur le bouton play.
 
-    Parametres
+    Paramètres
     ----------.
     event
     """
@@ -227,49 +222,46 @@ def debut(event):
     if event.widget == play:
         nom_joueur = entree_username.get()
         argent_joueur = entree_credit.get()
-        # Si le joueur n'a pas entré un nombre compris entre 0 et 1 000 000 000
+        # Si le joueur met des espaces entre les chiffres, ils sont supprimés
+        argent_joueur = argent_joueur.replace(" ", "")
+        # Si le joueur n'a pas entré un nombre compris entre 0 et 100 000
         # exclus
         if not argent_joueur.isdigit() or int(argent_joueur) <= 0 or\
-                len(argent_joueur) > 4:
-            # Si la fonction pack_info retourne une erreur Tcl, alors le
+                len(argent_joueur) > 5:
+            # Si la fonction pack_info retourne {}, alors le
             # message d'erreur n'est pas encore pack et donc le programme le
             # pack. Cela permet de ne pas pack plusieurs fois le message
             # d'erreur
-            print(erreur_nom.grid_info())
-            try:
-                erreur_argent.grid_info()
-                print('1', erreur_nom.grid_info())
-            except _tkinter.TclError:
+            if erreur_argent.grid_info() == {}:
                 erreur_argent.grid(row=9, column=7)
-                print('2', erreur_nom.grid_info())
         else:
             erreur_argent.grid_forget()
         # Si le nom du joueur fait plus de 15 caractère et/ou n'est consitué
         # que d'espaces
         if len(nom_joueur) > 15 or len(nom_joueur.strip()) == 0:
-            print(erreur_nom.grid_info())
-            try:
-                erreur_nom.grid_info()
-            except _tkinter.TclError:
-                erreur_nom.grid(row=9, column=7)
+            if erreur_nom.grid_info() == {}:
+                erreur_argent.grid(row=9, column=7)
         else:
             erreur_nom.grid_forget()
         # Si le joueur n'entre pas de nom, il est nommé 'Player' par défaut
         if nom_joueur == '':
             nom_joueur = 'Player'
+        # Si le joueur n'entre pas de crédit, il démarre avec 1 000 crédit
         if argent_joueur == '':
             argent_joueur = '1000'
         # On vérifie que le joueur ai bien rentré un texte uniquement composé
-        # de chiffres et que le nombre soit compris entre 0 et 1 000 000 000
+        # de chiffres et que le nombre soit compris entre 0 et 9 999:
         # exclus
-        if argent_joueur != '' and argent_joueur.isdigit():
+        if argent_joueur != '' and argent_joueur.isdigit() and\
+                len(argent_joueur) < 6:
             argent_joueur = int(argent_joueur)
         # On vérifie avant de lancer la fenêtre de jeu que le joueur ai bien
-        # rentré un crédit uniquement composé de chiffre et que son nom ne
-        # soit pas trop long ni constitué uniquement d'espaces
+        # rentré un crédit uniquement composé de chiffre et que ce dernier
+        # soit compris entre 0 et 9 999 et que son nom ne soit pas trop long
+        # ni constitué uniquement d'espaces
         if argent_joueur != '' and nom_joueur != '' and\
                 str(argent_joueur).isdigit() and len(nom_joueur) < 15 and\
-                len(str(argent_joueur)) <= 4 and argent_joueur > 0 and\
+                len(str(argent_joueur)) < 6 and argent_joueur > 0 and\
                 len(nom_joueur.strip()) != 0:
             argent['text'] = 'Crédits: '+str(argent_joueur)
             labelj['text'] = nom_joueur
@@ -357,7 +349,7 @@ def reponse_assurance(reponse=0):
 
     Cette fonction sert à déterminer si le joueur prend ou non l'assurance
 
-    Parametres
+    Paramètres
     ----------.
     reponse : str
         Permet de déterminer si le joueur prend l'assurance ou non
@@ -403,18 +395,20 @@ def hit(main, pointeur, double_down=0):
     Cette fonction sert à faire piocher une carte lorsque le joueur ou le
     croupier "hit".
 
-    Parametres
+    Paramètres
     ----------.
     main : list
         Correspond à la main qui va piocher la carte
     pointeur : str
         Permet de savoir si c'est le croupier qui pioche ou un joueur
+    double_down : int
+        Permet de savoir si la fonction a été appelée à partir de la fonction
+        double_down ou croupier
     """
     global main_joueur
     global main_croupier
     global paquet
     global last_press
-    print('entrée dans hit')
     if double_down == 0:
         if time.time() - last_press < 0.5:
             return
@@ -428,7 +422,6 @@ def hit(main, pointeur, double_down=0):
     else:
         carte = cj
     if pointeur == 'main_joueur':
-        print('main dans hit', main)
         bouton_double_down.grid_forget()
         bouton_split.grid_forget()
         bouton_surrender.grid_forget()
@@ -456,7 +449,6 @@ def hit(main, pointeur, double_down=0):
         if debug == 1:
             print(len(main))
         main.append(paquet[0])
-        print('main croupier main', main)
         del paquet[0]
         nb_carte_paquet['text'] = 'Nombre de cartes restantes dans le ' +\
             f'paquet: {str(len(paquet))} \nNombre de cartes restantes ' +\
@@ -477,7 +469,7 @@ def test_score(main):
     dépasse pas 21 points. Si c'est le cas, aucune action supplémentaire du
     joueur ne peut avoir lieu sur la main en question
 
-    Parametres
+    Paramètres
     ----------.
     main : list
         Correspond à la main dont le socre est testé
@@ -539,7 +531,7 @@ def score(main):
 
     Cette fonction sert à déterminer quel est le score d'une main
 
-    Parametres
+    Paramètres
     ----------.
     main : list
         Correspond à la main dont le score est évalué
@@ -584,7 +576,7 @@ def croupier():
     while points_croupier <= 16:
         if debug == 1:
             print(points_croupier, main_croupier)
-        hit(main_croupier, 'main_croupier')
+        hit(main_croupier, 'main_croupier', 1)
         points_croupier = score(main_croupier)
     if debug == 1:
         print('resultat dans croupier')
@@ -622,7 +614,7 @@ def doubble_down(main):
     Cette fonction sert à réagir lorsque le joueur doubble down: il double sa
     mise, reçois une carte, puis sont tour s'arrête
 
-    Parametres
+    Paramètres
     ----------.
     main : list
         Correspond à la main qui double down
@@ -675,7 +667,7 @@ def resultat(action=0):
 
     Cette fonction sert à donner le résulat de la manche
 
-    Parametres
+    Paramètres
     ----------.
     action : str
         Permet de savoir si le joueur a surrender ou pas
@@ -794,7 +786,7 @@ def resultat(action=0):
         resultat_final.grid(column=13+len(main_croupier),
                             row=3, columnspan=2)
         resultat_label.grid(column=13+len(main_croupier),
-                            row=3, columnspan=2)
+                            row=4, columnspan=2)
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
@@ -811,7 +803,7 @@ def calcul_gain(consequence=0, assurance_gagnante=0):
 
     Cette fonction sert à calculer les gains en fonction du résultat
 
-    Parametres
+    Paramètres
     ----------.
     consequence : str
         Permet de déterminer combien le joueur a remporté en fonction du
@@ -1081,7 +1073,7 @@ def mise(montant_mise):
 
     Cette fonction permet de comptabiliser la mise du joueur
 
-    Parametres
+    Paramètres
     ----------.
     montant_mise: int
         Détermine de combien la mise doit être incrémentée
@@ -1182,7 +1174,6 @@ def tutoriel(event):
     def retour(event):
         # Fonction pour faire un retour en arrière
         global index_image
-        print(index_image)
         if event.widget == bouton_retour and index_image == 0:
             index_image = 0
         elif event.widget == bouton_retour and index_image == 1:
@@ -1223,7 +1214,6 @@ def tutoriel(event):
         # Fonction pour passer d'une image à une autre
         global index_image
         # index qui sert à attribuer une image à sa position
-        print(index_image)
         if event.widget == bouton_pass and index_image == 0:
             index_image += 1
             image_tuto = Image.open('./Images/image_mise.png')
