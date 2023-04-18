@@ -1256,14 +1256,14 @@ def tutoriel(event):
         interface = tkinter.Frame()
         interface.pack(expand=True, fill=tkinter.BOTH)
         # bouton pour passer à l'image suivante
-        bouton_pass = tkinter.Button(interface, text='suivant',
-                                     bg='white', fg='black')
-        bouton_pass.pack(side='right', anchor='s')
+        bouton_pass = tkinter.Button(interface, text='❯', font=('helvetica', 30),
+                                     fg='black', relief='flat')
+        bouton_pass.pack(side='right', anchor='center')
         bouton_pass.bind('<Button-1>', passer)
         # bouton pour revenir à l'image précédente
-        bouton_retour = tkinter.Button(interface, text='retour',
-                                       bg='white', fg='black')
-        bouton_retour.pack(side='left', anchor='s')
+        bouton_retour = tkinter.Button(interface, text='❮',  font=('helvetica', 30),
+                                       fg='black', relief='flat')
+        bouton_retour.pack(side='left', anchor='center')
         bouton_retour.bind('<Button-1>', retour)
 
         canvas_im = tkinter.Canvas(interface)
