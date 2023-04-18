@@ -600,7 +600,7 @@ def stand():
         return
     else:
         last_press = time.time()
-    stand_label.grid(column=4, row=10, columnspan=2)
+    stand_label.grid(column=0, row=17, columnspan=5)
     bouton_split.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
@@ -1565,7 +1565,7 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 # Bouton pour quitter la partie
 bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='white',
                                 bg='red', font=('helvetica', 15))
-bouton_quitter.grid(column=14, row=22, columnspan=5)
+bouton_quitter.grid(column=14, row=21, columnspan=5)
 bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
