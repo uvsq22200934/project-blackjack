@@ -822,14 +822,14 @@ def resultat(action=0):
             else:
                 resultat_label['text'] += 'BLACKJACK: vous êtes le vainqueur'
                 consequence = 'Blackjack'
-                blackjack_fen = tkinter.Frame()
-                blackjack_fen.pack(expand=True, fill=tkinter.BOTH)
+                blackjack = tkinter.Frame()
+                blackjack.pack(expand=True, fill=tkinter.BOTH)
                 canvas_bj = tkinter.Canvas(blackjack, bg='white')
                 canvas_bj.pack(expand=True, fill=tkinter.BOTH)
                 image_bj = Image.open('./Images/image_blackjack.png')
                 image_bj = image_bj.resize((700, 350))
                 image_bj_dic['text'] = ImageTk.PhotoImage(image_bj,
-                                                            master=blackjack_fen)
+                                                            master=blackjack)
                 canvas_bj.create_image(300, 350, image=image_bj_dic['text'],
                                     anchor='nw')
                 root.pack_forget()
@@ -904,10 +904,8 @@ def resultat(action=0):
             annonce += f'Score main 2: {str(score_joueur)}\n' + \
                 f'Score du Dealer: {str(score_croupier)} \n'
         resultat_final['text'] = annonce
-        resultat_final.grid(column=13+len(main_croupier),
-                            row=4, rowspan=2, columnspan=2)
-        resultat_label.grid(column=13+len(main_croupier),
-                            row=6, rowspan=2, columnspan=2)
+        resultat_final.grid(column=13, row=11, rowspan=2, columnspan=4)
+        resultat_label.grid(column=13, row=12, rowspan=2, columnspan=4)
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
@@ -1690,7 +1688,7 @@ bouton_rdj.bind('<Button-1>', dir_regles)
 # Bouton pour quitter la partie
 bouton_quitter = tkinter.Button(root, text='Quitter la partie', fg='white',
                                 bg='red', font=('helvetica', 15))
-bouton_quitter.grid(column=14, row=21, columnspan=5)
+bouton_quitter.grid(column=18, row=21, columnspan=5)
 bouton_quitter.bind('<Button-1>', quitter)
 
 # Mélanger le jeu de carte
@@ -1930,8 +1928,8 @@ numero_main = tkinter.Label(root, text='')
 stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "15"))
-resultat_final = tkinter.Label(
-    root, text='annonce', bg='dark green', fg='red')
+resultat_final = tkinter.Label(root, font=('helvetica', 12),
+    text='annonce', bg='dark green', fg='red')
 resultat_label = tkinter.Label(root, font=('helvetica', 15),
     text='', bg='dark green', fg='yellow')
 
@@ -1940,7 +1938,7 @@ nb_carte_paquet = tkinter.Label(
     root, text='Nombre de cartes restantes dans le paquet:' +
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f' défausse: {str(len(defausse))}', bg='dark green')
-nb_carte_paquet.grid(column=15, columnspan=3, row=0, rowspan=2)
+nb_carte_paquet.grid(column=18, columnspan=3, row=0, rowspan=2)
 
 #listes pour la fonction d'identification
 # et modiffication du background
