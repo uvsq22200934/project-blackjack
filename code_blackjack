@@ -419,7 +419,7 @@ def donne_initiale():
                 f'As.\n Voulez vous payer une assurance ({prix_assurance})?'
             texte_assurance.grid(column=14, columnspan=5, row=8, rowspan=3)
             bouton_oui_assurance.grid(column=15, columnspan=2, row=11)
-            bouton_non_assurance.grid(column=16, columnspan=2, row=11)
+            bouton_non_assurance.grid(column=17, columnspan=2, row=11)
             root.update()
         else:
             if score(main_joueur) == 21:
@@ -824,13 +824,13 @@ def resultat(action=0):
                 consequence = 'Blackjack'
                 blackjack = tkinter.Frame()
                 blackjack.pack(expand=True, fill=tkinter.BOTH)
-                canvas_bj = tkinter.Canvas(blackjack, bg='white')
+                canvas_bj = tkinter.Canvas(blackjack)
                 canvas_bj.pack(expand=True, fill=tkinter.BOTH)
                 image_bj = Image.open('./Images/image_blackjack.png')
                 image_bj = image_bj.resize((700, 350))
                 image_bj_dic['text'] = ImageTk.PhotoImage(image_bj,
                                                             master=blackjack)
-                canvas_bj.create_image(300, 350, image=image_bj_dic['text'],
+                canvas_bj.create_image(335, 135, image=image_bj_dic['text'],
                                     anchor='nw')
                 root.pack_forget()
                 def update():
