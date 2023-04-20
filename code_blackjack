@@ -130,24 +130,36 @@ def id(event):
         cartes3.configure(highlightthickness=0)
         cartes4.configure(highlightthickness=0)
         cartes1.configure(highlightbackground='red', highlightthickness=7)
+        cartes_2.grid_forget()
+        cartes_3.grid_forget()
+        cartes_4.grid_forget()
     if event.widget == cartes2 : 
         r = 2
         cartes1.configure(highlightthickness=0)
         cartes3.configure(highlightthickness=0)
         cartes4.configure(highlightthickness=0)
         cartes2.configure(highlightbackground='red', highlightthickness=7)
+        cartes_1.grid_forget()
+        cartes_3.grid_forget()
+        cartes_4.grid_forget()
     if event.widget == cartes3 :
         r = 3
         cartes1.configure(highlightthickness=0)
         cartes2.configure(highlightthickness=0)
         cartes4.configure(highlightthickness=0)
         cartes3.configure(highlightbackground='red', highlightthickness=7)
+        cartes_2.grid_forget()
+        cartes_1.grid_forget()
+        cartes_4.grid_forget()
     if event.widget== cartes4 : 
         r = 4 
         cartes1.configure(highlightthickness=0)
         cartes2.configure(highlightthickness=0)
         cartes3.configure(highlightthickness=0)
         cartes4.configure(highlightbackground='red', highlightthickness=7)
+        cartes_2.grid_forget()
+        cartes_3.grid_forget()
+        cartes_1.grid_forget()
 
 
 def creer_image(carte, position_carte, texte):
@@ -239,33 +251,21 @@ def dos_carte(position, texte):
         eviter le garbage collector
     """
     if r == 1 :
-        cartes_2.grid_forget()
-        cartes_3.grid_forget()
-        cartes_4.grid_forget()
         image_carte = Image.open("./Images/dos_cartes1.jpg")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
     if r == 2 : 
-        cartes_1.grid_forget()
-        cartes_3.grid_forget()
-        cartes_4.grid_forget()
         image_carte = Image.open("./Images/dos_cartes2.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
     if r == 3 :
-        cartes_2.grid_forget()
-        cartes_1.grid_forget()
-        cartes_4.grid_forget()
         image_carte = Image.open("./Images/dos_cartes3.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
     if r == 4 :
-        cartes_2.grid_forget()
-        cartes_3.grid_forget()
-        cartes_1.grid_forget()
         image_carte = Image.open("./Images/dos_cartes4.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
@@ -1647,7 +1647,7 @@ erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
 
 cartes_1 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55',
-                         highlightthickness=0)
+                         highlightthickness=1)
 cartes_1.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_1 = Image.open("./Images/dos_cartes1.jpg")
 resize_image_1 = image_cartes_1.resize((136, 200))
@@ -1655,7 +1655,7 @@ img_cartes_1['texte'] = ImageTk.PhotoImage(resize_image_1)
 cartes_1.create_image(136, 200, image=img_cartes_1['texte'], anchor='se')
 
 cartes_2 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
-                         highlightthickness=0)
+                         highlightthickness=1)
 cartes_2.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_2 = Image.open("./Images/dos_cartes2.png")
 resize_image_2 = image_cartes_2.resize((136, 200))
@@ -1663,7 +1663,7 @@ img_cartes_2['texte'] = ImageTk.PhotoImage(resize_image_2)
 cartes_2.create_image(136, 200, image=img_cartes_2['texte'], anchor='se')
 
 cartes_3 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
-                         highlightthickness=0)
+                         highlightthickness=1)
 cartes_3.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_3 = Image.open("./Images/dos_cartes3.png")
 resize_image_3 = image_cartes_3.resize((136, 200))
@@ -1672,7 +1672,7 @@ cartes_3.create_image(136, 200, image=img_cartes_3['texte'], anchor='se')
 
 
 cartes_4 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
-                         highlightthickness=0)
+                         highlightthickness=1)
 cartes_4.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_4 = Image.open("./Images/dos_cartes4.png")
 resize_image_4 = image_cartes_4.resize((136, 200))
