@@ -103,8 +103,8 @@ nombre_partie = 0
 nombre_emprunt = 0
 
 #variables pour déterminer les couleurs
-r = 1
-bg_couleur = 0
+r = 1 #par défaut
+
 
 # Dictionnaires permettant de contourner le garbage collector
 images = dict()
@@ -124,69 +124,12 @@ def id(event):
     global liste_bouton_root
     if event.widget == cartes1 :
         r = 1 
-        root['bg']='dark green'
     if event.widget == cartes2 : 
         r = 2
-        index_liste = 0
-        root['bg']='SlateBlue2'
-        liste_objet = [] #liste pour stocker tous les widgets placer dans root
-        liste_objet= list(root.winfo_children())
-        while index_liste != str(len(liste_objet)): # boucle pour modifier le bg de chaque objet de la liste
-            if liste_objet[index_liste] in liste_bouton_root :
-                pass
-            else :
-                liste_objet[index_liste].configure(bg='SlateBlue2')
-            if liste_objet[index_liste] in liste_texte : 
-                liste_objet[index_liste].configure(fg='white')
-            else : 
-                pass
-            if liste_objet[index_liste] in liste_carte : 
-                cja[f"cj{i}a"].configure(bg='MediumPurple1')
-                cc[f"cc{i}"].configure(bg='MediumPurple1')
-                cj[f"cj{i}"].configure(bg='MediumPurple1')
-            else : 
-                pass 
-            index_liste +=1
     if event.widget == cartes3 :
         r = 3
-        index_liste = 0
-        root['bg']='light blue'
-        liste_objet = [] #liste pour stocker tous les widgets placer dans root
-        liste_objet= list(root.winfo_children())
-        while index_liste != str(len(liste_objet)): # boucle pour modifier le bg de chaque objet de la liste
-            if liste_objet[index_liste] in liste_bouton_root :
-                pass
-            else :
-                liste_objet[index_liste].configure(bg='light blue')
-            if liste_objet[index_liste] in liste_texte : 
-                liste_objet[index_liste].configure(fg='black')
-            else : 
-                pass
-            if liste_objet[index_liste] in liste_carte : 
-                liste_objet[index_liste].configure(bg='light blue')
-            else : 
-                pass 
-            index_liste +=1
     if event.widget== cartes4 : 
         r = 4 
-        index_liste = 0
-        root['bg']='goldenrod'
-        liste_objet = [] #liste pour stocker tous les widgets placer dans root
-        liste_objet= list(root.winfo_children())
-        while index_liste != str(len(liste_objet)): # boucle pour modifier le bg de chaque objet de la liste
-            if liste_objet[index_liste] in liste_bouton_root :
-                pass
-            else :
-                liste_objet[index_liste].configure(bg='goldenrod')
-            if liste_objet[index_liste] in liste_texte : 
-                liste_objet[index_liste].configure(fg='black')
-            else : 
-                pass
-            if liste_objet[index_liste] in liste_carte : 
-                liste_objet[index_liste].configure(bg='goldenrod')
-            else : 
-                pass 
-            index_liste +=1
 
 
 
@@ -824,7 +767,7 @@ def resultat(action=0):
                 consequence = 'Blackjack'
                 blackjack = tkinter.Frame()
                 blackjack.pack(expand=True, fill=tkinter.BOTH)
-                canvas_bj = tkinter.Canvas(blackjack)
+                canvas_bj = tkinter.Canvas(blackjack, bg='dark green')
                 canvas_bj.pack(expand=True, fill=tkinter.BOTH)
                 image_bj = Image.open('./Images/image_blackjack.png')
                 image_bj = image_bj.resize((700, 350))
@@ -1509,18 +1452,18 @@ window.state("zoomed")
 window.resizable(width=False, height=False)
 
 accueil = tkinter.Frame()
-accueil.configure(bg='red')
+accueil.configure(bg='bisque2')
 
 # Variables relatives aux graphismes du jeu
 
 # Graphismes
 
-# Configuration de l'écran d'acceuil"""
-titre_jeu = tkinter.Label(accueil, text='BLACK JACK', bg='red', fg='gold',
+# Configuration de l'écran d'accueil"""
+titre_jeu = tkinter.Label(accueil, text='BLACK JACK', bg='bisque2', fg='black',
                           font=('helvetica', 70))
 titre_jeu.grid(column=5, columnspan=5, row=1)
 
-play = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+play = tkinter.Canvas(accueil, width=200, height=200, bg='bisque2',
                       highlightthickness=0)
 play.create_oval(34, 40, 180, 190, width=3, outline='mint cream',
                  fill='mint cream')
@@ -1537,7 +1480,7 @@ play.create_image(100, 100, image=img, anchor='center')
 
 
 # affichage image du jeton bleu
-bleu = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+bleu = tkinter.Canvas(accueil, width=200, height=200, bg='bisque2',
                       highlightthickness=0)
 bleu.grid(column=3, row=4, columnspan=2)
 image_jeton_bleu = Image.open("./Images/image_jeton_bleu.png")
@@ -1546,7 +1489,7 @@ img1 = ImageTk.PhotoImage(resize_image1)
 bleu.create_image(100, 100, image=img1, anchor='center')
 
 # affichage image du jeton rouge
-rouge = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+rouge = tkinter.Canvas(accueil, width=200, height=200, bg='bisque2',
                        highlightthickness=0)
 rouge.grid(column=10, row=4, columnspan=2)
 image_jeton_rouge = Image.open("./Images/image_jeton_rouge.png")
@@ -1555,7 +1498,7 @@ img2 = ImageTk.PhotoImage(resize_image2)
 rouge.create_image(100, 100, image=img2, anchor='center')
 
 # affichage image du jeton vert
-vert = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+vert = tkinter.Canvas(accueil, width=200, height=200, bg='bisque2',
                       highlightthickness=0)
 vert.grid(column=1, row=4, columnspan=2, padx=15)
 image_jeton_vert = Image.open("./Images/image_jeton_vert.png")
@@ -1564,7 +1507,7 @@ img3 = ImageTk.PhotoImage(resize_image3)
 vert.create_image(100, 100, image=img3, anchor='center')
 
 # affichage image du jeton noir
-noir = tkinter.Canvas(accueil, width=200, height=200, bg='red',
+noir = tkinter.Canvas(accueil, width=200, height=200, bg='bisque2',
                       highlightthickness=0)
 noir.grid(column=13, row=4, columnspan=2)
 image_jeton_vert = Image.open("./Images/image_jeton_noir.png")
@@ -1593,7 +1536,7 @@ entree_credit.grid(column=7, row=8)
 # Graphisme fenêtre acceuil
 
 # affichage image de la pile de jeton
-pile = tkinter.Canvas(accueil, width=200, height=300, bg='red',
+pile = tkinter.Canvas(accueil, width=200, height=300, bg='bisque2',
                       highlightthickness=0)
 pile.grid(column=8, row=9, columnspan=2)
 image_jeton_pile = Image.open("./Images/jeton_pile.png")
@@ -1602,7 +1545,7 @@ img0 = ImageTk.PhotoImage(resize_image0)
 pile.create_image(100, 300, image=img0, anchor='s')
 
 # affichage image de pile1
-pile1 = tkinter.Canvas(accueil, width=200, height=300, bg='red',
+pile1 = tkinter.Canvas(accueil, width=200, height=300, bg='bisque2',
                        highlightthickness=0)
 pile1.grid(column=5, columnspan=2, row=9)
 image_jeton_pile1 = Image.open("./Images/jeton_pile.png")
@@ -1612,37 +1555,36 @@ pile1.create_image(100, 300, image=img00, anchor='s')
 
 # graphisme cartes à gauche
 
-
 cartes1 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
 cartes1.grid(column=1, padx=5, columnspan=2, row=9, rowspan=10)
 image_cartes1 = Image.open("./Images/dos_cartes1.jpg")
-resize_image1 = image_cartes1.resize((200, 320))
+resize_image1 = image_cartes1.resize((198, 320))
 img_cartes1 = ImageTk.PhotoImage(resize_image1)
 cartes1.create_image(200, 320, image=img_cartes1, anchor='se')
 cartes1.bind('<Button-1>', id)
 
-cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='SlateBlue2')
+cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='green')
 cartes2.grid(column=3, columnspan=2, row=9, rowspan=10)
 image_cartes2 = Image.open("./Images/dos_cartes2.png")
-resize_image2 = image_cartes2.resize((202, 317))
+resize_image2 = image_cartes2.resize((200, 317))
 img_cartes2 = ImageTk.PhotoImage(resize_image2)
 cartes2.create_image(200, 320, image=img_cartes2, anchor='se')
 cartes2.bind('<Button-1>', id)
 
 # graphisme cartes à droite
 
-cartes3 = tkinter.Canvas(accueil, width=199, height=320, bg='steel blue')
+cartes3 = tkinter.Canvas(accueil, width=199, height=322, bg='green')
 cartes3.grid(column=10, padx=10, columnspan=2, row=9, rowspan=10)
 image_cartes3 = Image.open("./Images/dos_cartes3.png")
-resize_image3 = image_cartes3.resize((198, 330))
+resize_image3 = image_cartes3.resize((198, 324))
 img_cartes3 = ImageTk.PhotoImage(resize_image3)
 cartes3.create_image(200, 330, image=img_cartes3, anchor='se')
 cartes3.bind('<Button-1>', id)
 
-cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='goldenrod')
+cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
 cartes4.grid(column=12, columnspan=2, row=9, rowspan=10)
 image_cartes4 = Image.open("./Images/dos_cartes4.png")
-resize_image4 = image_cartes4.resize((200, 320))
+resize_image4 = image_cartes4.resize((198, 320))
 img_cartes4 = ImageTk.PhotoImage(resize_image4)
 cartes4.create_image(200, 322, image=img_cartes4, anchor='se')
 cartes4.bind('<Button-1>', id)
