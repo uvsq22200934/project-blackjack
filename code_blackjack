@@ -102,6 +102,9 @@ nom_joueur = ''
 nombre_partie = 0
 nombre_emprunt = 0
 
+#variables pour déterminer les couleurs
+r = 1
+bg_couleur = 0
 
 # Dictionnaires permettant de contourner le garbage collector
 images = dict()
@@ -109,7 +112,82 @@ image_dos = dict()
 image_tuto_dic = dict()
 image_bj_dic = dict()
 
+
+
 # Fonctions
+
+def id(event):
+    """fonction pour permettre à l'utilisateur de
+    choisir le fond de ses cartes"""
+    global r 
+    global bg_couleur
+    global liste_bouton_root
+    if event.widget == cartes1 :
+        r = 1 
+        root['bg']='dark green'
+    if event.widget == cartes2 : 
+        r = 2
+        index_liste = 0
+        root['bg']='SlateBlue2'
+        liste_objet = [] #liste pour stocker tous les widgets placer dans root
+        liste_objet= list(root.winfo_children())
+        while index_liste != str(len(liste_objet)): # boucle pour modifier le bg de chaque objet de la liste
+            if liste_objet[index_liste] in liste_bouton_root :
+                pass
+            else :
+                liste_objet[index_liste].configure(bg='SlateBlue2')
+            if liste_objet[index_liste] in liste_texte : 
+                liste_objet[index_liste].configure(fg='white')
+            else : 
+                pass
+            if liste_objet[index_liste] in liste_carte : 
+                cja[f"cj{i}a"].configure(bg='MediumPurple1')
+                cc[f"cc{i}"].configure(bg='MediumPurple1')
+                cj[f"cj{i}"].configure(bg='MediumPurple1')
+            else : 
+                pass 
+            index_liste +=1
+    if event.widget == cartes3 :
+        r = 3
+        index_liste = 0
+        root['bg']='light blue'
+        liste_objet = [] #liste pour stocker tous les widgets placer dans root
+        liste_objet= list(root.winfo_children())
+        while index_liste != str(len(liste_objet)): # boucle pour modifier le bg de chaque objet de la liste
+            if liste_objet[index_liste] in liste_bouton_root :
+                pass
+            else :
+                liste_objet[index_liste].configure(bg='light blue')
+            if liste_objet[index_liste] in liste_texte : 
+                liste_objet[index_liste].configure(fg='black')
+            else : 
+                pass
+            if liste_objet[index_liste] in liste_carte : 
+                liste_objet[index_liste].configure(bg='light blue')
+            else : 
+                pass 
+            index_liste +=1
+    if event.widget== cartes4 : 
+        r = 4 
+        index_liste = 0
+        root['bg']='goldenrod'
+        liste_objet = [] #liste pour stocker tous les widgets placer dans root
+        liste_objet= list(root.winfo_children())
+        while index_liste != str(len(liste_objet)): # boucle pour modifier le bg de chaque objet de la liste
+            if liste_objet[index_liste] in liste_bouton_root :
+                pass
+            else :
+                liste_objet[index_liste].configure(bg='goldenrod')
+            if liste_objet[index_liste] in liste_texte : 
+                liste_objet[index_liste].configure(fg='black')
+            else : 
+                pass
+            if liste_objet[index_liste] in liste_carte : 
+                liste_objet[index_liste].configure(bg='goldenrod')
+            else : 
+                pass 
+            index_liste +=1
+
 
 
 def creer_image(carte, position_carte, texte):
@@ -187,6 +265,7 @@ def creer_image(carte, position_carte, texte):
 
 
 def dos_carte(position, texte):
+    global r
     """Créer l'image du dos des cartes.
 
     Cette fonction sert à créer l'image de du dos des carte sur l'interface
@@ -200,10 +279,26 @@ def dos_carte(position, texte):
         Texte qui va créer une clé dans le dictionnaire dic_valeur_cartes pour
         eviter le garbage collector
     """
-    image_carte = Image.open("./Images/dos_cartes3.jpg")
-    image_fin = image_carte.resize((136, 200))
-    images[texte] = ImageTk.PhotoImage(image_fin)
-    position.create_image(2, 2, anchor='nw', image=images[texte])
+    if r == 1 :
+        image_carte = Image.open("./Images/dos_cartes1.jpg")
+        image_fin = image_carte.resize((136, 200))
+        images[texte] = ImageTk.PhotoImage(image_fin)
+        position.create_image(2, 2, anchor='nw', image=images[texte])
+    if r == 2 : 
+        image_carte = Image.open("./Images/dos_cartes2.png")
+        image_fin = image_carte.resize((136, 200))
+        images[texte] = ImageTk.PhotoImage(image_fin)
+        position.create_image(2, 2, anchor='nw', image=images[texte])
+    if r == 3 :
+        image_carte = Image.open("./Images/dos_cartes3.png")
+        image_fin = image_carte.resize((136, 200))
+        images[texte] = ImageTk.PhotoImage(image_fin)
+        position.create_image(2, 2, anchor='nw', image=images[texte])
+    if r == 4 :
+        image_carte = Image.open("./Images/dos_cartes4.png")
+        image_fin = image_carte.resize((136, 200))
+        images[texte] = ImageTk.PhotoImage(image_fin)
+        position.create_image(2, 2, anchor='nw', image=images[texte]) 
 
 
 def debut(event):
@@ -321,10 +416,10 @@ def donne_initiale():
         prix_assurance = mise_totale // 2
         if argent_joueur >= prix_assurance:
             texte_assurance['text'] = 'Le Dealer vient de tirer un ' + \
-                f'As. Voulez vous payer une assurance ({prix_assurance})?'
-            texte_assurance.grid(column=10, columnspan=5, row=9, rowspan=3)
-            bouton_oui_assurance.grid(column=11, columnspan=2, row=11)
-            bouton_non_assurance.grid(column=13, columnspan=2, row=11)
+                f'As.\n Voulez vous payer une assurance ({prix_assurance})?'
+            texte_assurance.grid(column=14, columnspan=5, row=8, rowspan=3)
+            bouton_oui_assurance.grid(column=15, columnspan=2, row=11)
+            bouton_non_assurance.grid(column=16, columnspan=2, row=11)
             root.update()
         else:
             if score(main_joueur) == 21:
@@ -332,6 +427,7 @@ def donne_initiale():
                 croupier()
             else:
                 bouton_melanger.grid_forget()
+                bouton_revenir.grid_forget()
                 apparition_bouton_joueur()
     else:
         if score(main_joueur) == 21:
@@ -339,6 +435,7 @@ def donne_initiale():
             croupier()
         else:
             bouton_melanger.grid_forget()
+            bouton_revenir.grid_forget()
             apparition_bouton_joueur()
     if debug == 1:
         print('main joueur', main_joueur, '\n main croupier', main_croupier)
@@ -386,6 +483,7 @@ def reponse_assurance(reponse=0):
         croupier()
     if blackjack == 0:
         bouton_melanger.grid_forget()
+        bouton_revenir.grid_forget()
         apparition_bouton_joueur()
 
 
@@ -496,6 +594,7 @@ def disparition_bouton_joueur():
     if debug == 1:
         print("bouton test", bouton_hit.grid_info())
     for i in range(len(bouton_joueur)):
+        bouton_hit.grid_forget()
         bouton_joueur[i].grid_forget()
     bouton_split.grid_forget()
 
@@ -602,11 +701,13 @@ def stand():
         last_press = time.time()
     stand_label.grid(column=0, row=17, columnspan=5)
     bouton_split.grid_forget()
+    bouton_hit.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
     # Si le joueur n'a pas split ou si le joueur a split et joué ses deux mains
     if split == 0 or split == 2:
         croupier()
+        bouton_hit.grid_forget()
         disparition_bouton_joueur()
     if split == 1:
         split = 2
@@ -721,15 +822,15 @@ def resultat(action=0):
             else:
                 resultat_label['text'] += 'BLACKJACK: vous êtes le vainqueur'
                 consequence = 'Blackjack'
-                blackjack = tkinter.Frame()
-                blackjack.pack(expand=True, fill=tkinter.BOTH)
-                canvas_bj = tkinter.Canvas(blackjack, bg='dark green')
+                blackjack_fen = tkinter.Frame()
+                blackjack_fen.pack(expand=True, fill=tkinter.BOTH)
+                canvas_bj = tkinter.Canvas(blackjack, bg='white')
                 canvas_bj.pack(expand=True, fill=tkinter.BOTH)
                 image_bj = Image.open('./Images/image_blackjack.png')
-                image_bj = image_bj.resize((1200, 700))
+                image_bj = image_bj.resize((700, 350))
                 image_bj_dic['text'] = ImageTk.PhotoImage(image_bj,
-                                                            master=blackjack)
-                canvas_bj.create_image(10, 10, image=image_bj_dic['text'],
+                                                            master=blackjack_fen)
+                canvas_bj.create_image(300, 350, image=image_bj_dic['text'],
                                     anchor='nw')
                 root.pack_forget()
                 def update():
@@ -804,9 +905,9 @@ def resultat(action=0):
                 f'Score du Dealer: {str(score_croupier)} \n'
         resultat_final['text'] = annonce
         resultat_final.grid(column=13+len(main_croupier),
-                            row=3, columnspan=2)
+                            row=4, rowspan=2, columnspan=2)
         resultat_label.grid(column=13+len(main_croupier),
-                            row=4, columnspan=2)
+                            row=6, rowspan=2, columnspan=2)
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
@@ -920,7 +1021,7 @@ def splitter():
     root.after(500, root.update())
     creer_image(main_joueur_split[1], cja['cj2a'], 'cj2a')
     root.after(500, root.update())
-    numero_main.grid(column=3, row=1)
+    numero_main.grid(column=3, row=15)
     # Si le joueur a une paire d'as et qu'il split, il ne peut avoir que 2
     # cartes par main, as inclu. Son tour se finit donc automatiqument après
     # avoir reçu une carte supplémentaire par main
@@ -996,9 +1097,9 @@ def rejouer():
     stand_label.grid_forget()
     # Si le joueur n'a plus d'argent il lui est proposé de prendre un emprunt
     if argent_joueur == 0:
-        emprunt.grid(column=13, columnspan=2, row=9)
-        term.grid(column=14, columnspan=2, row=9)
-        banque.grid(column=12, columnspan=4, row=8)
+        emprunt.grid(column=14, row=9)
+        term.grid(column=15, row=9)
+        banque.grid(column=12, columnspan=5, row=8)
 
 
 def quitter(event):
@@ -1017,6 +1118,7 @@ def quitter(event):
 def ordre_boutons2(event):
     if event.widget == bouton_melanger:
         bouton_melanger.grid_forget()
+        bouton_revenir.grid_forget()
         bouton_donne_initiale.grid(column=7, columnspan=2,
                                    row=12)
         apparition_mise()
@@ -1394,6 +1496,11 @@ def dir_regles(event):
     root.pack_forget()
     règle.pack(fill=tkinter.BOTH, expand=True)
 
+def retour(event):
+    if event.widget == bouton_revenir:
+        root.pack_forget()
+        accueil.pack(fill=tkinter.BOTH, expand=True)
+
 
 # Fenêtre accueil
 
@@ -1510,34 +1617,37 @@ pile1.create_image(100, 300, image=img00, anchor='s')
 
 cartes1 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
 cartes1.grid(column=1, padx=5, columnspan=2, row=9, rowspan=10)
-image_cartes1 = Image.open("./Images/dos_cartes3.jpg")
+image_cartes1 = Image.open("./Images/dos_cartes1.jpg")
 resize_image1 = image_cartes1.resize((200, 320))
 img_cartes1 = ImageTk.PhotoImage(resize_image1)
 cartes1.create_image(200, 320, image=img_cartes1, anchor='se')
+cartes1.bind('<Button-1>', id)
 
-cartes2 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='SlateBlue2')
 cartes2.grid(column=3, columnspan=2, row=9, rowspan=10)
-image_cartes2 = Image.open("./Images/dos_cartes3.jpg")
-resize_image2 = image_cartes2.resize((200, 320))
+image_cartes2 = Image.open("./Images/dos_cartes2.png")
+resize_image2 = image_cartes2.resize((202, 317))
 img_cartes2 = ImageTk.PhotoImage(resize_image2)
 cartes2.create_image(200, 320, image=img_cartes2, anchor='se')
-
+cartes2.bind('<Button-1>', id)
 
 # graphisme cartes à droite
 
-cartes3 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes3 = tkinter.Canvas(accueil, width=199, height=320, bg='steel blue')
 cartes3.grid(column=10, padx=10, columnspan=2, row=9, rowspan=10)
-image_cartes3 = Image.open("./Images/dos_cartes3.jpg")
-resize_image3 = image_cartes3.resize((200, 320))
+image_cartes3 = Image.open("./Images/dos_cartes3.png")
+resize_image3 = image_cartes3.resize((198, 330))
 img_cartes3 = ImageTk.PhotoImage(resize_image3)
-cartes3.create_image(200, 320, image=img_cartes3, anchor='se')
+cartes3.create_image(200, 330, image=img_cartes3, anchor='se')
+cartes3.bind('<Button-1>', id)
 
-cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='goldenrod')
 cartes4.grid(column=12, columnspan=2, row=9, rowspan=10)
-image_cartes4 = Image.open("./Images/dos_cartes3.jpg")
+image_cartes4 = Image.open("./Images/dos_cartes4.png")
 resize_image4 = image_cartes4.resize((200, 320))
 img_cartes4 = ImageTk.PhotoImage(resize_image4)
-cartes4.create_image(200, 320, image=img_cartes4, anchor='se')
+cartes4.create_image(200, 322, image=img_cartes4, anchor='se')
+cartes4.bind('<Button-1>', id)
 
 
 # affichage des erreurs crédit et username
@@ -1652,18 +1762,18 @@ valid = tkinter.Button(root, text='valider l\'emprunt',
                        font=('helvetica', 15), relief='raised')
 valid.bind('<Button-1>', validd)
 banque = tkinter.Label(root, text='Vous êtes à cours de crédit',
-                       font=('helvetica', 15), bg='dark green',
+                       font=('helvetica', 20), bg='dark green',
                        fg='red')
-emprunt = tkinter.Button(root, text='Emprunt', font=('helvetica', 9),
+emprunt = tkinter.Button(root, text='Emprunt', font=('helvetica', 12),
                          relief='raised')
 emprunt.bind('<Button-1>', emprunter)
-term = tkinter.Button(root, text='Terminer', font=('helvetica', 9),
+term = tkinter.Button(root, text='Terminer', font=('helvetica', 12),
                       relief='raised')
 term.bind('<Button-1>', quitter)
 
 eprnt = tkinter.Label(root, text='Combien souhaitez-vous ' +
                       'emprunter ?', fg='black',
-                      bg='dark green', font=('helvetica', 10))
+                      bg='dark green', font=('helvetica', 11))
 my_entry3 = tkinter.Entry(root)
 
 entry_label = tkinter.Label(root, text='', bg='dark green', fg='red',
@@ -1674,6 +1784,12 @@ canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
 dette_label = tkinter.Label(root, text='', bg='dark green', fg='red',
                             font=('helvetica', 13))
 
+#bouton pour revenir sur la page précédente
+bouton_revenir = tkinter.Button(root, text='retour', relief='solid',
+                                 font=('helvetica', 15))
+bouton_revenir.grid()
+bouton_revenir.bind('<Button-1>', retour)
+
 # Bouton qui permet l'accès au tutoriel
 bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
                                  bg='green', fg='white',
@@ -1681,6 +1797,7 @@ bouton_tutoriel = tkinter.Button(root, text='Comment jouer ?',
                                  font=('helvetica', 10))
 bouton_tutoriel.grid(column=2, columnspan=2, row=1)
 bouton_tutoriel.bind('<Button-1>', tutoriel)
+
 
 # Mise du jeu """
 mise_totale = 0
@@ -1815,8 +1932,8 @@ stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             font=("helvetica", "15"))
 resultat_final = tkinter.Label(
     root, text='annonce', bg='dark green', fg='red')
-resultat_label = tkinter.Label(
-    root, text='', bg='dark green', fg='yellow')
+resultat_label = tkinter.Label(root, font=('helvetica', 15),
+    text='', bg='dark green', fg='yellow')
 
 # Label qui affiche le nombre de cartes restantes
 nb_carte_paquet = tkinter.Label(
@@ -1825,5 +1942,21 @@ nb_carte_paquet = tkinter.Label(
     f' défausse: {str(len(defausse))}', bg='dark green')
 nb_carte_paquet.grid(column=15, columnspan=3, row=0, rowspan=2)
 
+#listes pour la fonction d'identification
+# et modiffication du background
+
+#liste des boutons de la 2ème fenêtre
+liste_bouton_root=[bouton_donne_initiale,bouton_revenir,bouton_melanger,
+                   bouton_oui_assurance,bouton_non_assurance,texte_assurance,
+                   assurance_valeur,bouton_double_down,bouton_surrender,bouton_split,
+                   bouton_hit,bouton_joueur,bouton_rejouer,bouton_revenir,
+                   bouton_donne_initiale,valid,emprunt,term,my_entry3,bouton_tutoriel,
+                   bouton_rdj,bouton_quitter, stand_bouton, entry_label, erreur]
+#liste des labels ou boutons avec l'écriture d'une couleur spécifiée
+liste_texte = [mise_texte, assurance_valeur, texte_assurance, argent, labelc, labelj,
+               stand_label, bouton_non_assurance, bouton_oui_assurance, assurance_valeur,
+               emprunt, term, valid, miser, mise_valeur, entry_label]
+#liste des cartes sur le plateau
+liste_carte = [cc, cj, cja, cartes]
 
 window.mainloop()
