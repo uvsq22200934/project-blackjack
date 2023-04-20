@@ -1234,7 +1234,9 @@ def tutoriel(event):
         return index_image
 
     def passer(event):
-        # Fonction pour passer d'une image à une autre
+        """ Fonction pour passer d'une image à une autre
+        dans le tutoriel
+        """
         global index_image
         # index qui sert à attribuer une image à sa position
         if event.widget == bouton_pass and index_image == 0:
@@ -1305,8 +1307,11 @@ def tutoriel(event):
 
 
 def dir_regles(event):
-    """ fonction associée au bouton comment joueur
-    permettant au joueur de connaître les règle du jeu"""
+    """ Afficher les règles du jeu
+    
+    Fonction associée au bouton comment joueur
+    permettant au joueur de connaître les règle du jeu
+    """
     if event.widget == bouton_rdj:
         règle = tkinter.Frame()
         règle.configure(bg='white')
