@@ -1184,7 +1184,7 @@ def tutoriel(event):
         elif event.widget == bouton_retour and index_image == 1:
             index_image -= 1
             image_tuto = Image.open('./Images/image_debut.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1192,7 +1192,7 @@ def tutoriel(event):
         elif event.widget == bouton_retour and index_image == 2:
             index_image -= 1
             image_tuto = Image.open('./Images/image_mise.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1200,7 +1200,7 @@ def tutoriel(event):
         elif event.widget == bouton_retour and index_image == 3:
             index_image -= 1
             image_tuto = Image.open('./Images/image_action.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1208,7 +1208,7 @@ def tutoriel(event):
         elif event.widget == bouton_retour and index_image == 4:
             index_image -= 1
             image_tuto = Image.open('./Images/image_résultat.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1222,7 +1222,7 @@ def tutoriel(event):
         if event.widget == bouton_pass and index_image == 0:
             index_image += 1
             image_tuto = Image.open('./Images/image_mise.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1230,7 +1230,7 @@ def tutoriel(event):
         elif event.widget == bouton_pass and index_image == 1:
             index_image += 1
             image_tuto = Image.open('./Images/image_action.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1238,7 +1238,7 @@ def tutoriel(event):
         elif event.widget == bouton_pass and index_image == 2:
             index_image += 1
             image_tuto = Image.open('./Images/image_résultat.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1246,7 +1246,7 @@ def tutoriel(event):
         elif event.widget == bouton_pass and index_image == 3:
             index_image += 1
             image_tuto = Image.open('./Images/image_emprunt.png')
-            resize_image = image_tuto.resize((1000, 685))
+            resize_image = image_tuto.resize((1500, 800))
             image_tuto_dic['text'] = ImageTk.PhotoImage(resize_image,
                                                         master=interface)
             canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
@@ -1274,7 +1274,7 @@ def tutoriel(event):
         canvas_im = tkinter.Canvas(interface)
         canvas_im.pack(expand=True, fill=tkinter.BOTH)
         image_tuto = Image.open('./Images/image_debut.png')
-        image_tuto = image_tuto.resize((1000, 685))
+        image_tuto = image_tuto.resize((1500, 800))
         image_tuto_dic['text'] = ImageTk.PhotoImage(image_tuto,
                                                     master=interface)
         canvas_im.create_image(10, 10, image=image_tuto_dic['text'],
