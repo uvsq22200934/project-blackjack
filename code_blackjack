@@ -120,16 +120,30 @@ def id(event):
     """fonction pour permettre à l'utilisateur de
     choisir le fond de ses cartes"""
     global r 
-    global bg_couleur
-    global liste_bouton_root
     if event.widget == cartes1 :
         r = 1 
+        cartes2.configure(highlightthickness=0)
+        cartes3.configure(highlightthickness=0)
+        cartes4.configure(highlightthickness=0)
+        cartes1.configure(highlightbackground='red', highlightthickness=7)
     if event.widget == cartes2 : 
         r = 2
+        cartes1.configure(highlightthickness=0)
+        cartes3.configure(highlightthickness=0)
+        cartes4.configure(highlightthickness=0)
+        cartes2.configure(highlightbackground='red', highlightthickness=7)
     if event.widget == cartes3 :
         r = 3
+        cartes1.configure(highlightthickness=0)
+        cartes2.configure(highlightthickness=0)
+        cartes4.configure(highlightthickness=0)
+        cartes3.configure(highlightbackground='red', highlightthickness=7)
     if event.widget== cartes4 : 
         r = 4 
+        cartes1.configure(highlightthickness=0)
+        cartes2.configure(highlightthickness=0)
+        cartes3.configure(highlightthickness=0)
+        cartes4.configure(highlightbackground='red', highlightthickness=7)
 
 
 
@@ -1440,6 +1454,7 @@ def dir_regles(event):
 def retour(event):
     if event.widget == bouton_revenir:
         root.pack_forget()
+        erreur_argent.grid_forget()
         accueil.pack(fill=tkinter.BOTH, expand=True)
 
 
