@@ -111,6 +111,10 @@ images = dict()
 image_dos = dict()
 image_tuto_dic = dict()
 image_bj_dic = dict()
+img_cartes_1 = dict()
+img_cartes_2 = dict()
+img_cartes_3 = dict()
+img_cartes_4 = dict()
 
 
 
@@ -144,7 +148,6 @@ def id(event):
         cartes2.configure(highlightthickness=0)
         cartes3.configure(highlightthickness=0)
         cartes4.configure(highlightbackground='red', highlightthickness=7)
-
 
 
 def creer_image(carte, position_carte, texte):
@@ -220,7 +223,6 @@ def creer_image(carte, position_carte, texte):
     images[texte] = ImageTk.PhotoImage(image_fin)
     position_carte.create_image(2, 2, anchor='nw', image=images[texte])
 
-
 def dos_carte(position, texte):
     global r
     """Créer l'image du dos des cartes.
@@ -237,25 +239,38 @@ def dos_carte(position, texte):
         eviter le garbage collector
     """
     if r == 1 :
+        cartes_2.grid_forget()
+        cartes_3.grid_forget()
+        cartes_4.grid_forget()
         image_carte = Image.open("./Images/dos_cartes1.jpg")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
     if r == 2 : 
+        cartes_1.grid_forget()
+        cartes_3.grid_forget()
+        cartes_4.grid_forget()
         image_carte = Image.open("./Images/dos_cartes2.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
     if r == 3 :
+        cartes_2.grid_forget()
+        cartes_1.grid_forget()
+        cartes_4.grid_forget()
         image_carte = Image.open("./Images/dos_cartes3.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
     if r == 4 :
+        cartes_2.grid_forget()
+        cartes_3.grid_forget()
+        cartes_1.grid_forget()
         image_carte = Image.open("./Images/dos_cartes4.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte]) 
+        
 
 
 def debut(event):
@@ -787,13 +802,13 @@ def resultat(action=0):
                 image_bj = image_bj.resize((700, 350))
                 image_bj_dic['text'] = ImageTk.PhotoImage(image_bj,
                                                             master=blackjack)
-                canvas_bj.create_image(335, 135, image=image_bj_dic['text'],
+                canvas_bj.create_image(350, 135, image=image_bj_dic['text'],
                                     anchor='nw')
                 root.pack_forget()
                 def update():
                     blackjack.pack_forget()
                     root.pack(expand=True, fill='both')
-                blackjack.after(1500,update)
+                blackjack.after(1550,update)
         # Si le joueur a surrender
         elif action == 'surrender':
             resultat_label['text'] += 'Vous avez abandonné'
@@ -1570,7 +1585,8 @@ pile1.create_image(100, 300, image=img00, anchor='s')
 
 # graphisme cartes à gauche
 
-cartes1 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes1 = tkinter.Canvas(accueil, width=200, height=320, bg='bisque2',
+                         highlightthickness=0)
 cartes1.grid(column=1, padx=5, columnspan=2, row=9, rowspan=10)
 image_cartes1 = Image.open("./Images/dos_cartes1.jpg")
 resize_image1 = image_cartes1.resize((198, 320))
@@ -1578,7 +1594,8 @@ img_cartes1 = ImageTk.PhotoImage(resize_image1)
 cartes1.create_image(200, 320, image=img_cartes1, anchor='se')
 cartes1.bind('<Button-1>', id)
 
-cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='green')
+cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='bisque2', 
+                         highlightthickness=0)
 cartes2.grid(column=3, columnspan=2, row=9, rowspan=10)
 image_cartes2 = Image.open("./Images/dos_cartes2.png")
 resize_image2 = image_cartes2.resize((200, 317))
@@ -1588,15 +1605,17 @@ cartes2.bind('<Button-1>', id)
 
 # graphisme cartes à droite
 
-cartes3 = tkinter.Canvas(accueil, width=199, height=322, bg='green')
+cartes3 = tkinter.Canvas(accueil, width=199, height=322, bg='bisque2', 
+                         highlightthickness=0)
 cartes3.grid(column=10, padx=10, columnspan=2, row=9, rowspan=10)
 image_cartes3 = Image.open("./Images/dos_cartes3.png")
-resize_image3 = image_cartes3.resize((198, 324))
+resize_image3 = image_cartes3.resize((198, 310))
 img_cartes3 = ImageTk.PhotoImage(resize_image3)
-cartes3.create_image(200, 330, image=img_cartes3, anchor='se')
+cartes3.create_image(200, 320, image=img_cartes3, anchor='se')
 cartes3.bind('<Button-1>', id)
 
-cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='green')
+cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='bisque2', 
+                         highlightthickness=0)
 cartes4.grid(column=12, columnspan=2, row=9, rowspan=10)
 image_cartes4 = Image.open("./Images/dos_cartes4.png")
 resize_image4 = image_cartes4.resize((198, 320))
@@ -1627,9 +1646,39 @@ root.configure(bg="dark green")
 erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
 
-cartes = tkinter.Canvas(root, width=136, height=200, bg='#55AA55')
-dos_carte(cartes, 'cartes')
-cartes.grid(column=7, row=10, rowspan=5, columnspan=2)
+cartes_1 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55',
+                         highlightthickness=0)
+cartes_1.grid(column=7, row=10, rowspan=5, columnspan=2)
+image_cartes_1 = Image.open("./Images/dos_cartes1.jpg")
+resize_image_1 = image_cartes_1.resize((136, 200))
+img_cartes_1['texte'] = ImageTk.PhotoImage(resize_image_1)
+cartes_1.create_image(136, 200, image=img_cartes_1['texte'], anchor='se')
+
+cartes_2 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
+                         highlightthickness=0)
+cartes_2.grid(column=7, row=10, rowspan=5, columnspan=2)
+image_cartes_2 = Image.open("./Images/dos_cartes2.png")
+resize_image_2 = image_cartes_2.resize((136, 200))
+img_cartes_2['texte'] = ImageTk.PhotoImage(resize_image_2)
+cartes_2.create_image(136, 200, image=img_cartes_2['texte'], anchor='se')
+
+cartes_3 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
+                         highlightthickness=0)
+cartes_3.grid(column=7, row=10, rowspan=5, columnspan=2)
+image_cartes_3 = Image.open("./Images/dos_cartes3.png")
+resize_image_3 = image_cartes_3.resize((136, 200))
+img_cartes_3['texte'] = ImageTk.PhotoImage(resize_image_3)
+cartes_3.create_image(136, 200, image=img_cartes_3['texte'], anchor='se')
+
+
+cartes_4 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
+                         highlightthickness=0)
+cartes_4.grid(column=7, row=10, rowspan=5, columnspan=2)
+image_cartes_4 = Image.open("./Images/dos_cartes4.png")
+resize_image_4 = image_cartes_4.resize((136, 200))
+img_cartes_4['texte'] = ImageTk.PhotoImage(resize_image_4)
+cartes_4.create_image(136, 200, image=img_cartes_4['texte'], anchor='se')
+
 
 # Interface graphique
 
@@ -1896,22 +1945,5 @@ nb_carte_paquet = tkinter.Label(
     f' {str(len(paquet))} \nNombre de cartes restantes dans la' +
     f' défausse: {str(len(defausse))}', bg='dark green')
 nb_carte_paquet.grid(column=18, columnspan=3, row=0, rowspan=2)
-
-#listes pour la fonction d'identification
-# et modiffication du background
-
-#liste des boutons de la 2ème fenêtre
-liste_bouton_root=[bouton_donne_initiale,bouton_revenir,bouton_melanger,
-                   bouton_oui_assurance,bouton_non_assurance,texte_assurance,
-                   assurance_valeur,bouton_double_down,bouton_surrender,bouton_split,
-                   bouton_hit,bouton_joueur,bouton_rejouer,bouton_revenir,
-                   bouton_donne_initiale,valid,emprunt,term,my_entry3,bouton_tutoriel,
-                   bouton_rdj,bouton_quitter, stand_bouton, entry_label, erreur]
-#liste des labels ou boutons avec l'écriture d'une couleur spécifiée
-liste_texte = [mise_texte, assurance_valeur, texte_assurance, argent, labelc, labelj,
-               stand_label, bouton_non_assurance, bouton_oui_assurance, assurance_valeur,
-               emprunt, term, valid, miser, mise_valeur, entry_label]
-#liste des cartes sur le plateau
-liste_carte = [cc, cj, cja, cartes]
 
 window.mainloop()
