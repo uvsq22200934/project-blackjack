@@ -1230,9 +1230,12 @@ index_image = 0
 
 
 def tutoriel(event):
+    """Fonction pour afficher les images du tutoriel"""
 
     def retour(event):
-        # Fonction pour faire un retour en arrière
+        """Fonction pour faire un retour en arrière dans la fonction
+        tutoriel
+        """
         global index_image
         if event.widget == bouton_retour and index_image == 0:
             index_image = 0
@@ -1271,7 +1274,7 @@ def tutoriel(event):
         return index_image
 
     def passer(event):
-        # Fonction pour passer d'une image à une autre
+        """Fonction pour passer d'une image à une autre dans le tutoriel"""
         global index_image
         # index qui sert à attribuer une image à sa position
         if event.widget == bouton_pass and index_image == 0:
@@ -1342,8 +1345,9 @@ def tutoriel(event):
 
 
 def dir_regles(event):
-    """ fonction associée au bouton comment joueur
-    permettant au joueur de connaître les règle du jeu"""
+    """ Fonction associée au bouton
+    permettant au joueur de connaître les règle du jeu
+    """
     if event.widget == bouton_rdj:
         règle = tkinter.Frame()
         règle.configure(bg='white')
@@ -1424,9 +1428,10 @@ def dir_regles(event):
         action_texte.pack(side='top')
 
         def revenir(event):
-            """fonction pour revenir au jeu et de
+            """Fonction pour revenir au jeu et de
             quitter la fenêtre lorsque
-            le bouton est appuyée"""
+            le bouton est appuyée
+            """
             if event.widget == bouton_revenir:
                 règle.pack_forget()
                 root.pack(fill=tkinter.BOTH, expand=True)
