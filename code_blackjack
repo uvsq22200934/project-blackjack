@@ -468,7 +468,8 @@ def hit(main, pointeur, double_down=0):
     global main_croupier
     global paquet
     global last_press
-    # Variable pour décaler les cartes en cas de split pour qu'elles ne se superposent pas
+    # Variable pour décaler les cartes en cas de split pour qu'elles ne se
+    # superposent pas
     j = 0
     if double_down == 0:
         if time.time() - last_press < 0.5:
