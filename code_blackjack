@@ -657,8 +657,9 @@ def stand():
     else:
         last_press = time.time()
     stand_label.grid(column=0, row=17, columnspan=5)
-    bouton_split.grid_forget()
-    bouton_hit.grid_forget()
+    if split == 0:
+        bouton_split.grid_forget()
+        bouton_hit.grid_forget()
     if debug == 1:
         print("je m'arrête", split)
     # Si le joueur n'a pas split ou si le joueur a split et joué ses deux mains
