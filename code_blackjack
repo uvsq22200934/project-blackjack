@@ -468,6 +468,8 @@ def hit(main, pointeur, double_down=0):
     global main_croupier
     global paquet
     global last_press
+    # Variable pour décaler les cartes en cas de split pour qu'elles ne se superposent pas
+    j = 0
     if double_down == 0:
         if time.time() - last_press < 0.5:
             return
@@ -478,6 +480,7 @@ def hit(main, pointeur, double_down=0):
         # cartes de la deuxième main du joueur en cas de split
         carte = cja
         main = main_joueur_split
+        j = 1
     else:
         carte = cj
     if pointeur == 'main_joueur':
@@ -495,12 +498,12 @@ def hit(main, pointeur, double_down=0):
                     creer_image(main[i-1], carte[f'cj{i}'],
                                 f'cj{i}')
                     carte[f'cj{i}'].grid(
-                        column=10+i, row=15, padx=10, rowspan=5, pady=10)
+                        column=10+i, row=15+j, padx=10, rowspan=5, pady=10)
                 if main == main_joueur_split:
                     creer_image(main[i-1], carte[f'cj{i}a'],
                                 f'cj{i}a')
                     carte[f'cj{i}a'].grid(
-                        column=10+i, row=15, padx=10, rowspan=5, pady=10)
+                        column=10+i, row=15+j, padx=10, rowspan=5, pady=10)
         # On vérifie que le joueur n'ai pas de Blackjack
         test_score(main)
     if pointeur == 'main_croupier':
