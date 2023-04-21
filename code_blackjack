@@ -946,8 +946,8 @@ def splitter():
     # cj1a et cj2a correspondent aux canvas permettant d'afficher sur
     # l'interface graphique des deux premières carte de la deuxième main du
     # joueur
-    cja['cj1a'].grid(column=5, columnspan=2, row=13, rowspan=5)
-    cja['cj2a'].grid(column=9,  columnspan=2, row=13, rowspan=5)
+    cja['cj1a'].grid(column=5, columnspan=2, row=16, rowspan=5)
+    cja['cj2a'].grid(column=9,  columnspan=2, row=16, rowspan=5)
     # La deuxième carte de la deuxième main disparait sur l'interface
     # graphique puisque correspondant désormais à la première carte de la
     # deuxième main
