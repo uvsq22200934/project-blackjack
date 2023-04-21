@@ -102,8 +102,8 @@ nom_joueur = ''
 nombre_partie = 0
 nombre_emprunt = 0
 
-#variables pour déterminer les couleurs
-r = 1 #par défaut
+# variables pour déterminer les couleurs
+r = 1  # par défaut
 
 
 # Dictionnaires permettant de contourner le garbage collector
@@ -117,15 +117,15 @@ img_cartes_3 = dict()
 img_cartes_4 = dict()
 
 
-
 # Fonctions
 
 def id(event):
-    """fonction pour permettre à l'utilisateur de
-    choisir le fond de ses cartes"""
-    global r 
-    if event.widget == cartes1 :
-        r = 1 
+    """Fonction pour permettre à l'utilisateur de
+    choisir le fond de ses cartes
+    """
+    global r
+    if event.widget == cartes1:
+        r = 1
         cartes2.configure(highlightthickness=0)
         cartes3.configure(highlightthickness=0)
         cartes4.configure(highlightthickness=0)
@@ -133,7 +133,7 @@ def id(event):
         cartes_2.grid_forget()
         cartes_3.grid_forget()
         cartes_4.grid_forget()
-    if event.widget == cartes2 : 
+    if event.widget == cartes2:
         r = 2
         cartes1.configure(highlightthickness=0)
         cartes3.configure(highlightthickness=0)
@@ -142,7 +142,7 @@ def id(event):
         cartes_1.grid_forget()
         cartes_3.grid_forget()
         cartes_4.grid_forget()
-    if event.widget == cartes3 :
+    if event.widget == cartes3:
         r = 3
         cartes1.configure(highlightthickness=0)
         cartes2.configure(highlightthickness=0)
@@ -151,8 +151,8 @@ def id(event):
         cartes_2.grid_forget()
         cartes_1.grid_forget()
         cartes_4.grid_forget()
-    if event.widget== cartes4 : 
-        r = 4 
+    if event.widget == cartes4:
+        r = 4
         cartes1.configure(highlightthickness=0)
         cartes2.configure(highlightthickness=0)
         cartes3.configure(highlightthickness=0)
@@ -233,6 +233,7 @@ def creer_image(carte, position_carte, texte):
     images[texte] = ImageTk.PhotoImage(image_fin)
     position_carte.create_image(2, 2, anchor='nw', image=images[texte])
 
+
 def dos_carte(position, texte):
     global r
     """Créer l'image du dos des cartes.
@@ -246,27 +247,26 @@ def dos_carte(position, texte):
         Texte qui va créer une clé dans le dictionnaire dic_valeur_cartes pour
         eviter le garbage collector
     """
-    if r == 1 :
+    if r == 1:
         image_carte = Image.open("./Images/dos_cartes1.jpg")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
-    if r == 2 : 
+    if r == 2:
         image_carte = Image.open("./Images/dos_cartes2.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
-    if r == 3 :
+    if r == 3:
         image_carte = Image.open("./Images/dos_cartes3.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
         position.create_image(2, 2, anchor='nw', image=images[texte])
-    if r == 4 :
+    if r == 4:
         image_carte = Image.open("./Images/dos_cartes4.png")
         image_fin = image_carte.resize((136, 200))
         images[texte] = ImageTk.PhotoImage(image_fin)
-        position.create_image(2, 2, anchor='nw', image=images[texte]) 
-        
+        position.create_image(2, 2, anchor='nw', image=images[texte])
 
 
 def debut(event):
@@ -777,14 +777,15 @@ def resultat(action=0):
                 image_bj = Image.open('./Images/image_blackjack.png')
                 image_bj = image_bj.resize((700, 350))
                 image_bj_dic['text'] = ImageTk.PhotoImage(image_bj,
-                                                            master=blackjack)
+                                                          master=blackjack)
                 canvas_bj.create_image(350, 135, image=image_bj_dic['text'],
-                                    anchor='nw')
+                                       anchor='nw')
                 root.pack_forget()
+
                 def update():
                     blackjack.pack_forget()
                     root.pack(expand=True, fill='both')
-                blackjack.after(1550,update)
+                blackjack.after(1550, update)
         # Si le joueur a surrender
         elif action == 'surrender':
             resultat_label['text'] += 'Vous avez abandonné'
@@ -1311,12 +1312,14 @@ def tutoriel(event):
         interface = tkinter.Frame()
         interface.pack(expand=True, fill=tkinter.BOTH)
         # bouton pour passer à l'image suivante
-        bouton_pass = tkinter.Button(interface, text='❯', font=('helvetica', 30),
+        bouton_pass = tkinter.Button(interface, text='❯',
+                                     font=('helvetica', 30),
                                      fg='black', relief='flat')
         bouton_pass.pack(side='right', anchor='center')
         bouton_pass.bind('<Button-1>', passer)
         # bouton pour revenir à l'image précédente
-        bouton_retour = tkinter.Button(interface, text='❮',  font=('helvetica', 30),
+        bouton_retour = tkinter.Button(interface, text='❮',
+                                       font=('helvetica', 30),
                                        fg='black', relief='flat')
         bouton_retour.pack(side='left', anchor='center')
         bouton_retour.bind('<Button-1>', retour)
@@ -1428,6 +1431,7 @@ def dir_regles(event):
         bouton_revenir.bind('<Button-1>', revenir)
     root.pack_forget()
     règle.pack(fill=tkinter.BOTH, expand=True)
+
 
 def retour(event):
     if event.widget == bouton_revenir:
@@ -1557,7 +1561,7 @@ img_cartes1 = ImageTk.PhotoImage(resize_image1)
 cartes1.create_image(200, 320, image=img_cartes1, anchor='se')
 cartes1.bind('<Button-1>', id)
 
-cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='bisque2', 
+cartes2 = tkinter.Canvas(accueil, width=199, height=320, bg='bisque2',
                          highlightthickness=0)
 cartes2.grid(column=3, columnspan=2, row=9, rowspan=10)
 image_cartes2 = Image.open("./Images/dos_cartes2.png")
@@ -1568,7 +1572,7 @@ cartes2.bind('<Button-1>', id)
 
 # graphisme cartes à droite
 
-cartes3 = tkinter.Canvas(accueil, width=199, height=322, bg='bisque2', 
+cartes3 = tkinter.Canvas(accueil, width=199, height=322, bg='bisque2',
                          highlightthickness=0)
 cartes3.grid(column=10, padx=10, columnspan=2, row=9, rowspan=10)
 image_cartes3 = Image.open("./Images/dos_cartes3.png")
@@ -1577,7 +1581,7 @@ img_cartes3 = ImageTk.PhotoImage(resize_image3)
 cartes3.create_image(200, 320, image=img_cartes3, anchor='se')
 cartes3.bind('<Button-1>', id)
 
-cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='bisque2', 
+cartes4 = tkinter.Canvas(accueil, width=200, height=320, bg='bisque2',
                          highlightthickness=0)
 cartes4.grid(column=12, columnspan=2, row=9, rowspan=10)
 image_cartes4 = Image.open("./Images/dos_cartes4.png")
@@ -1610,16 +1614,16 @@ erreur = tkinter.Label(root, text='', font=('helvetica', 10),
                        fg='black')
 
 
-cartes_2 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
-                         highlightthickness=1)
+cartes_2 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55',
+                          highlightthickness=1)
 cartes_2.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_2 = Image.open("./Images/dos_cartes2.png")
 resize_image_2 = image_cartes_2.resize((136, 200))
 img_cartes_2['texte'] = ImageTk.PhotoImage(resize_image_2)
 cartes_2.create_image(136, 200, image=img_cartes_2['texte'], anchor='se')
 
-cartes_3 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
-                         highlightthickness=1)
+cartes_3 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55',
+                          highlightthickness=1)
 cartes_3.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_3 = Image.open("./Images/dos_cartes3.png")
 resize_image_3 = image_cartes_3.resize((136, 200))
@@ -1627,8 +1631,8 @@ img_cartes_3['texte'] = ImageTk.PhotoImage(resize_image_3)
 cartes_3.create_image(136, 200, image=img_cartes_3['texte'], anchor='se')
 
 
-cartes_4 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55', 
-                         highlightthickness=1)
+cartes_4 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55',
+                          highlightthickness=1)
 cartes_4.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_4 = Image.open("./Images/dos_cartes4.png")
 resize_image_4 = image_cartes_4.resize((136, 200))
@@ -1636,7 +1640,7 @@ img_cartes_4['texte'] = ImageTk.PhotoImage(resize_image_4)
 cartes_4.create_image(136, 200, image=img_cartes_4['texte'], anchor='se')
 
 cartes_1 = tkinter.Canvas(root, width=136, height=200, bg='#55AA55',
-                         highlightthickness=1)
+                          highlightthickness=1)
 cartes_1.grid(column=7, row=10, rowspan=5, columnspan=2)
 image_cartes_1 = Image.open("./Images/dos_cartes1.jpg")
 resize_image_1 = image_cartes_1.resize((136, 200))
@@ -1750,9 +1754,9 @@ canvas_emprunt = [my_entry3, valid, banque, eprnt, entry_label]
 dette_label = tkinter.Label(root, text='', bg='dark green', fg='red',
                             font=('helvetica', 13))
 
-#bouton pour revenir sur la page précédente
+# bouton pour revenir sur la page précédente
 bouton_revenir = tkinter.Button(root, text='retour', relief='solid',
-                                 font=('helvetica', 15))
+                                font=('helvetica', 15))
 bouton_revenir.grid()
 bouton_revenir.bind('<Button-1>', retour)
 
@@ -1897,9 +1901,9 @@ stand_label = tkinter.Label(root, bg='dark green', fg='black',
                             text="<<Je m'arrête>>",
                             font=("helvetica", "15"))
 resultat_final = tkinter.Label(root, font=('helvetica', 12),
-    text='annonce', bg='dark green', fg='red')
+                               text='annonce', bg='dark green', fg='red')
 resultat_label = tkinter.Label(root, font=('helvetica', 15),
-    text='', bg='dark green', fg='yellow')
+                               text='', bg='dark green', fg='yellow')
 
 # Label qui affiche le nombre de cartes restantes
 nb_carte_paquet = tkinter.Label(
