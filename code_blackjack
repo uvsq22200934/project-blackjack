@@ -853,7 +853,7 @@ def resultat(action=0):
                 f'Score du Dealer: {str(score_croupier)} \n'
         resultat_final['text'] = annonce
         resultat_final.grid(column=13, row=11, rowspan=2, columnspan=4)
-        resultat_label.grid(column=13, row=12, rowspan=2, columnspan=4)
+        resultat_label.grid(column=13, row=13, rowspan=2, columnspan=4)
         if debug == 1:
             print(score_joueur, score_croupier)
             print('fin manche dans resultat')
