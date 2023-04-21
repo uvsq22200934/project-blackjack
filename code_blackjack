@@ -1186,7 +1186,7 @@ def validd(event):
                 len(argent_demande) >= 3:
             entry_label['text'] = 'Erreur\n Veuillez entrer' +\
                 ' un nombre entier positif inférieur à 999'
-            entry_label.grid(column=12, columnspan=2, row=12)
+            entry_label.grid(column=12, columnspan=2, row=15)
         if argent_demande.isdigit() and int(argent_demande) > 0 and\
                 len(argent_demande) <= 3:
             if debug == 1:
